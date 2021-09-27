@@ -10,13 +10,14 @@ import com.google.cloud.retail.v2.SearchResponse;
 import com.google.cloud.retail.v2.SearchServiceClient;
 import com.google.cloud.retail.v2.SearchServiceSettings;
 import com.google.common.collect.Lists;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class SearchService {
+public class SearchServiceTest {
     private static final long YOUR_PROJECT_NUMBER = 1038874412926L;
     private static final String ENDPOINT = "retail.googleapis.com:443";
     private static final String DEFAULT_CATALOG_NAME =
@@ -361,8 +362,8 @@ public class SearchService {
     }
     // [END search_product_queryExpansion]
 
-
-    public static void main(String[] args) throws IOException, InterruptedException {
+    @Test
+    public void search() throws IOException, InterruptedException {
 
         searchProducts("Nest_Maxi");
 
