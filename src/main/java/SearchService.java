@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import org.junit.Test;
 
 public class SearchService {
     private static final long YOUR_PROJECT_NUMBER = 1038874412926L;
@@ -48,13 +47,13 @@ public class SearchService {
                 .setVisitorId(VISITOR_ID)
                 .setQuery(query)
                 .build();
-
+        System.out.println("Search with only a query, request: "+ searchRequest);
         SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
 
         searchClient.shutdownNow();
         searchClient.awaitTermination(2, TimeUnit.SECONDS);
 
-        System.out.println(response);
+        System.out.println("Search with only a query, response: "+ response);
         return response;
     }
     // [END search_product]
@@ -72,12 +71,12 @@ public class SearchService {
                 .setPageSize(pageSize)
                 .setFilter(filter)
                 .build();
-
+        System.out.println("Search with filtering, request: "+ searchRequest);
         SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
 
         searchClient.shutdownNow();
         searchClient.awaitTermination(2, TimeUnit.SECONDS);
-
+        System.out.println("Search with filtering, response: "+ response);
         return response;
     }
     // [END search_product_filter]
@@ -95,12 +94,12 @@ public class SearchService {
                 .setPageSize(pageSize)
                 .setOrderBy(orderBy)
                 .build();
-
+        System.out.println("Search with ordering, request: "+ searchRequest);
         SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
 
         searchClient.shutdownNow();
         searchClient.awaitTermination(2, TimeUnit.SECONDS);
-
+        System.out.println("Search with ordering, response: "+ response);
         return response;
     }
     // [END search_product_order]
@@ -128,12 +127,12 @@ public class SearchService {
                 .setPageSize(pageSize)
                 .setPageToken(firstResponse.getNextPageToken())
                 .build();
-
+        System.out.println("Search with pagination using page token, request: "+ secondRequest);
         SearchResponse response = searchClient.search(secondRequest).getPage().getResponse();
 
         searchClient.shutdownNow();
         searchClient.awaitTermination(2, TimeUnit.SECONDS);
-
+        System.out.println("Search with pagination using page token, response: "+ response);
         return response;
     }
     // [END search_product_page_token]
@@ -151,12 +150,12 @@ public class SearchService {
                 .setPageSize(pageSize)
                 .setOffset(offset)
                 .build();
-
+        System.out.println("Search with pagination using offset, request: "+ searchRequest);
         SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
 
         searchClient.shutdownNow();
         searchClient.awaitTermination(2, TimeUnit.SECONDS);
-
+        System.out.println("Search with pagination using offset, response: "+ response);
         return response;
     }
     // [END search_product_page_offset]
@@ -180,12 +179,12 @@ public class SearchService {
                 .setQuery(query)
                 .addFacetSpecs(facetSpec)
                 .build();
-
+        System.out.println("Search and return textual facet, request: "+ searchRequest);
         SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
 
         searchClient.shutdownNow();
         searchClient.awaitTermination(2, TimeUnit.SECONDS);
-
+        System.out.println("Search and return textual facet, response: "+ response);
         return response;
     }
     // [END search_product_textualFacet]
@@ -210,12 +209,12 @@ public class SearchService {
                 .setQuery(query)
                 .addFacetSpecs(facetSpec)
                 .build();
-
+        System.out.println("Search and return numerical facet, request: "+ searchRequest);
         SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
 
         searchClient.shutdownNow();
         searchClient.awaitTermination(2, TimeUnit.SECONDS);
-
+        System.out.println("Search and return numerical facet, response: "+ response);
         return response;
     }
     // [END search_product_numericalFacet]
@@ -239,12 +238,12 @@ public class SearchService {
                 .setQuery(query)
                 .addFacetSpecs(facetSpec)
                 .build();
-
+        System.out.println("Search and return textual facet with restricted values, request: "+ searchRequest);
         SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
 
         searchClient.shutdownNow();
         searchClient.awaitTermination(2, TimeUnit.SECONDS);
-
+        System.out.println("Search and return textual facet with restricted values, response: "+ response);
         return response;
     }
     // [END search_product_textualFacet_withRestrictedValues]
@@ -270,12 +269,12 @@ public class SearchService {
                 .setFilter(filter)
                 .addFacetSpecs(facetSpec)
                 .build();
-
+        System.out.println("Search and return textual facet with excluded filter keys, request: "+ searchRequest);
         SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
 
         searchClient.shutdownNow();
         searchClient.awaitTermination(2, TimeUnit.SECONDS);
-
+        System.out.println("Search and return textual facet with excluded filter keys, response: "+ response);
         return response;
     }
     // [END search_product_textualFacet_withExcludedFilterKeys]
@@ -300,11 +299,12 @@ public class SearchService {
                 .setPageSize(pageSize)
                 .setBoostSpec(boostSpec)
                 .build();
-
+        System.out.println("Search with boosting specification, request: "+ searchRequest);
         SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
 
         searchClient.shutdownNow();
         searchClient.awaitTermination(2, TimeUnit.SECONDS);
+        System.out.println("Search with boosting specification, response: "+ response);
         return response;
 
     }
@@ -323,12 +323,12 @@ public class SearchService {
                 .setPageSize(pageSize)
                 .addAllVariantRollupKeys(rollupKeys)
                 .build();
-
+        System.out.println("Search with variant rollup keys, request: "+ searchRequest);
         SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
 
         searchClient.shutdownNow();
         searchClient.awaitTermination(2, TimeUnit.SECONDS);
-
+        System.out.println("Search with variant rollup keys, response: "+ response);
         return response;
     }
     // [END search_product_variantRollupKeys]
@@ -350,49 +350,49 @@ public class SearchService {
                 .setPageSize(pageSize)
                 .setQueryExpansionSpec(queryExpansionSpec)
                 .build();
-
+        System.out.println("Search with query expansion, request: "+ searchRequest);
         SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
 
         searchClient.shutdownNow();
         searchClient.awaitTermination(2, TimeUnit.SECONDS);
-
+        System.out.println("Search with query expansion, response: "+ response);
         return response;
     }
     // [END search_product_queryExpansion]
 
-    @Test
-    public void search() throws IOException, InterruptedException {
+
+    public static void main(String[] args) throws IOException, InterruptedException {
 
         SearchResponse searchResponse;
 
-        searchResponse = searchProducts("Nest");
+        searchResponse = searchProducts("Nest_Maxi");
 
-        searchResponse = searchOrderedProducts("Nest", 10, "price desc");
+        searchResponse = searchOrderedProducts("Nest_Maxi", 10, "price desc");
 
-        searchResponse = searchFilteredProducts("Nest", 10,
+        searchResponse = searchFilteredProducts("Nest_Maxi", 10,
                                                 "(colorFamily: ANY(\"grey\")) AND (price>=100)");
 
-        searchResponse = searchProducts_withNextPageToken("Nest", 10);
+        searchResponse = searchProducts_withNextPageToken("Nest_Maxi", 10);
 
-        searchResponse = searchProducts_withOffset("Nest", 10, 5);
+        searchResponse = searchProducts_withOffset("Nest_Maxi", 10, 5);
 
         List<Interval> intervals = Lists.newArrayList(Interval.newBuilder()
                                                               .setMinimum(10.0)
                                                               .setExclusiveMaximum(20.0)
                                                               .build());
 
-        searchResponse = searchProductsWithNumericalFacet("Nest", "price", intervals, "count desc");
+        searchResponse = searchProductsWithNumericalFacet("Nest_Maxi", "price", intervals, "count desc");
 
-        searchResponse = searchProductsWithTextualFacet("Nest", "colorFamily", "value desc");
+        searchResponse = searchProductsWithTextualFacet("Nest_Maxi", "colorFamily", "value desc");
 
         List<String> restrictedValues = Lists.newArrayList("store123", "store456");
 
-        searchResponse = searchProductsWithTextualFacet_restrictedValues("Nest", "pickupInStore",
+        searchResponse = searchProductsWithTextualFacet_restrictedValues("Nest_Maxi", "pickupInStore",
                                                                          restrictedValues);
 
         List<String> excludedFilterKeys = Lists.newArrayList("colorFamily");
 
-        searchResponse = searchProductsWithTextualFacet_excludedFilterKeys("Nest", "colorFamily",
+        searchResponse = searchProductsWithTextualFacet_excludedFilterKeys("Nest_Maxi", "colorFamily",
                                                                            "(colorFamily: ANY(\"grey\"))", excludedFilterKeys);
 
         searchResponse = searchProductsWithBoostSpec("Nest", 10, "(colorFamily: ANY(\"grey\"))", 0.5f);
@@ -400,8 +400,8 @@ public class SearchService {
         List<String> variantRollupKeys = Lists
                 .newArrayList("colorFamily", "pickupInStore.store123");
 
-        searchResponse = searchProductsWithVariantRollupKeys("Nest", 10, variantRollupKeys);
+        searchResponse = searchProductsWithVariantRollupKeys("Nest_Maxi", 10, variantRollupKeys);
 
-        searchResponse = searchProductsWithQueryExpansion("Nest", 10, Condition.AUTO);
+        searchResponse = searchProductsWithQueryExpansion("Nest_Maxi", 10, Condition.AUTO);
     }
 }
