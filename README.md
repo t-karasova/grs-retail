@@ -3,7 +3,7 @@
 The code here demonstartes how to consume Google Retail Search API in Java
 
 ### Authorization
-In order to authenticate and authorize the client please open the Java Process Console and use a command to set the Project_Id:
+In order to authenticate and authorize the client please open a Terminal and use a command to set the Project_Id:
 
 ```
 gcloud config set project project_id
