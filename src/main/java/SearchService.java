@@ -364,48 +364,46 @@ public class SearchService {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        SearchResponse searchResponse;
+        searchProducts("Nest_Maxi");
 
-        searchResponse = searchProducts("Nest_Maxi");
+        searchOrderedProducts("Nest_Maxi", 10, "price desc");
 
-        searchResponse = searchOrderedProducts("Nest_Maxi", 10, "price desc");
-
-        searchResponse = searchFilteredProducts("Nest_Maxi", 10,
-                                                "(colorFamily: ANY(\"grey\")) AND (price>=100)"
+        searchFilteredProducts("Nest_Maxi", 10,
+                               "(colorFamily: ANY(\"grey\")) AND (price>=100)"
         );
 
-        searchResponse = searchProducts_withNextPageToken("Nest_Maxi", 10);
+        searchProducts_withNextPageToken("Nest_Maxi", 10);
 
-        searchResponse = searchProducts_withOffset("Nest_Maxi", 10, 5);
+        searchProducts_withOffset("Nest_Maxi", 10, 5);
 
         List<Interval> intervals = Lists.newArrayList(Interval.newBuilder()
                                                               .setMinimum(10.0)
                                                               .setExclusiveMaximum(20.0)
                                                               .build());
 
-        searchResponse = searchProductsWithNumericalFacet("Nest_Maxi", "price", intervals, "count desc");
+        searchProductsWithNumericalFacet("Nest_Maxi", "price", intervals, "count desc");
 
-        searchResponse = searchProductsWithTextualFacet("Nest_Maxi", "colorFamily", "value desc");
+        searchProductsWithTextualFacet("Nest_Maxi", "colorFamily", "value desc");
 
         List<String> restrictedValues = Lists.newArrayList("store123", "store456");
 
-        searchResponse = searchProductsWithTextualFacet_restrictedValues("Nest_Maxi", "pickupInStore",
-                                                                         restrictedValues
+        searchProductsWithTextualFacet_restrictedValues("Nest_Maxi", "pickupInStore",
+                                                        restrictedValues
         );
 
         List<String> excludedFilterKeys = Lists.newArrayList("colorFamily");
 
-        searchResponse = searchProductsWithTextualFacet_excludedFilterKeys("Nest_Maxi", "colorFamily",
-                                                                           "(colorFamily: ANY(\"grey\"))", excludedFilterKeys
+        searchProductsWithTextualFacet_excludedFilterKeys("Nest_Maxi", "colorFamily",
+                                                          "(colorFamily: ANY(\"grey\"))", excludedFilterKeys
         );
 
-        searchResponse = searchProductsWithBoostSpec("Nest", 10, "(colorFamily: ANY(\"grey\"))", 0.5f);
+        searchProductsWithBoostSpec("Nest", 10, "(colorFamily: ANY(\"grey\"))", 0.5f);
 
         List<String> variantRollupKeys = Lists
                 .newArrayList("colorFamily", "pickupInStore.store123");
 
-        searchResponse = searchProductsWithVariantRollupKeys("Nest_Maxi", 10, variantRollupKeys);
+        searchProductsWithVariantRollupKeys("Nest_Maxi", 10, variantRollupKeys);
 
-        searchResponse = searchProductsWithQueryExpansion("Nest_Maxi", 10, Condition.AUTO);
+        searchProductsWithQueryExpansion("Nest_Maxi", 10, Condition.AUTO);
     }
 }
