@@ -12,7 +12,7 @@ export GOOGLE_APPLICATION_CREDENTIALS="/home/use_name/cloudshell_open/grs-retail
 
 Use maven commant to run one of test classes:
 ```
-mvn test -Dtest=SearchServicePaginationTest
+mvn test -Dtest=SearchServicePaginationOffsetTest
 ```
 Or run All tests in this code samples with a command:
 ```

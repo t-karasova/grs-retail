@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class SearchServicePaginationTest {
+public class SearchServicePaginationNextPageTest {
     //TODO(developers) change the values of following variables to use proper project
     private static final long YOUR_PROJECT_NUMBER = 00000L;
 
@@ -65,35 +65,10 @@ public class SearchServicePaginationTest {
     }
     // [END search_product_page_token]
 
-    // [START search_product_page_offset]
-    public static SearchResponse searchProducts_withOffset(String query, int pageSize,
-                                                           int offset) throws IOException, InterruptedException {
-        SearchServiceClient searchClient = getSearchServiceClient();
-
-        SearchRequest searchRequest = SearchRequest.newBuilder()
-                .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
-                .setBranch(DEFAULT_BRANCH_NAME)
-                .setVisitorId(VISITOR_ID)
-                .setQuery(query)
-                .setPageSize(pageSize)
-                .setOffset(offset)
-                .build();
-        System.out.println("Search with pagination using offset, request: " + searchRequest);
-        SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
-
-        searchClient.shutdownNow();
-        searchClient.awaitTermination(2, TimeUnit.SECONDS);
-        System.out.println("Search with pagination using offset, response: " + response);
-        return response;
-    }
-    // [END search_product_page_offset]
-
     @Test
     public void search() throws IOException, InterruptedException {
 
         searchProducts_withNextPageToken("Nest_Maxi", 10);
-
-        searchProducts_withOffset("Nest_Maxi", 10, 5);
 
     }
 }
