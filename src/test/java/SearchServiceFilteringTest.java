@@ -37,8 +37,6 @@ public class SearchServiceFilteringTest {
   private static final String DEFAULT_SEARCH_PLACEMENT_NAME =
       DEFAULT_CATALOG_NAME + "/placements/default_search";
   private static final String VISITOR_ID = UUID.randomUUID().toString();
-  private static final String DEFAULT_BRANCH_NAME =
-      DEFAULT_CATALOG_NAME + "/branches/default_branch";
 
   // get search service client
   private static SearchServiceClient getSearchServiceClient() throws IOException {
@@ -55,7 +53,6 @@ public class SearchServiceFilteringTest {
 
     SearchRequest searchRequest = SearchRequest.newBuilder()
         .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
-        .setBranch(DEFAULT_BRANCH_NAME)
         .setVisitorId(VISITOR_ID)
         .setQuery(query)
         .setPageSize(pageSize)
