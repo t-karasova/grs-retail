@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 public class SearchServiceQueryExpansionTest {
 
   private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
-  private static final String ENDPOINT = "retail.googleapis.com";
+  private static final String ENDPOINT = "retail.googleapis.com:443";
   private static final String DEFAULT_CATALOG_NAME =
       String.format("projects/%d/locations/global/catalogs/default_catalog", YOUR_PROJECT_NUMBER);
   private static final String DEFAULT_SEARCH_PLACEMENT_NAME =
