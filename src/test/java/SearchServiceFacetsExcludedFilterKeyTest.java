@@ -51,7 +51,7 @@ public class SearchServiceFacetsExcludedFilterKeyTest {
 
   // get search service request
   private static void searchProductsWithTextualFacet_excludedFilterKeys(String query,
-      String key, String filter, List<String> excludedFilterKeys, Integer pageSize)
+      String key, String filter, List<String> excludedFilterKeys, int pageSize)
       throws IOException, InterruptedException {
     SearchServiceClient searchClient = getSearchServiceClient();
 
@@ -88,7 +88,7 @@ public class SearchServiceFacetsExcludedFilterKeyTest {
   public void search() throws IOException, InterruptedException {
     // TRY DIFFERENT FILTER EXPRESSIONS HERE:
     String filter = "(colorFamily: ANY(\"Black\"))";
-    Integer pageSize = 10;
+    int pageSize = 10;
 
     List<String> excludedFilterKeys = Lists.newArrayList("colorFamily");
 
