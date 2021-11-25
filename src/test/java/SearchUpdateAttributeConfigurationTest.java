@@ -89,7 +89,7 @@ public class SearchUpdateAttributeConfigurationTest {
   @Test
   public void search() throws IOException, InterruptedException {
     // TRY DIFFERENT FILTER EXPRESSIONS HERE:
-    String productToUpdateId = "GGOEGAER119516";
+    String productToUpdateId = "GGOEAAEC172013";
 
     updateProduct(productToUpdateId);
   }
