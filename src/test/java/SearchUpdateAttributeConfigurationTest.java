@@ -22,18 +22,17 @@ import com.google.cloud.retail.v2.GetProductRequest;
 import com.google.cloud.retail.v2.Product;
 import com.google.cloud.retail.v2.ProductServiceClient;
 import com.google.cloud.retail.v2.ProductServiceSettings;
+import com.google.protobuf.FieldMask;
 import java.io.IOException;
-import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import org.junit.Test;
 
 public class SearchUpdateAttributeConfigurationTest {
 
   private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
   private static final String ENDPOINT = "retail.googleapis.com:443";
   private static final String DEFAULT_CATALOG_NAME =
-      String.format("projects/%d/locations/global/catalogs/default_catalog", YOUR_PROJECT_NUMBER);
-  private static final String DEFAULT_SEARCH_PLACEMENT_NAME =
-      DEFAULT_CATALOG_NAME + "/placements/default_search";
-  private static final String VISITOR_ID = UUID.randomUUID().toString();
+      String.format("projects/%d/locations/global/catalogs/default_catalog/", YOUR_PROJECT_NUMBER);
 
   // get product service client
   private static ProductServiceClient getProductServiceClient() throws IOException {
@@ -47,16 +46,17 @@ public class SearchUpdateAttributeConfigurationTest {
     return getProductServiceClient().getProduct(productId);
   }
 
-  public static Product getProductWithRequest(String productName) throws IOException {
+  public static Product getUpdateProductRequest(Product productToUpdate) throws IOException {
     GetProductRequest request = GetProductRequest
         .newBuilder()
-        .setName(productName)
+        .setName(DEFAULT_CATALOG_NAME + "/" + productToUpdate.getId())
         .build();
     return getProductServiceClient().getProduct(request);
   }
 
   // update the product attribute
-  public static void updateProduct(String productToUpdateId) throws IOException {
+  public static void updateProduct(String productToUpdateId)
+      throws IOException, InterruptedException {
 
     // Get a product from catalog
     Product productToUpdate = getProduct(productToUpdateId);
@@ -65,26 +65,33 @@ public class SearchUpdateAttributeConfigurationTest {
     final CustomAttribute customAttribute = CustomAttribute.newBuilder()
         .setIndexable(true)
         .setSearchable(true)
-        // setText - "recycled fabrics", "recycled packaging", "plastic-free packaging", "ethically made"
-        .setText(1, "")
+        .addText("\"recycled fabrics\", \"recycled packaging\", \"plastic-free packaging\", \"ethically made\"")
         .build();
 
     // Set the attribute to the original product
-    // TODO: 11/24/21 https://github.com/t-karasova/grs-samples-python/blob/master/search/update_attribute_configuration.py
+    productToUpdate.getAttributesOrDefault("ecofriendly", customAttribute);
 
     // Update product
-//    updated_product = get_product_service_client().update_product(
-//        get_update_product_request(product_to_update))
-//
-//    print('---updated product---:')
-//    print(updated_product)
-//
-//    print('---Wait 5 minutes to be sure the catalog has been indexed after the changes---:')
-//    time.sleep(300)
-//    print('---You can proceed with the search requests---')
-//
-//
-//    update_product(product_id)
+    Product updatedProduct = getProductServiceClient().updateProduct(
+        getUpdateProductRequest(productToUpdate), FieldMask.getDefaultInstance());
+
+    System.out.println("updated product: " + updatedProduct);
+
+    System.out.println("Wait 5 minutes to be sure the catalog has been indexed after the changes:");
+
+    getProductServiceClient().shutdownNow();
+    getProductServiceClient().awaitTermination(2, TimeUnit.SECONDS);
+
+    System.out.println("You can proceed with the search requests");
+  }
+
+  // call the Retail Search:
+  @Test
+  public void search() throws IOException, InterruptedException {
+    // TRY DIFFERENT FILTER EXPRESSIONS HERE:
+    String productToUpdateId = "GGOEGAER119516";
+
+    updateProduct(productToUpdateId);
   }
 }
 

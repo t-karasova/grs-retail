@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * [START retail_search_for_products_with_offset]
+ * [START retail_search_for_products_with_page_size]
  * Call Retail API to search for a products in a catalog,
  * limit the number of the products per page and go to the next page using "next_page_token"
  * or jump to chosen page using "offset".
@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class SearchServicePaginationOffsetTest {
+public class SearchServiceWithPaginationTest {
 
   private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
   private static final String ENDPOINT = "retail.googleapis.com:443";
@@ -48,24 +48,39 @@ public class SearchServicePaginationOffsetTest {
   }
 
   // get search service request
-  public static SearchResponse searchProducts_withOffset(String query, int offset)
-      throws IOException, InterruptedException {
+  public static SearchResponse searchProducts_withNextPageToken(String query, int pageSize,
+      int offset, String pageToken) throws IOException, InterruptedException {
     SearchServiceClient searchClient = getSearchServiceClient();
 
-    SearchRequest searchRequest = SearchRequest.newBuilder()
+    SearchRequest firstRequest = SearchRequest.newBuilder()
         .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
         .setVisitorId(VISITOR_ID) // A unique identifier to track visitors
         .setQuery(query)
+        .setPageSize(pageSize)
         .setOffset(offset)
+        .setPageToken(pageToken)
         .build();
-    System.out.println("Search with pagination using offset, request: " + searchRequest);
 
-    SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
+    SearchResponse firstResponse = searchClient.search(firstRequest).getPage()
+        .getResponse();
+
+    SearchRequest secondRequest = SearchRequest.newBuilder()
+        .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
+        .setVisitorId(VISITOR_ID) // A unique identifier to track visitors
+        .setQuery(query)
+        .setPageSize(pageSize)
+        .setOffset(offset)
+        .setPageToken(firstResponse.getNextPageToken())
+        .build();
+
+    System.out.println("Search with pagination using page token, request: " + secondRequest);
+
+    SearchResponse response = searchClient.search(secondRequest).getPage().getResponse();
 
     searchClient.shutdownNow();
     searchClient.awaitTermination(2, TimeUnit.SECONDS);
 
-    System.out.println("Search with pagination using offset, response: " + response);
+    System.out.println("Search with pagination using page token, response: " + response);
     return response;
   }
 
@@ -73,10 +88,16 @@ public class SearchServicePaginationOffsetTest {
   @Test
   public void search() throws IOException, InterruptedException {
     // TRY DIFFERENT PAGINATION PARAMETERS HERE:
+    int pageSize = 6;
     int offset = 0;
+    String pageToken = "";
 
-    searchProducts_withOffset("Hoodie", offset);
+    searchProducts_withNextPageToken("Hoodie", pageSize, offset, pageToken);
+
+    // PASTE CALL WITH NEXT PAGE TOKEN HERE:
+
+    // PASTE CALL WITH OFFSET HERE:
   }
 }
 
-// [END retail_search_for_products_with_offset]
+// [END retail_search_for_products_with_page_size]
