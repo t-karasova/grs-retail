@@ -75,7 +75,7 @@ public class SearchServiceFilteringTest {
   @Test
   public void search() throws IOException, InterruptedException {
     // TRY DIFFERENT FILTER EXPRESSIONS HERE:
-    String filter = "(colorFamily: ANY(\"grey\")) AND (price>=100)";
+    String filter = "(colorFamily: ANY(\"Black\"))";
 
     searchFilteredProducts("Nest_Maxi", 10,
         filter

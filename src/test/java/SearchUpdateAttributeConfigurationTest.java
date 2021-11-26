@@ -32,7 +32,7 @@ public class SearchUpdateAttributeConfigurationTest {
   private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
   private static final String ENDPOINT = "retail.googleapis.com:443";
   private static final String DEFAULT_CATALOG_NAME =
-      String.format("projects/%d/locations/global/catalogs/default_catalog/", YOUR_PROJECT_NUMBER);
+      String.format("projects/%d/locations/global/catalogs/default_catalog/branches/default_branch/products/", YOUR_PROJECT_NUMBER);
 
   // get product service client
   private static ProductServiceClient getProductServiceClient() throws IOException {
@@ -43,13 +43,13 @@ public class SearchUpdateAttributeConfigurationTest {
   }
 
   public static Product getProduct(String productId) throws IOException {
-    return getProductServiceClient().getProduct(productId);
+    return getProductServiceClient().getProduct(DEFAULT_CATALOG_NAME + productId);
   }
 
   public static Product getUpdateProductRequest(Product productToUpdate) throws IOException {
     GetProductRequest request = GetProductRequest
         .newBuilder()
-        .setName(DEFAULT_CATALOG_NAME + "/" + productToUpdate.getId())
+        .setName(DEFAULT_CATALOG_NAME + productToUpdate.getId())
         .build();
     return getProductServiceClient().getProduct(request);
   }
