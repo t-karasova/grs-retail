@@ -17,6 +17,8 @@
  * Call Retail API to search for a products in a catalog, filter the results by the "product.attribute" field.
  */
 
+package search;
+
 import com.google.cloud.retail.v2.SearchRequest;
 import com.google.cloud.retail.v2.SearchResponse;
 import com.google.cloud.retail.v2.SearchServiceClient;
@@ -26,7 +28,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
-public class SearchServiceAttributeConfigTest {
+public class SearchAttributeConfig {
 
   private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
   private static final String ENDPOINT = "retail.googleapis.com:443";
