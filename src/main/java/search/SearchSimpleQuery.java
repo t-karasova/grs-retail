@@ -25,7 +25,6 @@ import com.google.cloud.retail.v2.SearchServiceClient;
 import com.google.cloud.retail.v2.SearchServiceSettings;
 import java.io.IOException;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
 public class SearchSimpleQuery {
@@ -48,7 +47,7 @@ public class SearchSimpleQuery {
 
   // get search service request
   public static SearchResponse getSearchRequest(String query)
-      throws IOException, InterruptedException {
+      throws IOException {
     SearchServiceClient searchClient = getSearchServiceClient();
 
     SearchRequest searchRequest = SearchRequest.newBuilder()
@@ -62,7 +61,6 @@ public class SearchSimpleQuery {
     SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
 
     searchClient.shutdownNow();
-    searchClient.awaitTermination(2, TimeUnit.SECONDS);
 
     System.out.println("Search with only a query, response: " + response);
     return response;
