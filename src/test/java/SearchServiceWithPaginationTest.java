@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * [START search_product_filter]
+ * [START retail_search_for_products_with_page_size]
+ * Call Retail API to search for a products in a catalog,
+ * limit the number of the products per page and go to the next page using "next_page_token"
+ * or jump to chosen page using "offset".
  */
 
 import com.google.cloud.retail.v2.SearchRequest;
@@ -26,7 +29,7 @@ import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class SearchServiceFilteringTest {
+public class SearchServiceWithPaginationTest {
 
   private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
   private static final String ENDPOINT = "retail.googleapis.com:443";
@@ -35,8 +38,6 @@ public class SearchServiceFilteringTest {
   private static final String DEFAULT_SEARCH_PLACEMENT_NAME =
       DEFAULT_CATALOG_NAME + "/placements/default_search";
   private static final String VISITOR_ID = UUID.randomUUID().toString();
-  private static final String DEFAULT_BRANCH_NAME =
-      DEFAULT_CATALOG_NAME + "/branches/default_branch";
 
   // get search service client
   private static SearchServiceClient getSearchServiceClient() throws IOException {
@@ -47,40 +48,56 @@ public class SearchServiceFilteringTest {
   }
 
   // get search service request
-  public static SearchResponse searchFilteredProducts(String query, int pageSize,
-      String filter) throws IOException, InterruptedException {
+  public static SearchResponse searchProducts_withNextPageToken(String query, int pageSize,
+      int offset, String pageToken) throws IOException, InterruptedException {
     SearchServiceClient searchClient = getSearchServiceClient();
 
-    SearchRequest searchRequest = SearchRequest.newBuilder()
+    SearchRequest firstRequest = SearchRequest.newBuilder()
         .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
-        .setBranch(DEFAULT_BRANCH_NAME)
-        .setVisitorId(VISITOR_ID)
+        .setVisitorId(VISITOR_ID) // A unique identifier to track visitors
         .setQuery(query)
         .setPageSize(pageSize)
-        .setFilter(filter)
+        .setOffset(offset)
+        .setPageToken(pageToken)
         .build();
 
-    System.out.println("Search with filtering, request: " + searchRequest);
+    SearchResponse firstResponse = searchClient.search(firstRequest).getPage()
+        .getResponse();
 
-    SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
+    SearchRequest secondRequest = SearchRequest.newBuilder()
+        .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
+        .setVisitorId(VISITOR_ID) // A unique identifier to track visitors
+        .setQuery(query)
+        .setPageSize(pageSize)
+        .setOffset(offset)
+        .setPageToken(firstResponse.getNextPageToken())
+        .build();
+
+    System.out.println("Search with pagination using page token, request: " + secondRequest);
+
+    SearchResponse response = searchClient.search(secondRequest).getPage().getResponse();
 
     searchClient.shutdownNow();
     searchClient.awaitTermination(2, TimeUnit.SECONDS);
 
-    System.out.println("Search with filtering, response: " + response);
+    System.out.println("Search with pagination using page token, response: " + response);
     return response;
   }
 
-  // call the Retail Search:
+  // call the Retail Search
   @Test
   public void search() throws IOException, InterruptedException {
-    // TRY DIFFERENT FILTER EXPRESSIONS HERE:
-    String filter = "(colorFamily: ANY(\"Black\"))";
+    // TRY DIFFERENT PAGINATION PARAMETERS HERE:
+    int pageSize = 6;
+    int offset = 0;
+    String pageToken = "";
 
-    searchFilteredProducts("Nest_Maxi", 10,
-        filter
-    );
+    searchProducts_withNextPageToken("Hoodie", pageSize, offset, pageToken);
+
+    // PASTE CALL WITH NEXT PAGE TOKEN HERE:
+
+    // PASTE CALL WITH OFFSET HERE:
   }
 }
 
-// [END search_product_filter]
+// [END retail_search_for_products_with_page_size]

@@ -14,68 +14,68 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class SearchServiceNumericalFacetTest {
-    //TODO(developers) change the values of following variables to use proper project
-    private static final long YOUR_PROJECT_NUMBER = 00000L;
+  //TODO(developers) change the values of following variables to use proper project
+  private static final long YOUR_PROJECT_NUMBER = 00000L;
 
-    private static final String ENDPOINT = "retail.googleapis.com:443";
-    private static final String DEFAULT_CATALOG_NAME =
-            String.format("projects/%d/locations/global/catalogs/default_catalog", YOUR_PROJECT_NUMBER);
-    private static final String DEFAULT_SEARCH_PLACEMENT_NAME =
-            DEFAULT_CATALOG_NAME + "/placements/default_search";
+  private static final String ENDPOINT = "retail.googleapis.com:443";
+  private static final String DEFAULT_CATALOG_NAME =
+      String.format("projects/%d/locations/global/catalogs/default_catalog", YOUR_PROJECT_NUMBER);
+  private static final String DEFAULT_SEARCH_PLACEMENT_NAME =
+      DEFAULT_CATALOG_NAME + "/placements/default_search";
 
-    private static final String VISITOR_ID = UUID.randomUUID().toString();
+  private static final String VISITOR_ID = UUID.randomUUID().toString();
 
-    // [START search_client]
-    private static SearchServiceClient getSearchServiceClient() throws IOException {
-        SearchServiceSettings settings = SearchServiceSettings.newBuilder()
-                .setEndpoint(ENDPOINT)
-                .build();
-        return SearchServiceClient.create(settings);
-    }
-    // [END search_client]
+  // [START search_client]
+  private static SearchServiceClient getSearchServiceClient() throws IOException {
+    SearchServiceSettings settings = SearchServiceSettings.newBuilder()
+        .setEndpoint(ENDPOINT)
+        .build();
+    return SearchServiceClient.create(settings);
+  }
+  // [END search_client]
 
-    private static final String DEFAULT_BRANCH_NAME =
-            DEFAULT_CATALOG_NAME + "/branches/default_branch";
+  private static final String DEFAULT_BRANCH_NAME =
+      DEFAULT_CATALOG_NAME + "/branches/default_branch";
 
-    // [START search_product_numericalFacet]
-    public static SearchResponse searchProductsWithNumericalFacet(String query, String key,
-                                                                  List<Interval> intervals, String orderBy) throws IOException, InterruptedException {
-        SearchServiceClient searchClient = getSearchServiceClient();
+  // [START search_product_numericalFacet]
+  public static SearchResponse searchProductsWithNumericalFacet(String query, String key,
+      List<Interval> intervals, String orderBy) throws IOException, InterruptedException {
+    SearchServiceClient searchClient = getSearchServiceClient();
 
-        FacetKey facetKey = FacetKey.newBuilder()
-                .setKey(key)
-                .addAllIntervals(intervals)
-                .setOrderBy(orderBy)
-                .build();
-        FacetSpec facetSpec = FacetSpec.newBuilder()
-                .setFacetKey(facetKey)
-                .build();
-        SearchRequest searchRequest = SearchRequest.newBuilder()
-                .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
-                .setBranch(DEFAULT_BRANCH_NAME)
-                .setVisitorId(VISITOR_ID)
-                .setQuery(query)
-                .addFacetSpecs(facetSpec)
-                .build();
-        System.out.println("Search and return numerical facet, request: " + searchRequest);
-        SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
+    FacetKey facetKey = FacetKey.newBuilder()
+        .setKey(key)
+        .addAllIntervals(intervals)
+        .setOrderBy(orderBy)
+        .build();
+    FacetSpec facetSpec = FacetSpec.newBuilder()
+        .setFacetKey(facetKey)
+        .build();
+    SearchRequest searchRequest = SearchRequest.newBuilder()
+        .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
+        .setBranch(DEFAULT_BRANCH_NAME)
+        .setVisitorId(VISITOR_ID)
+        .setQuery(query)
+        .addFacetSpecs(facetSpec)
+        .build();
+    System.out.println("Search and return numerical facet, request: " + searchRequest);
+    SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
 
-        searchClient.shutdownNow();
-        searchClient.awaitTermination(2, TimeUnit.SECONDS);
-        System.out.println("Search and return numerical facet, response: " + response);
-        return response;
-    }
-    // [END search_product_numericalFacet]
+    searchClient.shutdownNow();
+    searchClient.awaitTermination(2, TimeUnit.SECONDS);
+    System.out.println("Search and return numerical facet, response: " + response);
+    return response;
+  }
+  // [END search_product_numericalFacet]
 
-    @Test
-    public void search() throws IOException, InterruptedException {
+  @Test
+  public void search() throws IOException, InterruptedException {
 
-        List<Interval> intervals = Lists.newArrayList(Interval.newBuilder()
-                                                              .setMinimum(10.0)
-                                                              .setExclusiveMaximum(20.0)
-                                                              .build());
+    List<Interval> intervals = Lists.newArrayList(Interval.newBuilder()
+        .setMinimum(10.0)
+        .setExclusiveMaximum(20.0)
+        .build());
 
-        searchProductsWithNumericalFacet("Nest_Maxi", "price", intervals, "count desc");
+    searchProductsWithNumericalFacet("Nest_Maxi", "price", intervals, "count desc");
 
-    }
+  }
 }

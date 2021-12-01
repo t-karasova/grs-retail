@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * [START search_product_filter]
+ * [START retail_search_with_filter_by_attribute]
+ * Call Retail API to search for a products in a catalog, filter the results by the "product.attribute" field.
  */
 
 import com.google.cloud.retail.v2.SearchRequest;
 import com.google.cloud.retail.v2.SearchResponse;
 import com.google.cloud.retail.v2.SearchServiceClient;
 import com.google.cloud.retail.v2.SearchServiceSettings;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import org.junit.Test;
 
-public class SearchServiceFilteringTest {
+public class SearchServiceAttributeConfigTest {
 
   private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
   private static final String ENDPOINT = "retail.googleapis.com:443";
@@ -35,8 +35,6 @@ public class SearchServiceFilteringTest {
   private static final String DEFAULT_SEARCH_PLACEMENT_NAME =
       DEFAULT_CATALOG_NAME + "/placements/default_search";
   private static final String VISITOR_ID = UUID.randomUUID().toString();
-  private static final String DEFAULT_BRANCH_NAME =
-      DEFAULT_CATALOG_NAME + "/branches/default_branch";
 
   // get search service client
   private static SearchServiceClient getSearchServiceClient() throws IOException {
@@ -47,40 +45,40 @@ public class SearchServiceFilteringTest {
   }
 
   // get search service request
-  public static SearchResponse searchFilteredProducts(String query, int pageSize,
-      String filter) throws IOException, InterruptedException {
+  public static SearchResponse searchProductsWithAttributeConfig(String query,
+      String filter, int pageSize) throws IOException, InterruptedException {
+
     SearchServiceClient searchClient = getSearchServiceClient();
 
     SearchRequest searchRequest = SearchRequest.newBuilder()
-        .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
-        .setBranch(DEFAULT_BRANCH_NAME)
-        .setVisitorId(VISITOR_ID)
+        .setPlacement(
+            DEFAULT_SEARCH_PLACEMENT_NAME) // Placement is used to identify the Serving Config name.
         .setQuery(query)
-        .setPageSize(pageSize)
         .setFilter(filter)
+        .setPageSize(pageSize)
+        .setVisitorId(VISITOR_ID) // A unique identifier to track visitors
         .build();
 
-    System.out.println("Search with filtering, request: " + searchRequest);
+    System.out.println("Search with attribute config, request: " + searchRequest);
 
     SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
 
     searchClient.shutdownNow();
     searchClient.awaitTermination(2, TimeUnit.SECONDS);
 
-    System.out.println("Search with filtering, response: " + response);
+    System.out.println("Search with attribute config, response: " + response);
     return response;
   }
 
   // call the Retail Search:
   @Test
   public void search() throws IOException, InterruptedException {
-    // TRY DIFFERENT FILTER EXPRESSIONS HERE:
-    String filter = "(colorFamily: ANY(\"Black\"))";
+    String query = "sweater";
+    String filter = "(attributes.ecofriendly: ANY(\"recycled packaging\"))";
+    int pageSize = 10;
 
-    searchFilteredProducts("Nest_Maxi", 10,
-        filter
-    );
+    searchProductsWithAttributeConfig(query, filter, pageSize);
   }
 }
 
-// [END search_product_filter]
+// [END retail_search_with_filter_by_attribute]
