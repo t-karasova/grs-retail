@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
-public class UpdateAttributeConfiguration {
+public class SearchUpdateAttributeConfig {
 
   private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
   private static final String ENDPOINT = "retail.googleapis.com:443";

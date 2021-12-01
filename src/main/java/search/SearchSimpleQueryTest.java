@@ -30,7 +30,7 @@ import java.io.IOException;
 public class SearchSimpleQueryTest {
 
   @Test
-  public void testSearchSimpleQuery() throws IOException, InterruptedException {
+  public void testSearchSimpleQuery() throws IOException {
 
     SearchResponse searchResponse = getSearchRequest("Hoodie");
 
@@ -40,7 +40,7 @@ public class SearchSimpleQueryTest {
 
     Assert.assertTrue(productTitle.contains("Hoodie"));
 
-    Assert.assertEquals(51, searchResponse.getTotalSize());
+    Assert.assertEquals(51, searchResponse.getTotalSize());  // todo : fix fail test
   }
 
 }
