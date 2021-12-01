@@ -17,17 +17,18 @@
  * Call Retail API to search for a products in a catalog using only search query.
  */
 
+package search;
+
 import com.google.cloud.retail.v2.SearchRequest;
 import com.google.cloud.retail.v2.SearchResponse;
 import com.google.cloud.retail.v2.SearchServiceClient;
 import com.google.cloud.retail.v2.SearchServiceSettings;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import org.junit.Test;
 
-public class SearchServiceSimpleQueryTest {
+public class SearchSimpleQuery {
 
   private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
   private static final String ENDPOINT = "retail.googleapis.com:443";
@@ -46,7 +47,7 @@ public class SearchServiceSimpleQueryTest {
   }
 
   // get search service request
-  public static SearchResponse searchProducts(String query)
+  public static SearchResponse getSearchRequest(String query)
       throws IOException, InterruptedException {
     SearchServiceClient searchClient = getSearchServiceClient();
 
@@ -54,7 +55,9 @@ public class SearchServiceSimpleQueryTest {
         .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
         .setQuery(query)
         .setVisitorId(VISITOR_ID)
+        .setPageSize(10)
         .build();
+
     System.out.println("Search with only a query, request: " + searchRequest);
     SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
 
@@ -68,8 +71,10 @@ public class SearchServiceSimpleQueryTest {
   // call the Retail Search
   @Test
   public void search() throws IOException, InterruptedException {
+    // TRY DIFFERENT QUERY PHRASES HERE:
+    String searchPhrase = "Hoodie";
 
-    searchProducts("Hoodie");
+    getSearchRequest(searchPhrase);
   }
 }
 
