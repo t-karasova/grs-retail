@@ -1,2 +1,0 @@
-{"code":3,"message":"Invalid value at 'availability' (type.googleapis.com/google.cloud.retail.v2main.Product.Availability): \"INVALID_VALUE\"","details":[{"@type":"type.googleapis.com/google.protobuf.Struct","value":{"line_number":1}}]}
-{"code":3,"message":"The string in \"product.title\" is a valid UTF-8 string, but only contains space characters, control characters or non-characters. The invalid field value is:  .","details":[{"@type":"type.googleapis.com/google.protobuf.Struct","value":{"line_number":2}}]}
