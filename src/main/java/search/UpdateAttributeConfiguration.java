@@ -17,6 +17,8 @@
  * Update product in a catalog using Retail API to change the product attribute searchability and indexability.
  */
 
+package search;
+
 import com.google.cloud.retail.v2.CustomAttribute;
 import com.google.cloud.retail.v2.GetProductRequest;
 import com.google.cloud.retail.v2.Product;
@@ -27,7 +29,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
-public class SearchUpdateAttributeConfigurationTest {
+public class UpdateAttributeConfiguration {
 
   private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
   private static final String ENDPOINT = "retail.googleapis.com:443";
@@ -55,7 +57,7 @@ public class SearchUpdateAttributeConfigurationTest {
   }
 
   // update the product attribute
-  public static void updateProduct(String productToUpdateId)
+  public static Product updateProduct(String productToUpdateId)
       throws IOException, InterruptedException {
 
     // Get a product from catalog
@@ -77,12 +79,14 @@ public class SearchUpdateAttributeConfigurationTest {
 
     System.out.println("updated product: " + updatedProduct);
 
-    System.out.println("Wait 5 minutes to be sure the catalog has been indexed after the changes:");
+    System.out.println("Wait 2 minutes to be sure the catalog has been indexed after the changes:");
 
     getProductServiceClient().shutdownNow();
-    getProductServiceClient().awaitTermination(2, TimeUnit.SECONDS);
+    getProductServiceClient().awaitTermination(2, TimeUnit.MINUTES);
 
     System.out.println("You can proceed with the search requests");
+
+    return updatedProduct;
   }
 
   // call the Retail Search:
