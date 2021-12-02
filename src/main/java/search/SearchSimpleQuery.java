@@ -70,9 +70,9 @@ public class SearchSimpleQuery {
   @Test
   public void search() throws IOException, InterruptedException {
     // TRY DIFFERENT QUERY PHRASES HERE:
-    String searchPhrase = "Hoodie";
+    String queryPhrase = "Hoodie";
 
-    getSearchRequest(searchPhrase);
+    getSearchRequest(queryPhrase);
   }
 }
 
