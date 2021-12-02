@@ -17,17 +17,17 @@
  * Call Retail API to search for a products in a catalog, order the results by different product fields.
  */
 
+package search;
+
 import com.google.cloud.retail.v2.SearchRequest;
 import com.google.cloud.retail.v2.SearchResponse;
 import com.google.cloud.retail.v2.SearchServiceClient;
 import com.google.cloud.retail.v2.SearchServiceSettings;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
-public class SearchServiceOrderingTest {
+public class SearchWithOrdering {
 
   private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
   private static final String ENDPOINT = "retail.googleapis.com:443";
@@ -46,34 +46,33 @@ public class SearchServiceOrderingTest {
   }
 
   // get search service request
-  public static SearchResponse searchOrderedProducts(String query, String orderBy)
-      throws IOException, InterruptedException {
-    SearchServiceClient searchClient = getSearchServiceClient();
-
+  public static SearchRequest getSearchRequest(String query, String orderBy) {
     SearchRequest searchRequest = SearchRequest.newBuilder()
         .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
         .setQuery(query)
         .setOrderBy(orderBy)
         .setVisitorId(VISITOR_ID) // A unique identifier to track visitors
+        .setPageSize(10)
         .build();
 
-    System.out.println("Search with ordering, request: " + searchRequest);
+    System.out.println("Search request: " + searchRequest);
 
-    SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
-
-    searchClient.shutdownNow();
-    searchClient.awaitTermination(2, TimeUnit.SECONDS);
-
-    System.out.println("Search with ordering, response: " + response);
-    return response;
+    return searchRequest;
   }
 
   // call the Retail Search:
-  @Test
-  public void search() throws IOException, InterruptedException {
+  public static SearchResponse search() throws IOException, InterruptedException {
+    // TRY DIFFERENT FILTER EXPRESSIONS HERE:
     String order = "price desc";
 
-    searchOrderedProducts("Hoodie", order);
+    SearchRequest searchRequest = getSearchRequest("Hoodie", order);
+
+    SearchResponse searchResponse = getSearchServiceClient().search(searchRequest).getPage()
+        .getResponse();
+
+    System.out.println("Ordered search results: " + searchResponse);
+
+    return searchResponse;
   }
 }
 
