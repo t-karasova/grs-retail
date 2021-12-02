@@ -28,7 +28,7 @@ import java.util.UUID;
 
 public class SearchSimpleQuery {
 
-  private static final long YOUR_PROJECT_NUMBER = 945579214386L;
+  private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
   private static final String ENDPOINT = "retail.googleapis.com:443";
   private static final String DEFAULT_CATALOG_NAME =
       String.format("projects/%d/locations/global/catalogs/default_catalog", YOUR_PROJECT_NUMBER);
@@ -45,10 +45,7 @@ public class SearchSimpleQuery {
   }
 
   // get search service request
-  public static SearchResponse getSearchRequest(String query)
-      throws IOException {
-    SearchServiceClient searchClient = getSearchServiceClient();
-
+  public static SearchRequest getSearchRequest(String query) {
     SearchRequest searchRequest = SearchRequest.newBuilder()
         .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
         .setQuery(query)
@@ -56,21 +53,20 @@ public class SearchSimpleQuery {
         .setPageSize(10)
         .build();
 
-    System.out.println("Search with only a query, request: " + searchRequest);
-    SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
+    System.out.println("Search request: " + searchRequest);
 
-    searchClient.shutdownNow();
-
-    System.out.println("Search with only a query, response: " + response);
-    return response;
+    return searchRequest;
   }
 
-  //call the Retail Search
+  // call the Retail Search:
   public static SearchResponse search() throws IOException, InterruptedException {
     // TRY DIFFERENT QUERY PHRASES HERE:
     String queryPhrase = "Hoodie";
 
-    SearchResponse searchResponse = getSearchRequest(queryPhrase);
+    SearchRequest searchRequest = getSearchRequest(queryPhrase);
+
+    SearchResponse searchResponse = getSearchServiceClient().search(searchRequest).getPage()
+        .getResponse();
 
     System.out.println("Search response: " + searchResponse);
 
