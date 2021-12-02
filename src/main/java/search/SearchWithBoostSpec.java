@@ -48,9 +48,8 @@ public class SearchWithBoostSpec {
   }
 
   // get search service request
-  public static SearchRequest getSearchRequest(String query,
-      String condition, float boostStrength) throws IOException {
-    SearchServiceClient searchClient = getSearchServiceClient();
+  public static SearchRequest getSearchRequest(String query, String condition,
+      float boostStrength) {
 
     BoostSpec boostSpec = BoostSpec.newBuilder()
         .addConditionBoostSpecs(ConditionBoostSpec.newBuilder()

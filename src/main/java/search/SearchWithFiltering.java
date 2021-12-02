@@ -16,17 +16,17 @@
  * [START search_product_filter]
  */
 
+package search;
+
 import com.google.cloud.retail.v2.SearchRequest;
 import com.google.cloud.retail.v2.SearchResponse;
 import com.google.cloud.retail.v2.SearchServiceClient;
 import com.google.cloud.retail.v2.SearchServiceSettings;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
-public class SearchServiceFilteringTest {
+public class SearchWithFiltering {
 
   private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
   private static final String ENDPOINT = "retail.googleapis.com:443";
@@ -47,39 +47,34 @@ public class SearchServiceFilteringTest {
   }
 
   // get search service request
-  public static SearchResponse searchFilteredProducts(String query, int pageSize,
-      String filter) throws IOException, InterruptedException {
-    SearchServiceClient searchClient = getSearchServiceClient();
-
+  public static SearchRequest getSearchRequest(String query, String filter) {
     SearchRequest searchRequest = SearchRequest.newBuilder()
         .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
         .setBranch(DEFAULT_BRANCH_NAME)
         .setVisitorId(VISITOR_ID)
         .setQuery(query)
-        .setPageSize(pageSize)
+        .setPageSize(10)
         .setFilter(filter)
         .build();
 
-    System.out.println("Search with filtering, request: " + searchRequest);
+    System.out.println("Search request: " + searchRequest);
 
-    SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
-
-    searchClient.shutdownNow();
-    searchClient.awaitTermination(2, TimeUnit.SECONDS);
-
-    System.out.println("Search with filtering, response: " + response);
-    return response;
+    return searchRequest;
   }
 
   // call the Retail Search:
-  @Test
-  public void search() throws IOException, InterruptedException {
+  public static SearchResponse search() throws IOException, InterruptedException {
     // TRY DIFFERENT FILTER EXPRESSIONS HERE:
     String filter = "(colorFamily: ANY(\"Black\"))";
 
-    searchFilteredProducts("Nest_Maxi", 10,
-        filter
-    );
+    SearchRequest searchRequest = getSearchRequest("Tee", filter);
+
+    SearchResponse searchResponse = getSearchServiceClient().search(searchRequest).getPage()
+        .getResponse();
+
+    System.out.println("Search response: " + searchResponse);
+
+    return searchResponse;
   }
 }
 
