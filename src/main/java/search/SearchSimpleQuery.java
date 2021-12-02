@@ -25,11 +25,10 @@ import com.google.cloud.retail.v2.SearchServiceClient;
 import com.google.cloud.retail.v2.SearchServiceSettings;
 import java.io.IOException;
 import java.util.UUID;
-import org.junit.Test;
 
 public class SearchSimpleQuery {
 
-  private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
+  private static final long YOUR_PROJECT_NUMBER = 945579214386L;
   private static final String ENDPOINT = "retail.googleapis.com:443";
   private static final String DEFAULT_CATALOG_NAME =
       String.format("projects/%d/locations/global/catalogs/default_catalog", YOUR_PROJECT_NUMBER);
@@ -66,13 +65,16 @@ public class SearchSimpleQuery {
     return response;
   }
 
-  // call the Retail Search
-  @Test
-  public void search() throws IOException, InterruptedException {
+  //call the Retail Search
+  public static SearchResponse search() throws IOException, InterruptedException {
     // TRY DIFFERENT QUERY PHRASES HERE:
     String queryPhrase = "Hoodie";
 
-    getSearchRequest(queryPhrase);
+    SearchResponse searchResponse = getSearchRequest(queryPhrase);
+
+    System.out.println("Search response: " + searchResponse);
+
+    return searchResponse;
   }
 }
 

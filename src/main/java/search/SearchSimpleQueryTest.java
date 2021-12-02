@@ -19,7 +19,7 @@
 
 package search;
 
-import static search.SearchSimpleQuery.getSearchRequest;
+import static search.SearchSimpleQuery.search;
 
 import com.google.cloud.retail.v2.SearchResponse;
 import org.junit.Test;
@@ -30,17 +30,17 @@ import java.io.IOException;
 public class SearchSimpleQueryTest {
 
   @Test
-  public void testSearchSimpleQuery() throws IOException {
+  public void testSearchSimpleQuery() throws IOException, InterruptedException {
 
-    SearchResponse searchResponse = getSearchRequest("Hoodie");
+    SearchResponse response = search();
 
-    Assert.assertEquals(10, searchResponse.getResultsCount());
+    Assert.assertEquals(10, response.getResultsCount());
 
-    String productTitle = searchResponse.getResults(0).getProduct().getTitle();
+    String productTitle = response.getResults(0).getProduct().getTitle();
 
     Assert.assertTrue(productTitle.contains("Hoodie"));
 
-    Assert.assertEquals(51, searchResponse.getTotalSize());  // todo : fix fail test
+    Assert.assertEquals(51, response.getTotalSize()); // todo : fix fail test
   }
 
 }
