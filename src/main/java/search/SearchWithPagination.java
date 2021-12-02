@@ -19,17 +19,17 @@
  * or jump to chosen page using "offset".
  */
 
+package search;
+
 import com.google.cloud.retail.v2.SearchRequest;
 import com.google.cloud.retail.v2.SearchResponse;
 import com.google.cloud.retail.v2.SearchServiceClient;
 import com.google.cloud.retail.v2.SearchServiceSettings;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
-public class SearchServiceWithPaginationTest {
+public class SearchWithPagination {
 
   private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
   private static final String ENDPOINT = "retail.googleapis.com:443";
@@ -48,11 +48,10 @@ public class SearchServiceWithPaginationTest {
   }
 
   // get search service request
-  public static SearchResponse searchProducts_withNextPageToken(String query, int pageSize,
-      int offset, String pageToken) throws IOException, InterruptedException {
-    SearchServiceClient searchClient = getSearchServiceClient();
+  public static SearchRequest getSearchRequest(String query, int pageSize,
+      int offset, String pageToken) {
 
-    SearchRequest firstRequest = SearchRequest.newBuilder()
+    SearchRequest searchRequest = SearchRequest.newBuilder()
         .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
         .setVisitorId(VISITOR_ID) // A unique identifier to track visitors
         .setQuery(query)
@@ -61,42 +60,30 @@ public class SearchServiceWithPaginationTest {
         .setPageToken(pageToken)
         .build();
 
-    SearchResponse firstResponse = searchClient.search(firstRequest).getPage()
-        .getResponse();
+    System.out.println("Search request: " + searchRequest);
 
-    SearchRequest secondRequest = SearchRequest.newBuilder()
-        .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
-        .setVisitorId(VISITOR_ID) // A unique identifier to track visitors
-        .setQuery(query)
-        .setPageSize(pageSize)
-        .setOffset(offset)
-        .setPageToken(firstResponse.getNextPageToken())
-        .build();
-
-    System.out.println("Search with pagination using page token, request: " + secondRequest);
-
-    SearchResponse response = searchClient.search(secondRequest).getPage().getResponse();
-
-    searchClient.shutdownNow();
-    searchClient.awaitTermination(2, TimeUnit.SECONDS);
-
-    System.out.println("Search with pagination using page token, response: " + response);
-    return response;
+    return searchRequest;
   }
 
   // call the Retail Search
-  @Test
-  public void search() throws IOException, InterruptedException {
+  public static SearchResponse search() throws IOException, InterruptedException {
     // TRY DIFFERENT PAGINATION PARAMETERS HERE:
     int pageSize = 6;
     int offset = 0;
     String pageToken = "";
 
-    searchProducts_withNextPageToken("Hoodie", pageSize, offset, pageToken);
+    SearchRequest searchRequestFirstPage = getSearchRequest("Hoodie", pageSize, offset, pageToken);
+
+    SearchResponse searchResponseFirstPage = getSearchServiceClient().search(searchRequestFirstPage)
+        .getPage().getResponse();
+
+    System.out.println("First page search result: " + searchResponseFirstPage);
 
     // PASTE CALL WITH NEXT PAGE TOKEN HERE:
 
     // PASTE CALL WITH OFFSET HERE:
+
+    return searchResponseFirstPage;
   }
 }
 
