@@ -12,10 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * [START retail_search_product_with_boost_spec]
- * Call Retail API to search for a products in a catalog, rerank the
- * results boosting or burying the products that match defined condition.
  */
 
 package search;
@@ -42,5 +38,3 @@ public class SearchWithBoostSpecTest {
     Assert.assertEquals(129, response.getTotalSize());
   }
 }
-
-// [END retail_search_product_with_boost_spec]

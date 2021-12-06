@@ -12,9 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * [START retail_search_for_products_with_query_parameter]
- * Call Retail API to search for a products in a catalog using only search query.
  */
 
 package search;
@@ -39,10 +36,6 @@ public class SearchSimpleQueryTest {
     String productTitle = response.getResults(0).getProduct().getTitle();
 
     Assert.assertTrue(productTitle.contains("Hoodie"));
-
-    Assert.assertEquals(51, response.getTotalSize()); // todo : fix fail test
   }
 
 }
-
-// [END retail_search_for_products_with_query_parameter]

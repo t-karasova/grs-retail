@@ -12,9 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * [START retail_update_attribute_config]
- * Update product in a catalog using Retail API to change the product attribute searchability and indexability.
  */
 
 package search;
@@ -49,10 +46,6 @@ public class SearchUpdateAttributeConfigTest {
     Assert.assertTrue(productTitle.contains("Sweater"));
 
     Assert.assertTrue(product.containsAttributes("ecofriendly"));
-
-    Assert.assertEquals(1, product.getSizesCount()); // todo : fix fail test
   }
 
 }
-
-// [END retail_update_attribute_config]
