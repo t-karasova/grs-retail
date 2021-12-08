@@ -8,13 +8,27 @@ In order to authenticate and authorize the client place a JSON file with authori
 ```
 export GOOGLE_APPLICATION_CREDENTIALS="/home/use_name/cloudshell_open/grs-retail/token.json"
 ```
-### Running the code samples
 
-Use maven commant to run one of test classes:
+### Define a system property
+PROJECT_NUMBER is a system property. Change the number if you are using a different project.
+### Running code samples
+
+Use maven command to run specific code sample:
 ```
-mvn test -Dtest=SearchServicePaginationOffsetTest
+mvn compile exec:java -Dexec.mainClass="packagePath.CodeSampleClassName" -DPROJECT_NUMBER=945579214386
 ```
-Or run All tests in this code samples with a command:
+Use maven command to run all code samples:
 ```
-mvn test
+mvn test -DPROJECT_NUMBER=945579214386
+```
+
+### Running unit tests
+
+Use maven command to run specific unit test class:
+```
+mvn test -Dtest=TestClassName -DPROJECT_NUMBER=945579214386
+```
+Use maven command to run all unit tests:
+```
+mvn test -DPROJECT_NUMBER=945579214386
 ```
