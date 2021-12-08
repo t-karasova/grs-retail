@@ -16,28 +16,24 @@
 
 package search;
 
-import static search.SearchWithFiltering.search;
-
 import com.google.cloud.retail.v2.SearchResponse;
 import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class SearchWithFilteringTest {
+public class SearchWithBoostSpecTest {
 
   @Test
-  public void TestSearchWithFiltering() throws IOException, InterruptedException {
-    SearchResponse response = search();
+  public void testSearchWithBoostSpec() throws IOException, InterruptedException {
+
+    SearchResponse response = SearchWithBoostSpec.search();
 
     Assert.assertEquals(10, response.getResultsCount());
 
     String productTitle = response.getResults(0).getProduct().getTitle();
 
-    Assert.assertTrue(productTitle.contains("Tee Black"));
+    Assert.assertTrue(productTitle.contains("Tee"));
 
-    Assert.assertTrue(response.getResults(0).getProduct()
-        .getColorInfo().getColorFamilies(0).contains("Black"));
-
-    Assert.assertEquals(16, response.getTotalSize());
+    Assert.assertEquals(129, response.getTotalSize());
   }
 }

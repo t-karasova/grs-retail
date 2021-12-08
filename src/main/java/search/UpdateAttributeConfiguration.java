@@ -28,14 +28,15 @@ import com.google.protobuf.FieldMask;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-public class SearchUpdateAttributeConfig {
+public class UpdateAttributeConfiguration {
 
-  private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
+  private static final String YOUR_PROJECT_NUMBER = System.getProperty("PROJECT_NUMBER");
   private static final String ENDPOINT = "retail.googleapis.com:443";
   private static final String DEFAULT_CATALOG_NAME =
       String.format(
-          "projects/%d/locations/global/catalogs/default_catalog/branches/default_branch/products/",
+          "projects/%s/locations/global/catalogs/default_catalog/branches/default_branch/products/",
           YOUR_PROJECT_NUMBER);
+  private static final String PROJECT_ID = "GGOEAAEC172013";
 
   // get product service client
   private static ProductServiceClient getProductServiceClient() throws IOException {
@@ -89,6 +90,10 @@ public class SearchUpdateAttributeConfig {
     System.out.println("You can proceed with the search requests");
 
     return updatedProduct;
+  }
+
+  public static void main(String[] args) throws IOException, InterruptedException {
+    updateProduct(PROJECT_ID);
   }
 }
 

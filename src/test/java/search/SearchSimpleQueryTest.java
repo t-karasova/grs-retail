@@ -16,25 +16,24 @@
 
 package search;
 
-import static search.SearchWithBoostSpec.search;
-
 import com.google.cloud.retail.v2.SearchResponse;
-import java.io.IOException;
-import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Assert;
 
-public class SearchWithBoostSpecTest {
+import java.io.IOException;
+
+public class SearchSimpleQueryTest {
 
   @Test
-  public void testSearchWithBoostSpec() throws IOException, InterruptedException {
-    SearchResponse response = search();
+  public void testSearchSimpleQuery() throws IOException, InterruptedException {
+
+    SearchResponse response = SearchSimpleQuery.search();
 
     Assert.assertEquals(10, response.getResultsCount());
 
     String productTitle = response.getResults(0).getProduct().getTitle();
 
-    Assert.assertTrue(productTitle.contains("Tee"));
-
-    Assert.assertEquals(129, response.getTotalSize());
+    Assert.assertTrue(productTitle.contains("Hoodie"));
   }
+
 }

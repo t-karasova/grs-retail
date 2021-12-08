@@ -28,10 +28,10 @@ import java.util.UUID;
 
 public class SearchSimpleQuery {
 
-  private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
+  private static final String YOUR_PROJECT_NUMBER = System.getProperty("PROJECT_NUMBER");
   private static final String ENDPOINT = "retail.googleapis.com:443";
   private static final String DEFAULT_CATALOG_NAME =
-      String.format("projects/%d/locations/global/catalogs/default_catalog", YOUR_PROJECT_NUMBER);
+      String.format("projects/%s/locations/global/catalogs/default_catalog", YOUR_PROJECT_NUMBER);
   private static final String DEFAULT_SEARCH_PLACEMENT_NAME =
       DEFAULT_CATALOG_NAME + "/placements/default_search";
   private static final String VISITOR_ID = UUID.randomUUID().toString();
@@ -71,6 +71,10 @@ public class SearchSimpleQuery {
     System.out.println("Search response: " + searchResponse);
 
     return searchResponse;
+  }
+
+  public static void main(String[] args) throws IOException, InterruptedException {
+    search();
   }
 }
 

@@ -15,20 +15,17 @@ PROJECT_NUMBER is a system property. Change the number if you are using a differ
 
 Use maven command to run specific code sample:
 ```
-mvn compile exec:java -Dexec.mainClass="packagePath.CodeSampleClassName" -DPROJECT_NUMBER=945579214386
-```
-Use maven command to run all code samples:
-```
-mvn test -DPROJECT_NUMBER=945579214386
+mvn compile exec:java -Dexec.mainClass="CodeSampleClass" -D PROJECT_NUMBER=<YOUR_PROJECT_NUMBER>
 ```
 
+CodeSampleClass is a placeholder, change it to the sample file path, e.g. "search.SearchSimpleQuery"
 ### Running unit tests
 
 Use maven command to run specific unit test class:
 ```
-mvn test -Dtest=TestClassName -DPROJECT_NUMBER=945579214386
+mvn test -Dtest=TestClassName -D PROJECT_NUMBER=<YOUR_PROJECT_NUMBER>
 ```
 Use maven command to run all unit tests:
 ```
-mvn test -DPROJECT_NUMBER=945579214386
+mvn test -D PROJECT_NUMBER=<YOUR_PROJECT_NUMBER>
 ```

@@ -16,9 +16,8 @@
 
 package search;
 
-import static search.SearchUpdateAttributeConfig.updateProduct;
-
 import com.google.cloud.retail.v2.Product;
+import com.google.cloud.retail.v2.SearchResponse;
 import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,7 +28,8 @@ public class SearchUpdateAttributeConfigTest {
 
   @Test
   public void testUpdateAttributeConfig() throws IOException, InterruptedException {
-    Product product = updateProduct(productId);
+
+    Product product = UpdateAttributeConfiguration.updateProduct(productId);
 
     Assert.assertEquals(product.getId(), productId);
 
@@ -37,15 +37,29 @@ public class SearchUpdateAttributeConfigTest {
   }
 
   @Test
-  public void testSearchAttributeConfig() throws IOException, InterruptedException {
+  public void testUpdateAttributeConfigPass() throws IOException, InterruptedException {
 
-    Product product = updateProduct(productId);
+    Product product = UpdateAttributeConfiguration.updateProduct(productId);
 
     String productTitle = product.getTitle();
 
     Assert.assertTrue(productTitle.contains("Sweater"));
 
     Assert.assertTrue(product.containsAttributes("ecofriendly"));
+  }
+
+  @Test
+  public void testSearchAttributeConfig() throws IOException, InterruptedException {
+
+    SearchResponse response = SearchAttributeConfig.search();
+
+    String productTitle = response.getResults(0).getProduct().getTitle();
+
+    Assert.assertTrue(productTitle.contains("Sweater"));
+
+    Assert.assertTrue(response.getResults(0).getProduct().containsAttributes("ecofriendly"));
+
+    Assert.assertEquals(1, response.getTotalSize());
   }
 
 }

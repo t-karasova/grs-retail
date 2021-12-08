@@ -16,26 +16,27 @@
 
 package search;
 
-import static search.SearchSimpleQuery.search;
-
 import com.google.cloud.retail.v2.SearchResponse;
-import org.junit.Test;
-import org.junit.Assert;
-
 import java.io.IOException;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class SearchSimpleQueryTest {
+public class SearchWithFilteringTest {
 
   @Test
-  public void testSearchSimpleQuery() throws IOException, InterruptedException {
+  public void TestSearchWithFiltering() throws IOException, InterruptedException {
 
-    SearchResponse response = search();
+    SearchResponse response = SearchWithFiltering.search();
 
     Assert.assertEquals(10, response.getResultsCount());
 
     String productTitle = response.getResults(0).getProduct().getTitle();
 
-    Assert.assertTrue(productTitle.contains("Hoodie"));
-  }
+    Assert.assertTrue(productTitle.contains("Tee Black"));
 
+    Assert.assertTrue(response.getResults(0).getProduct()
+        .getColorInfo().getColorFamilies(0).contains("Black"));
+
+    Assert.assertEquals(16, response.getTotalSize());
+  }
 }

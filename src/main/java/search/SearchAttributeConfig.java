@@ -25,15 +25,13 @@ import com.google.cloud.retail.v2.SearchServiceClient;
 import com.google.cloud.retail.v2.SearchServiceSettings;
 import java.io.IOException;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-import org.junit.Test;
 
 public class SearchAttributeConfig {
 
-  private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
+  private static final String YOUR_PROJECT_NUMBER = System.getProperty("PROJECT_NUMBER");
   private static final String ENDPOINT = "retail.googleapis.com:443";
   private static final String DEFAULT_CATALOG_NAME =
-      String.format("projects/%d/locations/global/catalogs/default_catalog", YOUR_PROJECT_NUMBER);
+      String.format("projects/%s/locations/global/catalogs/default_catalog", YOUR_PROJECT_NUMBER);
   private static final String DEFAULT_SEARCH_PLACEMENT_NAME =
       DEFAULT_CATALOG_NAME + "/placements/default_search";
   private static final String VISITOR_ID = UUID.randomUUID().toString();
@@ -46,40 +44,31 @@ public class SearchAttributeConfig {
     return SearchServiceClient.create(settings);
   }
 
-  // get search service request
-  public static SearchResponse searchProductsWithAttributeConfig(String query,
-      String filter, int pageSize) throws IOException, InterruptedException {
+  public static SearchResponse search() throws IOException, InterruptedException {
 
     SearchServiceClient searchClient = getSearchServiceClient();
 
+    // get search service request
     SearchRequest searchRequest = SearchRequest.newBuilder()
         .setPlacement(
             DEFAULT_SEARCH_PLACEMENT_NAME) // Placement is used to identify the Serving Config name.
-        .setQuery(query)
-        .setFilter(filter)
-        .setPageSize(pageSize)
+        .setQuery("sweater")
+        .setFilter("attributes.ecofriendly: ANY(\"recycled packaging\")")
+        .setPageSize(10)
         .setVisitorId(VISITOR_ID) // A unique identifier to track visitors
         .build();
 
     System.out.println("Search with attribute config, request: " + searchRequest);
 
-    SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
+    // call the Retail Search:
+    SearchResponse searchResponse = searchClient.search(searchRequest).getPage().getResponse();
 
-    searchClient.shutdownNow();
-    searchClient.awaitTermination(2, TimeUnit.SECONDS);
-
-    System.out.println("Search with attribute config, response: " + response);
-    return response;
+    System.out.println("Search with attribute config, response: " + searchResponse);
+    return searchResponse;
   }
 
-  // call the Retail Search:
-  @Test
-  public void search() throws IOException, InterruptedException {
-    String query = "sweater";
-    String filter = "(attributes.ecofriendly: ANY(\"recycled packaging\"))";
-    int pageSize = 10;
-
-    searchProductsWithAttributeConfig(query, filter, pageSize);
+  public static void main(String[] args) throws IOException, InterruptedException {
+    search();
   }
 }
 
