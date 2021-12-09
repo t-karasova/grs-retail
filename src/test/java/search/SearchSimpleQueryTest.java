@@ -17,12 +17,33 @@
 package search;
 
 import com.google.cloud.retail.v2.SearchResponse;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert;
 
-import java.io.IOException;
-
 public class SearchSimpleQueryTest {
+
+  private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+
+  @Before
+  public void setUpStreams() {
+    System.setOut(new PrintStream(outContent));
+  }
+
+  @Test
+  public void outputTest() throws IOException, InterruptedException {
+
+    System.out.print(SearchSimpleQuery.search().toString());
+
+    Assert.assertTrue(outContent.toString().contains("Search request:"));
+
+    Assert.assertTrue(outContent.toString().contains("Search response:"));
+
+    Assert.assertTrue(outContent.toString().contains("results {\n" + "  id:"));
+  }
 
   @Test
   public void testSearchSimpleQuery() throws IOException, InterruptedException {
