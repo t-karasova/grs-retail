@@ -26,7 +26,6 @@ import com.google.cloud.retail.v2.ProductServiceClient;
 import com.google.cloud.retail.v2.ProductServiceSettings;
 import com.google.protobuf.FieldMask;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 public class UpdateAttributeConfiguration {
 
@@ -60,7 +59,7 @@ public class UpdateAttributeConfiguration {
 
   // update the product attribute
   public static Product updateProduct(String productToUpdateId)
-      throws IOException, InterruptedException {
+      throws IOException {
 
     // Get a product from catalog
     Product productToUpdate = getProduct(productToUpdateId);
@@ -84,12 +83,10 @@ public class UpdateAttributeConfiguration {
 
     System.out.println("Wait 2 minutes to be sure the catalog has been indexed after the changes:");
 
-    getProductServiceClient().awaitTermination(2, TimeUnit.MINUTES);
-
     return updatedProduct;
   }
 
-  public static void main(String[] args) throws IOException, InterruptedException {
+  public static void main(String[] args) throws IOException {
     updateProduct(PROJECT_ID);
   }
 }
