@@ -67,7 +67,7 @@ public class UpdateAttributeConfiguration {
 
     // Prepare the product attribute to be updated
     final CustomAttribute customAttribute = CustomAttribute.newBuilder()
-        .setIndexable(true)
+        .setIndexable(false)
         .setSearchable(false)
         .addText(
             "\"recycled fabrics\", \"recycled packaging\", \"plastic-free packaging\", \"ethically made\"")
@@ -84,10 +84,7 @@ public class UpdateAttributeConfiguration {
 
     System.out.println("Wait 2 minutes to be sure the catalog has been indexed after the changes:");
 
-    getProductServiceClient().shutdownNow();
     getProductServiceClient().awaitTermination(2, TimeUnit.MINUTES);
-
-    System.out.println("You can proceed with the search requests");
 
     return updatedProduct;
   }
