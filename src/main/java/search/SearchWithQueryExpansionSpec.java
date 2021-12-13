@@ -78,7 +78,7 @@ public class SearchWithQueryExpansionSpec {
     SearchResponse searchResponse = getSearchServiceClient().search(searchRequest).getPage()
         .getResponse();
 
-    System.out.println("Query expansion search results: " + searchResponse);
+    System.out.println("Search response: " + searchResponse);
 
     return searchResponse;
   }

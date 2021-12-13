@@ -58,12 +58,12 @@ public class SearchAttributeConfig {
         .setVisitorId(VISITOR_ID) // A unique identifier to track visitors
         .build();
 
-    System.out.println("Search with attribute config, request: " + searchRequest);
+    System.out.println("Search request: " + searchRequest);
 
     // call the Retail Search:
     SearchResponse searchResponse = searchClient.search(searchRequest).getPage().getResponse();
 
-    System.out.println("Search with attribute config, response: " + searchResponse);
+    System.out.println("Search response: " + searchResponse);
     return searchResponse;
   }
 

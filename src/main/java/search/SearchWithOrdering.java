@@ -70,7 +70,7 @@ public class SearchWithOrdering {
     SearchResponse searchResponse = getSearchServiceClient().search(searchRequest).getPage()
         .getResponse();
 
-    System.out.println("Ordered search results: " + searchResponse);
+    System.out.println("Search response: " + searchResponse);
 
     return searchResponse;
   }

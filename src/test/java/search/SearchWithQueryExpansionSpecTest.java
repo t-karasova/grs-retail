@@ -18,13 +18,43 @@ package search;
 
 import com.google.cloud.retail.v2.SearchResponse;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import util.StreamGobbler;
 
 public class SearchWithQueryExpansionSpecTest {
 
+  private String output;
+
+  @Before
+  public void setUp() throws IOException, InterruptedException, ExecutionException {
+
+    Process exec = Runtime.getRuntime()
+        .exec("mvn compile exec:java -Dexec.mainClass=search.SearchWithQueryExpansionSpec");
+
+    StreamGobbler streamGobbler = new StreamGobbler(exec.getInputStream());
+
+    Future<String> stringFuture = Executors.newSingleThreadExecutor().submit(streamGobbler);
+
+    output = stringFuture.get();
+  }
+
   @Test
-  public void TestSearchWithOrdering() throws IOException, InterruptedException {
+  public void testOutput() {
+
+    Assert.assertTrue(output.matches("(?s)^(.*Search request.*)$"));
+
+    Assert.assertTrue(output.matches("(?s)^(.*Search response.*)$"));
+
+    Assert.assertTrue(output.matches("(?s)^(.*results.*id.*)$"));
+  }
+
+  @Test
+  public void testSearchWithQueryExpansionSpec() throws IOException, InterruptedException {
 
     SearchResponse response = SearchWithQueryExpansionSpec.search();
 
