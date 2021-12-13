@@ -28,7 +28,7 @@ import java.util.UUID;
 
 public class SearchAttributeConfig {
 
-  private static final String YOUR_PROJECT_NUMBER = System.getProperty("PROJECT_NUMBER");
+  private static final String YOUR_PROJECT_NUMBER = System.getenv("PROJECT_NUMBER");
   private static final String ENDPOINT = "retail.googleapis.com:443";
   private static final String DEFAULT_CATALOG_NAME =
       String.format("projects/%s/locations/global/catalogs/default_catalog", YOUR_PROJECT_NUMBER);
