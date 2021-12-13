@@ -17,32 +17,40 @@
 package search;
 
 import com.google.cloud.retail.v2.SearchResponse;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert;
+import util.StreamGobbler;
 
 public class SearchSimpleQueryTest {
 
-  private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+  private String output;
 
   @Before
-  public void setUpStreams() {
-    System.setOut(new PrintStream(outContent));
+  public void setUp() throws IOException, InterruptedException, ExecutionException {
+
+    Process exec = Runtime.getRuntime()
+        .exec("mvn compile exec:java -Dexec.mainClass=search.SearchSimpleQuery");
+
+    StreamGobbler streamGobbler = new StreamGobbler(exec.getInputStream());
+
+    Future<String> stringFuture = Executors.newSingleThreadExecutor().submit(streamGobbler);
+
+    output = stringFuture.get();
   }
 
   @Test
-  public void outputTest() throws IOException, InterruptedException {
+  public void testOutput() {
 
-    System.out.print(SearchSimpleQuery.search().toString());
+    Assert.assertTrue(output.matches("(?s)^(.*Search request.*)$"));
 
-    Assert.assertTrue(outContent.toString().contains("Search request:"));
+    Assert.assertTrue(output.matches("(?s)^(.*Search response.*)$"));
 
-    Assert.assertTrue(outContent.toString().contains("Search response:"));
-
-    Assert.assertTrue(outContent.toString().contains("results {\n" + "  id:"));
+    Assert.assertTrue(output.matches("(?s)^(.*results.*id.*)$"));
   }
 
   @Test

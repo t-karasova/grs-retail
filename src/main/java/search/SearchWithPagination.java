@@ -77,7 +77,7 @@ public class SearchWithPagination {
     SearchResponse searchResponseFirstPage = getSearchServiceClient().search(searchRequestFirstPage)
         .getPage().getResponse();
 
-    System.out.println("First page search result: " + searchResponseFirstPage);
+    System.out.println("Search response: " + searchResponseFirstPage);
 
     // PASTE CALL WITH NEXT PAGE TOKEN HERE:
 
