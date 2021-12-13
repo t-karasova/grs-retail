@@ -13,30 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * [START search_product_filter]
+ * [START retail_search_for_products_with_ordering]
+ * Call Retail API to search for a products in a catalog, order the results by different product fields.
  */
+
+package search;
 
 import com.google.cloud.retail.v2.SearchRequest;
 import com.google.cloud.retail.v2.SearchResponse;
 import com.google.cloud.retail.v2.SearchServiceClient;
 import com.google.cloud.retail.v2.SearchServiceSettings;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
-public class SearchServiceFilteringTest {
+public class SearchWithOrdering {
 
-  private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
+  private static final String YOUR_PROJECT_NUMBER = System.getenv("PROJECT_NUMBER");
   private static final String ENDPOINT = "retail.googleapis.com:443";
   private static final String DEFAULT_CATALOG_NAME =
-      String.format("projects/%d/locations/global/catalogs/default_catalog", YOUR_PROJECT_NUMBER);
+      String.format("projects/%s/locations/global/catalogs/default_catalog", YOUR_PROJECT_NUMBER);
   private static final String DEFAULT_SEARCH_PLACEMENT_NAME =
       DEFAULT_CATALOG_NAME + "/placements/default_search";
   private static final String VISITOR_ID = UUID.randomUUID().toString();
-  private static final String DEFAULT_BRANCH_NAME =
-      DEFAULT_CATALOG_NAME + "/branches/default_branch";
 
   // get search service client
   private static SearchServiceClient getSearchServiceClient() throws IOException {
@@ -47,40 +46,38 @@ public class SearchServiceFilteringTest {
   }
 
   // get search service request
-  public static SearchResponse searchFilteredProducts(String query, int pageSize,
-      String filter) throws IOException, InterruptedException {
-    SearchServiceClient searchClient = getSearchServiceClient();
-
+  public static SearchRequest getSearchRequest(String query, String orderBy) {
     SearchRequest searchRequest = SearchRequest.newBuilder()
         .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
-        .setBranch(DEFAULT_BRANCH_NAME)
-        .setVisitorId(VISITOR_ID)
         .setQuery(query)
-        .setPageSize(pageSize)
-        .setFilter(filter)
+        .setOrderBy(orderBy)
+        .setVisitorId(VISITOR_ID) // A unique identifier to track visitors
+        .setPageSize(10)
         .build();
 
-    System.out.println("Search with filtering, request: " + searchRequest);
+    System.out.println("Search request: " + searchRequest);
 
-    SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
-
-    searchClient.shutdownNow();
-    searchClient.awaitTermination(2, TimeUnit.SECONDS);
-
-    System.out.println("Search with filtering, response: " + response);
-    return response;
+    return searchRequest;
   }
 
   // call the Retail Search:
-  @Test
-  public void search() throws IOException, InterruptedException {
+  public static SearchResponse search() throws IOException, InterruptedException {
     // TRY DIFFERENT FILTER EXPRESSIONS HERE:
-    String filter = "(colorFamily: ANY(\"Black\"))";
+    String order = "price desc";
 
-    searchFilteredProducts("Nest_Maxi", 10,
-        filter
-    );
+    SearchRequest searchRequest = getSearchRequest("Hoodie", order);
+
+    SearchResponse searchResponse = getSearchServiceClient().search(searchRequest).getPage()
+        .getResponse();
+
+    System.out.println("Ordered search results: " + searchResponse);
+
+    return searchResponse;
+  }
+
+  public static void main(String[] args) throws IOException, InterruptedException {
+    search();
   }
 }
 
-// [END search_product_filter]
+// [END retail_search_for_products_with_ordering]

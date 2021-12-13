@@ -17,6 +17,8 @@
  * Update product in a catalog using Retail API to change the product attribute searchability and indexability.
  */
 
+package search;
+
 import com.google.cloud.retail.v2.CustomAttribute;
 import com.google.cloud.retail.v2.GetProductRequest;
 import com.google.cloud.retail.v2.Product;
@@ -24,15 +26,16 @@ import com.google.cloud.retail.v2.ProductServiceClient;
 import com.google.cloud.retail.v2.ProductServiceSettings;
 import com.google.protobuf.FieldMask;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-import org.junit.Test;
 
-public class SearchUpdateAttributeConfigurationTest {
+public class UpdateAttributeConfiguration {
 
-  private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
+  private static final String YOUR_PROJECT_NUMBER = System.getenv("PROJECT_NUMBER");
   private static final String ENDPOINT = "retail.googleapis.com:443";
   private static final String DEFAULT_CATALOG_NAME =
-      String.format("projects/%d/locations/global/catalogs/default_catalog/branches/default_branch/products/", YOUR_PROJECT_NUMBER);
+      String.format(
+          "projects/%s/locations/global/catalogs/default_catalog/branches/default_branch/products/",
+          YOUR_PROJECT_NUMBER);
+  private static final String PROJECT_ID = "GGOEAAEC172013";
 
   // get product service client
   private static ProductServiceClient getProductServiceClient() throws IOException {
@@ -55,17 +58,18 @@ public class SearchUpdateAttributeConfigurationTest {
   }
 
   // update the product attribute
-  public static void updateProduct(String productToUpdateId)
-      throws IOException, InterruptedException {
+  public static Product updateProduct(String productToUpdateId)
+      throws IOException {
 
     // Get a product from catalog
     Product productToUpdate = getProduct(productToUpdateId);
 
     // Prepare the product attribute to be updated
     final CustomAttribute customAttribute = CustomAttribute.newBuilder()
-        .setIndexable(true)
-        .setSearchable(true)
-        .addText("\"recycled fabrics\", \"recycled packaging\", \"plastic-free packaging\", \"ethically made\"")
+        .setIndexable(false)
+        .setSearchable(false)
+        .addText(
+            "\"recycled fabrics\", \"recycled packaging\", \"plastic-free packaging\", \"ethically made\"")
         .build();
 
     // Set the attribute to the original product
@@ -75,23 +79,15 @@ public class SearchUpdateAttributeConfigurationTest {
     Product updatedProduct = getProductServiceClient().updateProduct(
         getUpdateProductRequest(productToUpdate), FieldMask.getDefaultInstance());
 
-    System.out.println("updated product: " + updatedProduct);
+    System.out.println("Updated product: " + updatedProduct);
 
-    System.out.println("Wait 5 minutes to be sure the catalog has been indexed after the changes:");
+    System.out.println("Wait 2 minutes to be sure the catalog has been indexed after the changes:");
 
-    getProductServiceClient().shutdownNow();
-    getProductServiceClient().awaitTermination(2, TimeUnit.SECONDS);
-
-    System.out.println("You can proceed with the search requests");
+    return updatedProduct;
   }
 
-  // call the Retail Search:
-  @Test
-  public void search() throws IOException, InterruptedException {
-    // TRY DIFFERENT FILTER EXPRESSIONS HERE:
-    String productToUpdateId = "GGOEAAEC172013";
-
-    updateProduct(productToUpdateId);
+  public static void main(String[] args) throws IOException {
+    updateProduct(PROJECT_ID);
   }
 }
 

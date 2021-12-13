@@ -17,29 +17,27 @@
  * Call Retail API to search for a products in a catalog, filter the results by different product fields.
  */
 
+package search;
+
 import com.google.cloud.retail.v2.SearchRequest;
-import com.google.cloud.retail.v2.SearchRequest.FacetSpec;
-import com.google.cloud.retail.v2.SearchRequest.FacetSpec.FacetKey;
 import com.google.cloud.retail.v2.SearchResponse;
 import com.google.cloud.retail.v2.SearchServiceClient;
 import com.google.cloud.retail.v2.SearchServiceSettings;
-import com.google.common.collect.Lists;
-import org.junit.Test;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
-public class SearchServiceFacetsExcludedFilterKeyTest {
+public class SearchWithFiltering {
 
-  private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
+  private static final String YOUR_PROJECT_NUMBER = System.getenv("PROJECT_NUMBER");
   private static final String ENDPOINT = "retail.googleapis.com:443";
   private static final String DEFAULT_CATALOG_NAME =
-      String.format("projects/%d/locations/global/catalogs/default_catalog", YOUR_PROJECT_NUMBER);
+      String.format("projects/%s/locations/global/catalogs/default_catalog", YOUR_PROJECT_NUMBER);
   private static final String DEFAULT_SEARCH_PLACEMENT_NAME =
       DEFAULT_CATALOG_NAME + "/placements/default_search";
   private static final String VISITOR_ID = UUID.randomUUID().toString();
+  private static final String DEFAULT_BRANCH_NAME =
+      DEFAULT_CATALOG_NAME + "/branches/default_branch";
 
   // get search service client
   private static SearchServiceClient getSearchServiceClient() throws IOException {
@@ -50,52 +48,38 @@ public class SearchServiceFacetsExcludedFilterKeyTest {
   }
 
   // get search service request
-  private static void searchProductsWithTextualFacet_excludedFilterKeys(String query,
-      String key, String filter, List<String> excludedFilterKeys, int pageSize)
-      throws IOException, InterruptedException {
-    SearchServiceClient searchClient = getSearchServiceClient();
-
-    FacetKey facetKey = FacetKey.newBuilder()
-        .setKey(key)
-        .build();
-    FacetSpec facetSpec = FacetSpec.newBuilder()
-        .setFacetKey(facetKey)
-        .addAllExcludedFilterKeys(excludedFilterKeys)
-        .build();
+  public static SearchRequest getSearchRequest(String query, String filter) {
     SearchRequest searchRequest = SearchRequest.newBuilder()
-        .setPlacement(
-            DEFAULT_SEARCH_PLACEMENT_NAME) // Placement is used to identify the Serving Config name.
+        .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
+        .setBranch(DEFAULT_BRANCH_NAME)
+        .setVisitorId(VISITOR_ID)
         .setQuery(query)
+        .setPageSize(10)
         .setFilter(filter)
-        .setPageSize(pageSize)
-        .setVisitorId(VISITOR_ID) // A unique identifier to track visitors
         .build();
 
-    System.out.println(
-        "Search and return textual facet with excluded filter keys, request: " + searchRequest);
+    System.out.println("Search request: " + searchRequest);
 
-    SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
-
-    searchClient.shutdownNow();
-    searchClient.awaitTermination(2, TimeUnit.SECONDS);
-
-    System.out.println(
-        "Search and return textual facet with excluded filter keys, response: " + response);
+    return searchRequest;
   }
 
   // call the Retail Search:
-  @Test
-  public void search() throws IOException, InterruptedException {
+  public static SearchResponse search() throws IOException, InterruptedException {
     // TRY DIFFERENT FILTER EXPRESSIONS HERE:
     String filter = "(colorFamily: ANY(\"Black\"))";
-    int pageSize = 10;
 
-    List<String> excludedFilterKeys = Lists.newArrayList("colorFamily");
+    SearchRequest searchRequest = getSearchRequest("Tee", filter);
 
-    searchProductsWithTextualFacet_excludedFilterKeys("Tee", "colorFamily",
-        filter, excludedFilterKeys, pageSize
-    );
+    SearchResponse searchResponse = getSearchServiceClient().search(searchRequest).getPage()
+        .getResponse();
 
+    System.out.println("Search response: " + searchResponse);
+
+    return searchResponse;
+  }
+
+  public static void main(String[] args) throws IOException, InterruptedException {
+    search();
   }
 }
 

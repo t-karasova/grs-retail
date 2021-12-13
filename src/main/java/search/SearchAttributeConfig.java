@@ -13,26 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * [START retail_search_for_products_with_ordering]
- * Call Retail API to search for a products in a catalog, order the results by different product fields.
+ * [START retail_search_with_filter_by_attribute]
+ * Call Retail API to search for a products in a catalog, filter the results by the "product.attribute" field.
  */
+
+package search;
 
 import com.google.cloud.retail.v2.SearchRequest;
 import com.google.cloud.retail.v2.SearchResponse;
 import com.google.cloud.retail.v2.SearchServiceClient;
 import com.google.cloud.retail.v2.SearchServiceSettings;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
-public class SearchServiceOrderingTest {
+public class SearchAttributeConfig {
 
-  private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
+  private static final String YOUR_PROJECT_NUMBER = System.getenv("PROJECT_NUMBER");
   private static final String ENDPOINT = "retail.googleapis.com:443";
   private static final String DEFAULT_CATALOG_NAME =
-      String.format("projects/%d/locations/global/catalogs/default_catalog", YOUR_PROJECT_NUMBER);
+      String.format("projects/%s/locations/global/catalogs/default_catalog", YOUR_PROJECT_NUMBER);
   private static final String DEFAULT_SEARCH_PLACEMENT_NAME =
       DEFAULT_CATALOG_NAME + "/placements/default_search";
   private static final String VISITOR_ID = UUID.randomUUID().toString();
@@ -45,36 +44,32 @@ public class SearchServiceOrderingTest {
     return SearchServiceClient.create(settings);
   }
 
-  // get search service request
-  public static SearchResponse searchOrderedProducts(String query, String orderBy)
-      throws IOException, InterruptedException {
+  public static SearchResponse search() throws IOException, InterruptedException {
+
     SearchServiceClient searchClient = getSearchServiceClient();
 
+    // get search service request
     SearchRequest searchRequest = SearchRequest.newBuilder()
-        .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
-        .setQuery(query)
-        .setOrderBy(orderBy)
+        .setPlacement(
+            DEFAULT_SEARCH_PLACEMENT_NAME) // Placement is used to identify the Serving Config name.
+        .setQuery("sweater")
+        .setFilter("attributes.ecofriendly: ANY(\"recycled packaging\")")
+        .setPageSize(10)
         .setVisitorId(VISITOR_ID) // A unique identifier to track visitors
         .build();
 
-    System.out.println("Search with ordering, request: " + searchRequest);
+    System.out.println("Search with attribute config, request: " + searchRequest);
 
-    SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
+    // call the Retail Search:
+    SearchResponse searchResponse = searchClient.search(searchRequest).getPage().getResponse();
 
-    searchClient.shutdownNow();
-    searchClient.awaitTermination(2, TimeUnit.SECONDS);
-
-    System.out.println("Search with ordering, response: " + response);
-    return response;
+    System.out.println("Search with attribute config, response: " + searchResponse);
+    return searchResponse;
   }
 
-  // call the Retail Search:
-  @Test
-  public void search() throws IOException, InterruptedException {
-    String order = "price desc";
-
-    searchOrderedProducts("Hoodie", order);
+  public static void main(String[] args) throws IOException, InterruptedException {
+    search();
   }
 }
 
-// [END retail_search_for_products_with_ordering]
+// [END retail_search_with_filter_by_attribute]

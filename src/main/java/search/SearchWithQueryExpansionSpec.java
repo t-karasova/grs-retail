@@ -18,24 +18,24 @@
  * enabling the query expansion feature to let the Google Retail Search build an automatic query expansion.
  */
 
+package search;
+
 import com.google.cloud.retail.v2.SearchRequest;
 import com.google.cloud.retail.v2.SearchRequest.QueryExpansionSpec;
 import com.google.cloud.retail.v2.SearchRequest.QueryExpansionSpec.Condition;
 import com.google.cloud.retail.v2.SearchResponse;
 import com.google.cloud.retail.v2.SearchServiceClient;
 import com.google.cloud.retail.v2.SearchServiceSettings;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
-public class SearchServiceQueryExpansionTest {
+public class SearchWithQueryExpansionSpec {
 
-  private static final long YOUR_PROJECT_NUMBER = Long.parseLong(System.getenv("PROJECT_NUMBER"));
+  private static final String YOUR_PROJECT_NUMBER = System.getenv("PROJECT_NUMBER");
   private static final String ENDPOINT = "retail.googleapis.com:443";
   private static final String DEFAULT_CATALOG_NAME =
-      String.format("projects/%d/locations/global/catalogs/default_catalog", YOUR_PROJECT_NUMBER);
+      String.format("projects/%s/locations/global/catalogs/default_catalog", YOUR_PROJECT_NUMBER);
   private static final String DEFAULT_SEARCH_PLACEMENT_NAME =
       DEFAULT_CATALOG_NAME + "/placements/default_search";
   private static final String VISITOR_ID = UUID.randomUUID().toString();
@@ -49,10 +49,7 @@ public class SearchServiceQueryExpansionTest {
   }
 
   // get search service request
-  public static SearchResponse searchProductsWithQueryExpansion(String query, Condition condition)
-      throws IOException, InterruptedException {
-    SearchServiceClient searchClient = getSearchServiceClient();
-
+  public static SearchRequest getSearchRequest(String query, Condition condition) {
     QueryExpansionSpec queryExpansionSpec = QueryExpansionSpec.newBuilder()
         .setCondition(condition)
         .build();
@@ -63,25 +60,31 @@ public class SearchServiceQueryExpansionTest {
         .setQuery(query)
         .setVisitorId(VISITOR_ID) // A unique identifier to track visitors
         .setQueryExpansionSpec(queryExpansionSpec)
+        .setPageSize(10)
         .build();
-    System.out.println("Search with query expansion, request: " + searchRequest);
 
-    SearchResponse response = searchClient.search(searchRequest).getPage().getResponse();
+    System.out.println("Search request: " + searchRequest);
 
-    searchClient.shutdownNow();
-    searchClient.awaitTermination(2, TimeUnit.SECONDS);
-
-    System.out.println("Search with query expansion, response: " + response);
-    return response;
+    return searchRequest;
   }
 
   // call the Retail Search
-  @Test
-  public void search() throws IOException, InterruptedException {
+  public static SearchResponse search() throws IOException, InterruptedException {
     // TRY DIFFERENT QUERY EXPANSION CONDITION HERE:
     Condition condition = Condition.AUTO;
 
-    searchProductsWithQueryExpansion("Google Youth Hero Tee Grey", condition);
+    SearchRequest searchRequest = getSearchRequest("Google Youth Hero Tee Grey", condition);
+
+    SearchResponse searchResponse = getSearchServiceClient().search(searchRequest).getPage()
+        .getResponse();
+
+    System.out.println("Query expansion search results: " + searchResponse);
+
+    return searchResponse;
+  }
+
+  public static void main(String[] args) throws IOException, InterruptedException {
+    search();
   }
 }
 
