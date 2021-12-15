@@ -19,6 +19,7 @@ package product.setup;
 import static com.google.cloud.storage.StorageClass.STANDARD;
 
 import com.google.api.gax.paging.Page;
+import com.google.api.gax.rpc.NotFoundException;
 import com.google.cloud.retail.v2.CreateProductRequest;
 import com.google.cloud.retail.v2.DeleteProductRequest;
 import com.google.cloud.retail.v2.FulfillmentInfo;
@@ -29,11 +30,15 @@ import com.google.cloud.retail.v2.Product.Availability;
 import com.google.cloud.retail.v2.Product.Type;
 import com.google.cloud.retail.v2.ProductServiceClient;
 import com.google.cloud.retail.v2.ProductServiceSettings;
+import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.BucketInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 public class SetupCleanup {
@@ -102,19 +107,23 @@ public class SetupCleanup {
   }
 
   public static Product getProduct(String productName) throws IOException {
+    Product product = Product.newBuilder()
+        .build();
+
     GetProductRequest getProductRequest = GetProductRequest.newBuilder()
         .setName(productName)
         .build();
 
-//    Product product = getProductServiceClient().getProduct(getProductRequest);
-//
-//    System.out.println("Product: " + product);
+    try {
+      product = getProductServiceClient().getProduct(getProductRequest);
 
-    Product product = getProductServiceClient().getProduct(getProductRequest);
+      System.out.println("Get product response: " + product);
 
-    System.out.println("Get product response: " + product);
-
-    return product;
+      return product;
+    } catch (NotFoundException e) {
+      System.out.printf("Product %s not found", productName);
+      return product;
+    }
   }
 
   public static String getProjectId() {
@@ -155,14 +164,18 @@ public class SetupCleanup {
     return bucketList;
   }
 
-  public static void uploadBlob(String bucketName, String sourceFileName) {
-    // Uploads a file to the bucket
+  public static void uploadObject(String bucketName, String objectName, String filePath)
+      throws IOException {
+    Storage storage = StorageOptions.newBuilder().setProjectId(PROJECT_NUMBER).build().getService();
 
-    Bucket bucket = storage.create(
-        BucketInfo.newBuilder(bucketName)
-            .build());
+    BlobId blobId = BlobId.of(bucketName, objectName);
 
-    // TODO: 12/14/21 Finish the method.
+    BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+
+    storage.create(blobInfo, Files.readAllBytes(Paths.get(filePath)));
+
+    System.out.println(
+        "File " + filePath + " uploaded to bucket " + bucketName + " as " + objectName);
   }
 
   public static void createBqDataset(String datasetName) {
