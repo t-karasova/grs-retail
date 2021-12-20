@@ -37,7 +37,8 @@ public class ProductsCreateGcsBucket {
 
     createBucket(bucketName);
 
-    uploadObject(bucketName, "products.json", "src/main/resources/products.json");
+    uploadObject(bucketName, "products.json",
+        "src/main/resources/products.json");
 
     uploadObject(bucketName, "products_some_invalid.json",
         "src/main/resources/products_some_invalid.json");

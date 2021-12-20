@@ -20,6 +20,24 @@ import static com.google.cloud.storage.StorageClass.STANDARD;
 
 import com.google.api.gax.paging.Page;
 import com.google.api.gax.rpc.NotFoundException;
+import com.google.cloud.bigquery.BigQuery;
+import com.google.cloud.bigquery.BigQuery.DatasetListOption;
+import com.google.cloud.bigquery.BigQuery.TableListOption;
+import com.google.cloud.bigquery.BigQueryException;
+import com.google.cloud.bigquery.BigQueryOptions;
+import com.google.cloud.bigquery.Dataset;
+import com.google.cloud.bigquery.DatasetId;
+import com.google.cloud.bigquery.DatasetInfo;
+import com.google.cloud.bigquery.FormatOptions;
+import com.google.cloud.bigquery.Job;
+import com.google.cloud.bigquery.JobInfo;
+import com.google.cloud.bigquery.LoadJobConfiguration;
+import com.google.cloud.bigquery.Schema;
+import com.google.cloud.bigquery.StandardTableDefinition;
+import com.google.cloud.bigquery.Table;
+import com.google.cloud.bigquery.TableDefinition;
+import com.google.cloud.bigquery.TableId;
+import com.google.cloud.bigquery.TableInfo;
 import com.google.cloud.retail.v2.CreateProductRequest;
 import com.google.cloud.retail.v2.DeleteProductRequest;
 import com.google.cloud.retail.v2.FulfillmentInfo;
@@ -49,10 +67,12 @@ public class SetupCleanup {
       "projects/%s/locations/global/catalogs/default_catalog/branches/default_branch",
       PROJECT_NUMBER);
 
-  public static final Storage storage = StorageOptions.newBuilder().setProjectId(PROJECT_NUMBER)
+  public static final Storage storage = StorageOptions.newBuilder()
+      .setProjectId(PROJECT_NUMBER)
       .build().getService();
 
-  private static ProductServiceClient getProductServiceClient() throws IOException {
+  private static ProductServiceClient getProductServiceClient()
+      throws IOException {
     ProductServiceSettings productServiceSettings = ProductServiceSettings.newBuilder()
         .setEndpoint(ENDPOINT)
         .build();
@@ -89,7 +109,8 @@ public class SetupCleanup {
         .setParent(DEFAULT_BRANCH_NAME)
         .build();
 
-    Product product = getProductServiceClient().createProduct(createProductRequest);
+    Product product = getProductServiceClient().createProduct(
+        createProductRequest);
 
     System.out.println("Product is created: " + product);
 
@@ -131,7 +152,6 @@ public class SetupCleanup {
   }
 
   public static Bucket createBucket(String bucketName) {
-    // Create a new bucket in Cloud Storage
     Bucket bucket = null;
 
     System.out.println("Bucket name: " + bucketName);
@@ -147,7 +167,8 @@ public class SetupCleanup {
               .setLocation("US")
               .build());
 
-      System.out.printf("Created bucket %s in %s with storage class %s%n", bucket.getName(),
+      System.out.printf("Created bucket %s in %s with storage class %s%n",
+          bucket.getName(),
           bucket.getLocation(), bucket.getStorageClass());
     }
 
@@ -164,9 +185,10 @@ public class SetupCleanup {
     return bucketList;
   }
 
-  public static void uploadObject(String bucketName, String objectName, String filePath)
-      throws IOException {
-    Storage storage = StorageOptions.newBuilder().setProjectId(PROJECT_NUMBER).build().getService();
+  public static void uploadObject(String bucketName, String objectName,
+      String filePath) throws IOException {
+    Storage storage = StorageOptions.newBuilder().setProjectId(PROJECT_NUMBER)
+        .build().getService();
 
     BlobId blobId = BlobId.of(bucketName, objectName);
 
@@ -175,14 +197,111 @@ public class SetupCleanup {
     storage.create(blobInfo, Files.readAllBytes(Paths.get(filePath)));
 
     System.out.println(
-        "File " + filePath + " uploaded to bucket " + bucketName + " as " + objectName);
+        "File " + filePath + " uploaded to bucket " + bucketName + " as "
+            + objectName);
   }
 
   public static void createBqDataset(String datasetName) {
-    // Create a BigQuery dataset
+    try {
+      BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
 
-    // TODO: 12/14/21 Finish the method.
+      DatasetInfo datasetInfo = DatasetInfo.newBuilder(datasetName).build();
+
+      Dataset newDataset = bigquery.create(datasetInfo);
+
+      String newDatasetName = newDataset.getDatasetId().getDataset();
+
+      System.out.println(newDatasetName + " created successfully");
+    } catch (BigQueryException e) {
+      System.out.println("Dataset was not created. \n" + e);
+    }
   }
 
-  // TODO: 12/14/21 Add other methods.
+  public static void listBqDatasets() {
+    try {
+      BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
+
+      Page<Dataset> datasets = bigquery.listDatasets(getProjectId(),
+          DatasetListOption.pageSize(100));
+      if (datasets == null) {
+        System.out.println("Dataset does not contain any models");
+        return;
+      }
+      datasets
+          .iterateAll()
+          .forEach(
+              dataset -> System.out.printf("Success! Dataset ID: %s ",
+                  dataset.getDatasetId()));
+    } catch (BigQueryException e) {
+      System.out.println(
+          "Project does not contain any datasets \n" + e.toString());
+    }
+  }
+
+  public static void createBqTable(String datasetName,
+      String tableName, Schema schema) {
+    try {
+      BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
+
+      TableId tableId = TableId.of(datasetName, tableName);
+      TableDefinition tableDefinition = StandardTableDefinition.of(schema);
+      TableInfo tableInfo = TableInfo.newBuilder(tableId, tableDefinition)
+          .build();
+
+      bigquery.create(tableInfo);
+      System.out.println("Table created successfully");
+    } catch (BigQueryException e) {
+      System.out.println("Table was not created. \n" + e);
+    }
+  }
+
+  public static Page<Table> listBqTables(String datasetName) {
+    Page<Table> tables = null;
+
+    try {
+      BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
+
+      DatasetId datasetId = DatasetId.of(getProjectId(), datasetName);
+      tables = bigquery.listTables(datasetId,
+          TableListOption.pageSize(100));
+      tables.iterateAll().forEach(
+          table -> System.out.print(table.getTableId().getTable() + "\n"));
+
+      System.out.println("Tables listed successfully.");
+    } catch (BigQueryException e) {
+      System.out.println("Tables were not listed. Error occurred: " + e);
+    }
+
+    return tables;
+  }
+
+  public static void uploadDataToBqTable(String datasetName, String tableName,
+      String sourceUri, Schema schema) {
+    try {
+      BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
+
+      TableId tableId = TableId.of(datasetName, tableName);
+      LoadJobConfiguration loadConfig =
+          LoadJobConfiguration.newBuilder(tableId, sourceUri)
+              .setFormatOptions(FormatOptions.json())
+              .setSchema(schema)
+              .build();
+
+      // Load data from a GCS JSON file into the table
+      Job job = bigquery.create(JobInfo.of(loadConfig));
+      // Blocks until this load table job completes its execution,
+      // either failing or succeeding.
+      job = job.waitFor();
+      if (job.isDone()) {
+        System.out.println("Json from GCS successfully loaded in a table");
+      } else {
+        System.out.println(
+            "BigQuery was unable to load into the table due to an error:"
+                + job.getStatus().getError());
+      }
+    } catch (BigQueryException | InterruptedException e) {
+      System.out.println(
+          "Column not added during load append \n" + e);
+    }
+  }
 }
