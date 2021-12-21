@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * [START add_remove_fulfillment_places]
+ * [START add_fulfillment_places]
  */
 
 package product;
@@ -34,7 +34,7 @@ public class AddFulfillmentPlaces {
   public static final String PROJECT_NUMBER = System.getenv("PROJECT_NUMBER");
   public static final String ENDPOINT = "retail.googleapis.com:443";
   public static final String PRODUCT_ID = "add_fulfillment_test_product_id";
-  public static final String PRODUCT_NAME = String.format(
+  public static final String DEFAULT_CATALOG = String.format(
       "projects/%s/locations/global/catalogs/default_catalog/branches/default_branch/products/%s",
       PROJECT_NUMBER, PRODUCT_ID);
 
@@ -44,7 +44,8 @@ public class AddFulfillmentPlaces {
       .setNanos(Instant.now().getNano()).build();
 
   // get product service client
-  private static ProductServiceClient getProductServiceClient() throws IOException {
+  private static ProductServiceClient getProductServiceClient()
+      throws IOException {
     ProductServiceSettings productServiceSettings = ProductServiceSettings.newBuilder()
         .setEndpoint(ENDPOINT)
         .build();
@@ -52,16 +53,18 @@ public class AddFulfillmentPlaces {
   }
 
   // add fulfillment request
-  public static AddFulfillmentPlacesRequest getAddFulfillmentRequest(String productName) {
+  public static AddFulfillmentPlacesRequest getAddFulfillmentRequest(
+      String productName) {
     AddFulfillmentPlacesRequest addfulfillmentPlacesRequest = AddFulfillmentPlacesRequest.newBuilder()
         .setProduct(productName)
         .setType("pickup-in-store")
-        .addPlaceIds("store1, store2, store3")
+        .addPlaceIds("store2, store3, store4")
         .setAddTime(requestTime)
         .setAllowMissing(true)
         .build();
 
-    System.out.println("Add fulfillment request " + addfulfillmentPlacesRequest);
+    System.out.println(
+        "Add fulfillment request " + addfulfillmentPlacesRequest);
 
     return addfulfillmentPlacesRequest;
   }
@@ -69,27 +72,30 @@ public class AddFulfillmentPlaces {
   // add fulfillment places to product
   public static void addFulfillmentPlaces(String productName)
       throws IOException, InterruptedException {
-    AddFulfillmentPlacesRequest addFulfillmentRequest = getAddFulfillmentRequest(productName);
+    AddFulfillmentPlacesRequest addFulfillmentRequest = getAddFulfillmentRequest(
+        productName);
 
     getProductServiceClient().addFulfillmentPlacesAsync(addFulfillmentRequest);
 
-    // This is a long running operation and its result is not immediately present with get operations,
-    // thus we simulate wait with sleep method.
-    System.out.println("Add fulfillment places, wait 60 seconds: ");
+    /*
+    This is a long running operation and its result is not immediately
+    present with get operations,thus we simulate wait with sleep method.
+    */
+    System.out.println("Add fulfillment places, wait 30 seconds: ");
 
-    getProductServiceClient().awaitTermination(60, TimeUnit.SECONDS);
+    getProductServiceClient().awaitTermination(30, TimeUnit.SECONDS);
   }
 
-  public static void main(String[] args) throws IOException, InterruptedException {
+  // [END add_fulfillment_places]
+
+  public static void main(String[] args)
+      throws IOException, InterruptedException {
     createProduct(PRODUCT_ID);
 
     getProductServiceClient().awaitTermination(30, TimeUnit.SECONDS);
 
-    addFulfillmentPlaces(PRODUCT_NAME);
+    addFulfillmentPlaces(DEFAULT_CATALOG);
 
-    getProduct(PRODUCT_NAME);
+    getProduct(DEFAULT_CATALOG);
   }
-
 }
-
-// [END add_remove_fulfillment_places]

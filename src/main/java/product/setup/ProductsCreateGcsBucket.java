@@ -17,7 +17,6 @@
 package product.setup;
 
 import static product.setup.SetupCleanup.createBucket;
-import static product.setup.SetupCleanup.getProjectId;
 import static product.setup.SetupCleanup.uploadObject;
 
 import java.io.IOException;
@@ -28,11 +27,14 @@ import java.time.Instant;
 public class ProductsCreateGcsBucket {
 
   public static void main(String[] args) throws IOException {
+
+    String PROJECT_ID = System.getenv("PROJECT_ID");
+
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
     Timestamp timestamp = Timestamp.from(Instant.now());
 
-    String bucketName = String.format("%s_products_%s", getProjectId(),
+    String bucketName = String.format("%s_products_%s", PROJECT_ID,
         dateFormat.format(timestamp));
 
     createBucket(bucketName);

@@ -62,6 +62,7 @@ import java.util.Arrays;
 public class SetupCleanup {
 
   public static final String PROJECT_NUMBER = System.getenv("PROJECT_NUMBER");
+  public static final String PROJECT_ID = System.getenv("PROJECT_ID");
   public static final String ENDPOINT = "retail.googleapis.com:443";
   public static final String DEFAULT_BRANCH_NAME = String.format(
       "projects/%s/locations/global/catalogs/default_catalog/branches/default_branch",
@@ -147,10 +148,6 @@ public class SetupCleanup {
     }
   }
 
-  public static String getProjectId() {
-    return storage.getOptions().getProjectId();
-  }
-
   public static Bucket createBucket(String bucketName) {
     Bucket bucket = null;
 
@@ -221,7 +218,7 @@ public class SetupCleanup {
     try {
       BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
 
-      Page<Dataset> datasets = bigquery.listDatasets(getProjectId(),
+      Page<Dataset> datasets = bigquery.listDatasets(PROJECT_ID,
           DatasetListOption.pageSize(100));
       if (datasets == null) {
         System.out.println("Dataset does not contain any models");
@@ -234,7 +231,7 @@ public class SetupCleanup {
                   dataset.getDatasetId()));
     } catch (BigQueryException e) {
       System.out.println(
-          "Project does not contain any datasets \n" + e.toString());
+          "Project does not contain any datasets. " + e);
     }
   }
 
@@ -261,7 +258,7 @@ public class SetupCleanup {
     try {
       BigQuery bigquery = BigQueryOptions.getDefaultInstance().getService();
 
-      DatasetId datasetId = DatasetId.of(getProjectId(), datasetName);
+      DatasetId datasetId = DatasetId.of(PROJECT_ID, datasetName);
       tables = bigquery.listTables(datasetId,
           TableListOption.pageSize(100));
       tables.iterateAll().forEach(
