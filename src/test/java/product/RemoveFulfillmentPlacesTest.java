@@ -16,8 +16,6 @@
 
 package product;
 
-import static product.DeleteProduct.deleteProduct;
-
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -27,12 +25,12 @@ import org.junit.Before;
 import org.junit.Test;
 import util.StreamGobbler;
 
-public class AddFulfillmentPlacesTest {
+public class RemoveFulfillmentPlacesTest {
 
   private final String projectNumber = System.getenv("PROJECT_NUMBER");
 
   private final String productName = String.format(
-      "projects/%s/locations/global/catalogs/default_catalog/branches/default_branch/products/add_fulfillment_test_product_id",
+      "projects/%s/locations/global/catalogs/default_catalog/branches/default_branch/products/remove_fulfillment_test_product_id",
       projectNumber);
 
   private String output;
@@ -43,7 +41,7 @@ public class AddFulfillmentPlacesTest {
 
     Process exec = Runtime.getRuntime()
         .exec(
-            "mvn compile exec:java -Dexec.mainClass=product.AddFulfillmentPlaces");
+            "mvn compile exec:java -Dexec.mainClass=product.RemoveFulfillmentPlaces");
 
     StreamGobbler streamGobbler = new StreamGobbler(exec.getInputStream());
 
@@ -54,18 +52,14 @@ public class AddFulfillmentPlacesTest {
   }
 
   @Test
-  public void testAddFulfillment() {
+  public void testRemoveFulfillmentPlaces() {
     Assert.assertTrue(output.matches("(?s)^(.*Product is created.*)$"));
 
-    Assert.assertTrue(output.matches("(?s)^(.*Add fulfillment request.*)$"));
+    Assert.assertTrue(output.matches("(?s)^(.*Remove fulfillment request.*)$"));
 
-    Assert.assertTrue(output.matches("(?s)^(.*Add fulfillment places.*)$"));
-
-    Assert.assertTrue(output.matches(
-        "(?s)^(.*Get product response.*?fulfillment_info.*type: \"pickup-in-store\".*?place_ids: \"store0\".*)$"));
+    Assert.assertTrue(output.matches("(?s)^(.*Remove fulfillment places.*)$"));
 
     Assert.assertTrue(output.matches(
-        "(?s)^(.*Get product response.*?fulfillment_info.*type: \"pickup-in-store\".*?place_ids: \"store1\".*)$"));
+        "(?s)^(.*Get product response:.*?fulfillment_info.*type: \"pickup-in-store\".*?place_ids: \"store1\".*)$"));
   }
-
 }

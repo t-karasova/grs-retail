@@ -16,8 +16,6 @@
 
 package product;
 
-import static product.DeleteProduct.deleteProduct;
-
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -27,13 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 import util.StreamGobbler;
 
-public class AddFulfillmentPlacesTest {
-
-  private final String projectNumber = System.getenv("PROJECT_NUMBER");
-
-  private final String productName = String.format(
-      "projects/%s/locations/global/catalogs/default_catalog/branches/default_branch/products/add_fulfillment_test_product_id",
-      projectNumber);
+public class SetInventoryTest {
 
   private String output;
 
@@ -43,7 +35,7 @@ public class AddFulfillmentPlacesTest {
 
     Process exec = Runtime.getRuntime()
         .exec(
-            "mvn compile exec:java -Dexec.mainClass=product.AddFulfillmentPlaces");
+            "mvn compile exec:java -Dexec.mainClass=product.SetInventory");
 
     StreamGobbler streamGobbler = new StreamGobbler(exec.getInputStream());
 
@@ -54,18 +46,21 @@ public class AddFulfillmentPlacesTest {
   }
 
   @Test
-  public void testAddFulfillment() {
+  public void testSetInventoryTest() {
     Assert.assertTrue(output.matches("(?s)^(.*Product is created.*)$"));
 
-    Assert.assertTrue(output.matches("(?s)^(.*Add fulfillment request.*)$"));
+    Assert.assertTrue(output.matches(
+        "(?s)^(.*name: \"projects/.*/locations/global/catalogs/default_catalog/branches/0/products/inventory_test_product_id\".*)$"));
 
-    Assert.assertTrue(output.matches("(?s)^(.*Add fulfillment places.*)$"));
+    Assert.assertTrue(output.matches("(?s)^(.*Set inventory request.*)$"));
 
     Assert.assertTrue(output.matches(
-        "(?s)^(.*Get product response.*?fulfillment_info.*type: \"pickup-in-store\".*?place_ids: \"store0\".*)$"));
+        "(?s)^(.*Get product response:.*?fulfillment_info.*type: \"pickup-in-store\".*?place_ids: \"store0\".*)$"));
 
     Assert.assertTrue(output.matches(
-        "(?s)^(.*Get product response.*?fulfillment_info.*type: \"pickup-in-store\".*?place_ids: \"store1\".*)$"));
+        "(?s)^(.*Get product response:.*?fulfillment_info.*type: \"pickup-in-store\".*?place_ids: \"store1\".*)$"));
+
+    Assert.assertTrue(output.matches(
+        "(?s)^(.*Product projects/.*/locations/global/catalogs/default_catalog/branches/default_branch/products/inventory_test_product_id was deleted.*)$"));
   }
-
 }

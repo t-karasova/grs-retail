@@ -54,7 +54,7 @@ public class SearchWithBoostSpecTest {
   }
 
   @Test
-  public void testSearchWithBoostSpec() throws IOException, InterruptedException {
+  public void testSearchWithBoostSpec() throws IOException {
 
     SearchResponse response = SearchWithBoostSpec.search();
 
@@ -64,6 +64,6 @@ public class SearchWithBoostSpecTest {
 
     Assert.assertTrue(productTitle.contains("Tee"));
 
-    Assert.assertEquals(129, response.getTotalSize());
+    Assert.assertEquals(133, response.getTotalSize());
   }
 }
