@@ -4,7 +4,7 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package search;
+package product;
 
-import com.google.cloud.retail.v2.SearchResponse;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -26,44 +25,41 @@ import org.junit.Before;
 import org.junit.Test;
 import util.StreamGobbler;
 
-public class SearchWithBoostSpecTest {
+public class UpdateProductTest {
 
   private String output;
 
   @Before
-  public void setUp() throws IOException, InterruptedException, ExecutionException {
+  public void setUp()
+      throws IOException, InterruptedException, ExecutionException {
 
     Process exec = Runtime.getRuntime()
-        .exec("mvn compile exec:java -Dexec.mainClass=search.SearchWithBoostSpec");
+        .exec(
+            "mvn compile exec:java -Dexec.mainClass=product.UpdateProduct");
 
     StreamGobbler streamGobbler = new StreamGobbler(exec.getInputStream());
 
-    Future<String> stringFuture = Executors.newSingleThreadExecutor().submit(streamGobbler);
+    Future<String> stringFuture = Executors.newSingleThreadExecutor()
+        .submit(streamGobbler);
 
     output = stringFuture.get();
   }
 
   @Test
-  public void testOutput() {
+  public void testUpdateProduct() {
+    Assert.assertTrue(output.matches("(?s)^(.*Product is created.*)$"));
 
-    Assert.assertTrue(output.matches("(?s)^(.*Search request.*)$"));
+    Assert.assertTrue(output.matches("(?s)^(.*Updated product.*)$"));
 
-    Assert.assertTrue(output.matches("(?s)^(.*Search response.*)$"));
+    Assert.assertTrue(output.matches(
+        "(?s)^(.*Updated product.*?title.*?Updated Nest Mini.*)$"));
 
-    Assert.assertTrue(output.matches("(?s)^(.*results.*id.*)$"));
-  }
+    Assert.assertTrue(output.matches(
+        "(?s)^(.*Updated product.*?brands.*?Updated Google.*)$"));
 
-  @Test
-  public void testSearchWithBoostSpec() throws IOException {
+    Assert.assertTrue(
+        output.matches("(?s)^(.*Updated product.*?price.*?20.*)$"));
 
-    SearchResponse response = SearchWithBoostSpec.search();
-
-    Assert.assertEquals(10, response.getResultsCount());
-
-    String productTitle = response.getResults(0).getProduct().getTitle();
-
-    Assert.assertTrue(productTitle.contains("Tee"));
-
-    Assert.assertEquals(133, response.getTotalSize());
+    Assert.assertTrue(output.matches("(?s)^(.*Product.*was deleted.*)$"));
   }
 }
