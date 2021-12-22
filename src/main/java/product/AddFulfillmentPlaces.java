@@ -32,8 +32,11 @@ import java.util.concurrent.TimeUnit;
 public class AddFulfillmentPlaces {
 
   public static final String PROJECT_NUMBER = System.getenv("PROJECT_NUMBER");
+
   public static final String ENDPOINT = "retail.googleapis.com:443";
+
   public static final String PRODUCT_ID = "add_fulfillment_test_product_id";
+
   public static final String DEFAULT_CATALOG = String.format(
       "projects/%s/locations/global/catalogs/default_catalog/branches/default_branch/products/%s",
       PROJECT_NUMBER, PRODUCT_ID);

@@ -33,7 +33,8 @@ public class DeleteProduct {
 
   public static final String ENDPOINT = "retail.googleapis.com:443";
 
-  private static final String PRODUCT_ID = UUID.randomUUID().toString();
+  private static final String GENERATED_PRODUCT_ID = UUID.randomUUID()
+      .toString();
 
   // Get product service client
   private static ProductServiceClient getProductServiceClient()
@@ -73,6 +74,6 @@ public class DeleteProduct {
 
   // Delete created product
   public static void main(String[] args) throws IOException {
-    deleteProduct(createProduct(PRODUCT_ID).getName());
+    deleteProduct(createProduct(GENERATED_PRODUCT_ID).getName());
   }
 }

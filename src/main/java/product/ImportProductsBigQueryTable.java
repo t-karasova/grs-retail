@@ -35,13 +35,20 @@ import java.util.concurrent.TimeUnit;
 public class ImportProductsBigQueryTable {
 
   public static final String PROJECT_NUMBER = System.getenv("PROJECT_NUMBER");
+
   private static final String PROJECT_ID = System.getenv("PROJECT_ID");
+
   public static final String ENDPOINT = "retail.googleapis.com:443";
+
   public static final String DEFAULT_CATALOG = String.format(
       "projects/%s/locations/global/catalogs/default_catalog/branches/default_branch",
       PROJECT_NUMBER);
+
   public static final String DATASET_ID = "products";
+
   public static final String TABLE_ID = "products";
+
+  private static final String DATA_SCHEMA = "product";
 
   /* TO CHECK ERROR HANDLING USE THE TABLE WITH INVALID PRODUCTS:
      TABLE_ID = "products_some_invalid"
@@ -67,7 +74,7 @@ public class ImportProductsBigQueryTable {
         .setProjectId(PROJECT_ID)
         .setDatasetId(DATASET_ID)
         .setTableId(TABLE_ID)
-        .setDataSchema("product")
+        .setDataSchema(DATA_SCHEMA)
         .build();
 
     ProductInputConfig inputConfig = ProductInputConfig.newBuilder()

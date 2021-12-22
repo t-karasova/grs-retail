@@ -44,11 +44,15 @@ import java.util.concurrent.TimeUnit;
 public class ImportProductsInlineSource {
 
   public static final String PROJECT_NUMBER = System.getenv("PROJECT_NUMBER");
+
   public static final String ENDPOINT = "retail.googleapis.com:443";
+
   public static final String DEFAULT_CATALOG = String.format(
       "projects/%s/locations/global/catalogs/default_catalog/branches/default_branch",
       PROJECT_NUMBER);
-  private static final String VISITOR_ID = UUID.randomUUID().toString();
+
+  private static final String GENERATED_PRODUCT_ID = UUID.randomUUID()
+      .toString();
 
   // prepare product to import as inline source
   public static List<Product> getProducts() {
@@ -82,7 +86,7 @@ public class ImportProductsInlineSource {
     // TO CHECK ERROR HANDLING COMMENT OUT THE PRODUCT TITLE HERE:
     product1 = Product.newBuilder()
         .setTitle("#IamRemarkable Pen")
-        .setId(VISITOR_ID)
+        .setId(GENERATED_PRODUCT_ID)
         .addAllCategories(Collections.singletonList("Office"))
         .setUri(
             "https://shop.googlemerchandisestore.com/Google+Redesign/Office/IamRemarkable+Pen")
@@ -117,7 +121,7 @@ public class ImportProductsInlineSource {
 
     product2 = Product.newBuilder()
         .setTitle("Android Embroidered Crewneck Sweater")
-        .setId(VISITOR_ID)
+        .setId(GENERATED_PRODUCT_ID)
         .addCategories("Apparel")
         .setUri(
             "https://shop.googlemerchandisestore.com/Google+Redesign/Apparel/Android+Embroidered+Crewneck+Sweater")

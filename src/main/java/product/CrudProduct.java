@@ -35,11 +35,15 @@ import java.util.Collections;
 public class CrudProduct {
 
   public static final String PROJECT_NUMBER = System.getenv("PROJECT_NUMBER");
+
   public static final String ENDPOINT = "retail.googleapis.com:443";
+
   public static final String PRODUCT_ID = "crud_product_id";
+
   public static final String DEFAULT_BRANCH_NAME = String.format(
       "projects/%s/locations/global/catalogs/default_catalog/branches/default_branch",
       PROJECT_NUMBER);
+
   public static final String PRODUCT_NAME = String.format("%s/products/%s",
       DEFAULT_BRANCH_NAME, PRODUCT_ID);
 

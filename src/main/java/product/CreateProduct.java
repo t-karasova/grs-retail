@@ -35,10 +35,13 @@ import java.util.UUID;
 public class CreateProduct {
 
   public static final String PROJECT_NUMBER = System.getenv("PROJECT_NUMBER");
+
   public static final String ENDPOINT = "retail.googleapis.com:443";
+
   public static final String DEFAULT_BRANCH_NAME = String.format(
       "projects/%s/locations/global/catalogs/default_catalog/branches/default_branch",
       PROJECT_NUMBER);
+
   private static final String GENERATED_PRODUCT_ID = UUID.randomUUID()
       .toString();
 
