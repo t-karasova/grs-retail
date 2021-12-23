@@ -126,6 +126,8 @@ public class SearchWithFiltering {
 
     System.out.println("Search response: " + searchResponse);
 
+    System.out.println("Facets: " + searchResponse.getFacetsList());
+
     return searchResponse;
   }
 
