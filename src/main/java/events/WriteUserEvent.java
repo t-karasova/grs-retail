@@ -42,7 +42,7 @@ public class WriteUserEvent {
       "projects/%s/locations/global/catalogs/default_catalog",
       PROJECT_NUMBER);
 
-  private static final String VISITOR_ID = "\"test_visitor_id\"";
+  private static final String VISITOR_ID = "test_visitor_id";
 
   // get user events service client
   private static UserEventServiceClient getUserEventsServiceClient()

@@ -135,7 +135,7 @@ public class SetupCleanup {
   public static void purgeUserEvent(String visitorId)
       throws IOException, ExecutionException, InterruptedException {
     PurgeUserEventsRequest purgeUserEventsRequest = PurgeUserEventsRequest.newBuilder()
-        .setFilter(String.format("visitorId=%s", visitorId))
+        .setFilter(String.format("visitorId=\"%s\"", visitorId))
         .setParent(DEFAULT_CATALOG)
         .setForce(true)
         .build();
