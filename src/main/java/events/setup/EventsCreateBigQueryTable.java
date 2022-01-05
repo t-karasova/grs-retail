@@ -30,10 +30,12 @@ public class EventsCreateBigQueryTable {
     String dataset = "user_events";
     String validEventsTable = "events";
     String invalidEventsTable = "events_some_invalid";
-    Schema eventsSchema = Schema.of(Field.of("resources/events_schema.json",
-        StandardSQLTypeName.STRING));
+    String eventsSchemaFile = "resources/event_schema.json";
     String validEventsSourceFile = "resources/user_events.json";
     String invalidEventsSourceFile = "resources/user_events_some_invalid.json";
+
+    Schema eventsSchema = Schema.of(
+        Field.of(eventsSchemaFile, StandardSQLTypeName.STRING));
 
     createBqDataset(dataset);
 
