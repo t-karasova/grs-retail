@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import lombok.Getter;
 
 public class ProductsCreateGcsBucket {
 
@@ -33,10 +34,16 @@ public class ProductsCreateGcsBucket {
 
   private static final Timestamp timestamp = Timestamp.from(Instant.now());
 
+  @Getter
   private static final String bucketName = String.format("%s_products_%s",
       PROJECT_ID, dateFormat.format(timestamp));
 
-  public static void productsCreateGcsBucket() throws IOException {
+  public static void main(String[] args) throws IOException {
+    productsCreateGcsBucketAndUploadJsonFiles();
+  }
+
+  public static void productsCreateGcsBucketAndUploadJsonFiles()
+      throws IOException {
 
     createBucket(bucketName);
 
@@ -45,11 +52,5 @@ public class ProductsCreateGcsBucket {
 
     uploadObject(bucketName, "products_some_invalid.json",
         "src/main/resources/products_some_invalid.json");
-
-    System.out.printf("%nThe gcs bucket %s was created.%n", bucketName);
-  }
-
-  public static String getBucketName() {
-    return bucketName;
   }
 }

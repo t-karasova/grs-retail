@@ -16,7 +16,7 @@
 
 package product.setup;
 
-import static product.setup.ProductsCreateGcsBucket.productsCreateGcsBucket;
+import static product.setup.ProductsCreateGcsBucket.productsCreateGcsBucketAndUploadJsonFiles;
 import static product.setup.SetupCleanup.createBqDataset;
 import static product.setup.SetupCleanup.createBqTable;
 import static product.setup.SetupCleanup.uploadDataToBqTable;
@@ -37,7 +37,7 @@ public class ProductsCreateBigqueryTable {
 
   public static void main(String[] args) throws IOException {
 
-    productsCreateGcsBucket();
+    productsCreateGcsBucketAndUploadJsonFiles();
 
     String dataset = "products";
 

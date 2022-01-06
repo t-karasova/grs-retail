@@ -16,7 +16,7 @@
 
 package events.setup;
 
-import static events.setup.EventsCreateGcsBucket.eventsCreateGcsBucket;
+import static events.setup.EventsCreateGcsBucket.eventsCreateGcsBucketAndUploadJsonFiles;
 import static events.setup.SetupCleanup.createBqDataset;
 import static events.setup.SetupCleanup.createBqTable;
 import static events.setup.SetupCleanup.uploadDataToBqTable;
@@ -37,7 +37,7 @@ public class EventsCreateBigQueryTable {
 
   public static void main(String[] args) throws IOException {
 
-    eventsCreateGcsBucket();
+    eventsCreateGcsBucketAndUploadJsonFiles();
 
     String dataset = "user_events";
 
