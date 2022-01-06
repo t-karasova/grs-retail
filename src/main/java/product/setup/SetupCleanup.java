@@ -156,7 +156,7 @@ public class SetupCleanup {
     Bucket bucket = storage.create(
         BucketInfo.newBuilder(bucketName)
             .setStorageClass(STANDARD)
-            .setLocation("USA")
+            .setLocation("US")
             .build());
 
     System.out.println(
@@ -206,7 +206,7 @@ public class SetupCleanup {
 
       System.out.println(newDatasetName + " created successfully");
     } catch (BigQueryException e) {
-      System.out.println("Dataset was not created. \n" + e);
+      System.out.printf("Dataset '%s' already exists.%n", datasetName);
     }
   }
 
@@ -242,9 +242,9 @@ public class SetupCleanup {
           .build();
 
       bigquery.create(tableInfo);
-      System.out.println("Table created successfully");
+      System.out.printf("Table '%s' created successfully.%n", tableName);
     } catch (BigQueryException e) {
-      System.out.println("Table was not created. \n" + e);
+      System.out.printf("Table '%s' already exists.%n", tableName);
     }
   }
 
@@ -286,15 +286,16 @@ public class SetupCleanup {
       // either failing or succeeding.
       job = job.waitFor();
       if (job.isDone()) {
-        System.out.println("Json from GCS successfully loaded in a table");
+        System.out.printf(
+            "Json from GCS successfully loaded in a table '%s'.%n",
+            tableName);
       } else {
         System.out.println(
             "BigQuery was unable to load into the table due to an error:"
                 + job.getStatus().getError());
       }
     } catch (BigQueryException | InterruptedException e) {
-      System.out.println(
-          "Column not added during load append \n" + e);
+      System.out.println("Column not added during load append \n" + e);
     }
   }
 }

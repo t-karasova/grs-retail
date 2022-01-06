@@ -16,24 +16,55 @@
 
 package product.setup;
 
+import static product.setup.ProductsCreateGcsBucket.productsCreateGcsBucket;
 import static product.setup.SetupCleanup.createBqDataset;
 import static product.setup.SetupCleanup.createBqTable;
 import static product.setup.SetupCleanup.uploadDataToBqTable;
 
 import com.google.cloud.bigquery.Field;
+import com.google.cloud.bigquery.FieldList;
+import com.google.cloud.bigquery.LegacySQLTypeName;
 import com.google.cloud.bigquery.Schema;
-import com.google.cloud.bigquery.StandardSQLTypeName;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.stream.Collectors;
 
 public class ProductsCreateBigqueryTable {
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
+
+    productsCreateGcsBucket();
+
     String dataset = "products";
+
     String validProductsTable = "products";
+
     String invalidProductsTable = "products_some_invalid";
-    Schema productSchema = Schema.of(Field.of("resources/product_schema.json",
-        StandardSQLTypeName.STRING));
-    String validProductsSourceFile = "resources/products.json";
-    String invalidProductsSourceFile = "resources/products_some_invalid.json";
+
+    String productSchemaFilePath = "src/main/resources/product_schema.json";
+
+    String validProductsSourceFile = String.format(
+        "gs://%s/products.json",
+        ProductsCreateGcsBucket.getBucketName());
+
+    String invalidProductsSourceFile = String.format(
+        "gs://%s/products_some_invalid.json",
+        ProductsCreateGcsBucket.getBucketName());
+
+    BufferedReader bufferedReader = new BufferedReader(
+        new FileReader(productSchemaFilePath));
+
+    String jsonToString = bufferedReader.lines().collect(Collectors.joining());
+
+    jsonToString = jsonToString.replace("\"fields\"", "\"subFields\"");
+
+    Field[] fields = getGson().fromJson(jsonToString, Field[].class);
+
+    Schema productSchema = Schema.of(fields);
 
     createBqDataset(dataset);
 
@@ -46,5 +77,22 @@ public class ProductsCreateBigqueryTable {
 
     uploadDataToBqTable(dataset, invalidProductsTable,
         invalidProductsSourceFile, productSchema);
+  }
+
+  public static Gson getGson() {
+    JsonDeserializer<LegacySQLTypeName> typeDeserializer = (jsonElement, type, deserializationContext) -> {
+      return LegacySQLTypeName.valueOf(jsonElement.getAsString());
+    };
+
+    JsonDeserializer<FieldList> subFieldsDeserializer = (jsonElement, type, deserializationContext) -> {
+      Field[] fields = deserializationContext.deserialize(
+          jsonElement.getAsJsonArray(), Field[].class);
+      return FieldList.of(fields);
+    };
+
+    return new GsonBuilder()
+        .registerTypeAdapter(LegacySQLTypeName.class, typeDeserializer)
+        .registerTypeAdapter(FieldList.class, subFieldsDeserializer)
+        .create();
   }
 }

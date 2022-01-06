@@ -26,16 +26,17 @@ import java.time.Instant;
 
 public class EventsCreateGcsBucket {
 
-  public static void main(String[] args) throws IOException {
+  private static final String PROJECT_ID = System.getenv("PROJECT_ID");
 
-    String PROJECT_ID = System.getenv("PROJECT_ID");
+  private static final SimpleDateFormat dateFormat = new SimpleDateFormat(
+      "yyyy-MM-dd_HH-mm-ss");
 
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+  private static final Timestamp timestamp = Timestamp.from(Instant.now());
 
-    Timestamp timestamp = Timestamp.from(Instant.now());
+  private static final String bucketName = String.format("%s_events_%s",
+      PROJECT_ID, dateFormat.format(timestamp));
 
-    String bucketName = String.format("%s_%s", PROJECT_ID,
-        dateFormat.format(timestamp));
+  public static void eventsCreateGcsBucket() throws IOException {
 
     createBucket(bucketName);
 
@@ -46,5 +47,9 @@ public class EventsCreateGcsBucket {
         "src/main/resources/user_events_some_invalid.json");
 
     System.out.printf("%nThe gcs bucket %s was created.%n", bucketName);
+  }
+
+  public static String getBucketName() {
+    return bucketName;
   }
 }
