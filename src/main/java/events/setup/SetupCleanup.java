@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package product.setup;
+package events.setup;
 
 import static com.google.cloud.storage.StorageClass.STANDARD;
 
+import com.google.api.gax.longrunning.OperationFuture;
 import com.google.api.gax.paging.Page;
-import com.google.api.gax.rpc.NotFoundException;
 import com.google.cloud.bigquery.BigQuery;
 import com.google.cloud.bigquery.BigQuery.DatasetListOption;
 import com.google.cloud.bigquery.BigQuery.TableListOption;
@@ -38,114 +38,114 @@ import com.google.cloud.bigquery.Table;
 import com.google.cloud.bigquery.TableDefinition;
 import com.google.cloud.bigquery.TableId;
 import com.google.cloud.bigquery.TableInfo;
-import com.google.cloud.retail.v2.CreateProductRequest;
-import com.google.cloud.retail.v2.DeleteProductRequest;
-import com.google.cloud.retail.v2.FulfillmentInfo;
-import com.google.cloud.retail.v2.GetProductRequest;
-import com.google.cloud.retail.v2.PriceInfo;
 import com.google.cloud.retail.v2.Product;
-import com.google.cloud.retail.v2.Product.Availability;
-import com.google.cloud.retail.v2.Product.Type;
-import com.google.cloud.retail.v2.ProductServiceClient;
-import com.google.cloud.retail.v2.ProductServiceSettings;
+import com.google.cloud.retail.v2.ProductDetail;
+import com.google.cloud.retail.v2.PurgeMetadata;
+import com.google.cloud.retail.v2.PurgeUserEventsRequest;
+import com.google.cloud.retail.v2.PurgeUserEventsResponse;
+import com.google.cloud.retail.v2.UserEvent;
+import com.google.cloud.retail.v2.UserEventServiceClient;
+import com.google.cloud.retail.v2.UserEventServiceSettings;
+import com.google.cloud.retail.v2.WriteUserEventRequest;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.BucketInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
+import com.google.protobuf.Int32Value;
+import com.google.protobuf.Timestamp;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
+import java.time.Instant;
+import java.util.Collections;
+import java.util.concurrent.ExecutionException;
 
 public class SetupCleanup {
 
-  public static final String PROJECT_NUMBER = System.getenv("PROJECT_NUMBER");
-  public static final String PROJECT_ID = System.getenv("PROJECT_ID");
-  public static final String ENDPOINT = "retail.googleapis.com:443";
-  public static final String DEFAULT_BRANCH_NAME = String.format(
-      "projects/%s/locations/global/catalogs/default_catalog/branches/default_branch",
+  private static final String PROJECT_NUMBER = System.getenv("PROJECT_NUMBER");
+
+  private static final String PROJECT_ID = System.getenv("PROJECT_ID");
+
+  private static final String ENDPOINT = "retail.googleapis.com:443";
+
+  private static final String DEFAULT_CATALOG = String.format(
+      "projects/%s/locations/global/catalogs/default_catalog",
       PROJECT_NUMBER);
 
-  public static final Storage storage = StorageOptions.newBuilder()
+  private static final Storage storage = StorageOptions.newBuilder()
       .setProjectId(PROJECT_NUMBER)
       .build().getService();
 
-  private static ProductServiceClient getProductServiceClient()
+  // get user events service client
+  private static UserEventServiceClient getUserEventsServiceClient()
       throws IOException {
-    ProductServiceSettings productServiceSettings = ProductServiceSettings.newBuilder()
+    UserEventServiceSettings userEventServiceSettings = UserEventServiceSettings.newBuilder()
         .setEndpoint(ENDPOINT)
         .build();
-    return ProductServiceClient.create(productServiceSettings);
+    return UserEventServiceClient.create(userEventServiceSettings);
   }
 
-  public static Product generateProduct() {
-    PriceInfo priceInfo = PriceInfo.newBuilder()
-        .setPrice(30.0f)
-        .setOriginalPrice(35.5f)
-        .setCurrencyCode("USD")
+  // get user event
+  public static UserEvent getUserEvent(String visitorId) {
+    Instant time = Instant.now();
+
+    Timestamp timestamp = Timestamp.newBuilder()
+        .setSeconds(time.getEpochSecond())
         .build();
 
-    FulfillmentInfo fulfillmentInfo = FulfillmentInfo.newBuilder()
-        .setType("pickup-in-store")
-        .addAllPlaceIds(Arrays.asList("store0", "store1"))
-        .build();
-
-    return Product.newBuilder()
-        .setTitle("Nest Mini")
-        .setType(Type.PRIMARY)
-        .addCategories("Speakers and displays")
-        .addBrands("Google")
-        .setPriceInfo(priceInfo)
-        .addFulfillmentInfo(fulfillmentInfo)
-        .setAvailability(Availability.IN_STOCK)
-        .build();
-  }
-
-  public static Product createProduct(String productId) throws IOException {
-    CreateProductRequest createProductRequest = CreateProductRequest.newBuilder()
-        .setProduct(generateProduct())
-        .setProductId(productId)
-        .setParent(DEFAULT_BRANCH_NAME)
-        .build();
-
-    Product product = getProductServiceClient().createProduct(
-        createProductRequest);
-
-    System.out.println("Product is created: " + product);
-
-    return product;
-  }
-
-  public static void deleteProduct(String productName) throws IOException {
-    DeleteProductRequest deleteProductRequest = DeleteProductRequest.newBuilder()
-        .setName(productName)
-        .build();
-
-    getProductServiceClient().deleteProduct(deleteProductRequest);
-
-    System.out.printf("Product %s was deleted.%n", productName);
-  }
-
-  public static Product getProduct(String productName) throws IOException {
     Product product = Product.newBuilder()
+        .setId("test_id")
         .build();
 
-    GetProductRequest getProductRequest = GetProductRequest.newBuilder()
-        .setName(productName)
+    ProductDetail productDetail = ProductDetail.newBuilder()
+        .setProduct(product)
+        .setQuantity(Int32Value.newBuilder().setValue(3).build())
         .build();
 
-    try {
-      product = getProductServiceClient().getProduct(getProductRequest);
+    UserEvent userEvent = UserEvent.newBuilder()
+        .setEventType("detail-page-view")
+        .setVisitorId(visitorId)
+        .setEventTime(timestamp)
+        .addAllProductDetails(Collections.singletonList(productDetail))
+        .build();
 
-      System.out.println("Get product response: " + product);
+    System.out.println(userEvent);
 
-      return product;
-    } catch (NotFoundException e) {
-      System.out.printf("Product %s not found", productName);
-      return product;
-    }
+    return userEvent;
+  }
+
+  // write user event
+  public static UserEvent writeUserEvent(String visitorId) throws IOException {
+    WriteUserEventRequest writeUserEventRequest = WriteUserEventRequest.newBuilder()
+        .setUserEvent(getUserEvent(visitorId))
+        .setParent(DEFAULT_CATALOG)
+        .build();
+
+    UserEvent userEvent = getUserEventsServiceClient().writeUserEvent(
+        writeUserEventRequest);
+
+    System.out.printf("The user event is written. %n%s%n", userEvent);
+
+    return userEvent;
+  }
+
+  // purge user event
+  public static void purgeUserEvent(String visitorId)
+      throws IOException, ExecutionException, InterruptedException {
+    PurgeUserEventsRequest purgeUserEventsRequest = PurgeUserEventsRequest.newBuilder()
+        .setFilter(String.format("visitorId=\"%s\"", visitorId))
+        .setParent(DEFAULT_CATALOG)
+        .setForce(true)
+        .build();
+
+    OperationFuture<PurgeUserEventsResponse, PurgeMetadata> purgeOperation
+        = getUserEventsServiceClient().purgeUserEventsAsync(
+        purgeUserEventsRequest);
+
+    System.out.printf("The purge operation was started: %s%n",
+        purgeOperation.getName());
   }
 
   public static void createBucket(String bucketName) {
@@ -280,10 +280,7 @@ public class SetupCleanup {
               .setSchema(schema)
               .build();
 
-      // Load data from a GCS JSON file into the table
       Job job = bigquery.create(JobInfo.of(loadConfig));
-      // Blocks until this load table job completes its execution,
-      // either failing or succeeding.
       job = job.waitFor();
       if (job.isDone()) {
         System.out.printf(

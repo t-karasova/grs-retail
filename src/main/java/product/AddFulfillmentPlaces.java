@@ -28,25 +28,47 @@ import com.google.protobuf.Timestamp;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class AddFulfillmentPlaces {
 
-  public static final String PROJECT_NUMBER = System.getenv("PROJECT_NUMBER");
+  /**
+   * This variable describes project number getting from environment variable.
+   */
+  private static final String PROJECT_NUMBER = System.getenv("PROJECT_NUMBER");
 
-  public static final String ENDPOINT = "retail.googleapis.com:443";
+  /**
+   * This variable describes endpoint for send requests.
+   */
+  private static final String ENDPOINT = "retail.googleapis.com:443";
 
-  public static final String PRODUCT_ID = "add_fulfillment_test_product_id";
+  /**
+   * This variable describes defined product id for field setting.
+   */
+  private static final String PRODUCT_ID = "add_fulfillment_test_product_id";
 
-  public static final String DEFAULT_CATALOG = String.format(
+  /**
+   * This variable describes default catalog name.
+   */
+  private static final String DEFAULT_CATALOG = String.format(
       "projects/%s/locations/global/catalogs/default_catalog/branches/default_branch/products/%s",
       PROJECT_NUMBER, PRODUCT_ID);
 
-  // The request timestamp
+  /**
+   * The time when the fulfillment updates are issued, used to prevent
+   * out-of-order updates on fulfillment information.
+   */
   private static final Timestamp requestTime = Timestamp.newBuilder()
       .setSeconds(Instant.now().getEpochSecond())
       .setNanos(Instant.now().getNano()).build();
 
-  // get product service client
+  /**
+   * Get product service client.
+   *
+   * @return ProductServiceClient
+   * @throws IOException if endpoint is incorrect.
+   */
   private static ProductServiceClient getProductServiceClient()
       throws IOException {
     ProductServiceSettings productServiceSettings = ProductServiceSettings.newBuilder()
@@ -55,7 +77,12 @@ public class AddFulfillmentPlaces {
     return ProductServiceClient.create(productServiceSettings);
   }
 
-  // add fulfillment request
+  /**
+   * Add fulfillment request.
+   *
+   * @param productName refers to product name.
+   * @return AddFulfillmentPlacesRequest.
+   */
   public static AddFulfillmentPlacesRequest getAddFulfillmentRequest(
       String productName) {
     AddFulfillmentPlacesRequest addfulfillmentPlacesRequest = AddFulfillmentPlacesRequest.newBuilder()
@@ -72,7 +99,13 @@ public class AddFulfillmentPlaces {
     return addfulfillmentPlacesRequest;
   }
 
-  // add fulfillment places to product
+  /**
+   * Add fulfillment places to product
+   *
+   * @param productName refers to product name.
+   * @throws IOException          from the called method.
+   * @throws InterruptedException if interrupted while waiting.
+   */
   public static void addFulfillmentPlaces(String productName)
       throws IOException, InterruptedException {
     AddFulfillmentPlacesRequest addFulfillmentRequest = getAddFulfillmentRequest(
@@ -80,18 +113,19 @@ public class AddFulfillmentPlaces {
 
     getProductServiceClient().addFulfillmentPlacesAsync(addFulfillmentRequest);
 
-    /*
-    This is a long running operation and its result is not immediately
-    present with get operations,thus we simulate wait with sleep method.
-    */
     System.out.println("Add fulfillment places, wait 30 seconds: ");
 
+    /*
+    This is a long-running operation and its result is not immediately
+    present with get operations,thus we simulate wait with sleep method.
+    */
     getProductServiceClient().awaitTermination(30, TimeUnit.SECONDS);
   }
 
-  // [END add_fulfillment_places]
-
-  public static void main(String[] args)
+  /**
+   * Executable tutorial class.
+   */
+  public static void main(final String[] args)
       throws IOException, InterruptedException {
     createProduct(PRODUCT_ID);
 
@@ -102,3 +136,5 @@ public class AddFulfillmentPlaces {
     getProduct(DEFAULT_CATALOG);
   }
 }
+
+// [END add_fulfillment_places]

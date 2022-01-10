@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package product.setup;
+package events.setup;
 
-import static product.setup.SetupCleanup.createBucket;
-import static product.setup.SetupCleanup.uploadObject;
+import static events.setup.SetupCleanup.createBucket;
+import static events.setup.SetupCleanup.uploadObject;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -25,7 +25,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import lombok.Getter;
 
-public class ProductsCreateGcsBucket {
+public class EventsCreateGcsBucket {
 
   private static final String PROJECT_ID = System.getenv("PROJECT_ID");
 
@@ -35,22 +35,22 @@ public class ProductsCreateGcsBucket {
   private static final Timestamp timestamp = Timestamp.from(Instant.now());
 
   @Getter
-  private static final String bucketName = String.format("%s_products_%s",
+  private static final String bucketName = String.format("%s_events_%s",
       PROJECT_ID, dateFormat.format(timestamp));
 
   public static void main(String[] args) throws IOException {
-    productsCreateGcsBucketAndUploadJsonFiles();
+    eventsCreateGcsBucketAndUploadJsonFiles();
   }
 
-  public static void productsCreateGcsBucketAndUploadJsonFiles()
+  public static void eventsCreateGcsBucketAndUploadJsonFiles()
       throws IOException {
 
     createBucket(bucketName);
 
-    uploadObject(bucketName, "products.json",
-        "src/main/resources/products.json");
+    uploadObject(bucketName, "user_events.json",
+        "src/main/resources/user_events.json");
 
-    uploadObject(bucketName, "products_some_invalid.json",
-        "src/main/resources/products_some_invalid.json");
+    uploadObject(bucketName, "user_events_some_invalid.json",
+        "src/main/resources/user_events_some_invalid.json");
   }
 }

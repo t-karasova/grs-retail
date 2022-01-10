@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package product.setup;
+package events.setup;
 
-import static product.setup.ProductsCreateGcsBucket.productsCreateGcsBucketAndUploadJsonFiles;
-import static product.setup.SetupCleanup.createBqDataset;
-import static product.setup.SetupCleanup.createBqTable;
-import static product.setup.SetupCleanup.uploadDataToBqTable;
+import static events.setup.EventsCreateGcsBucket.eventsCreateGcsBucketAndUploadJsonFiles;
+import static events.setup.SetupCleanup.createBqDataset;
+import static events.setup.SetupCleanup.createBqTable;
+import static events.setup.SetupCleanup.uploadDataToBqTable;
 
 import com.google.cloud.bigquery.Field;
 import com.google.cloud.bigquery.FieldList;
@@ -33,30 +33,30 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
-public class ProductsCreateBigqueryTable {
+public class EventsCreateBigQueryTable {
 
   public static void main(String[] args) throws IOException {
 
-    productsCreateGcsBucketAndUploadJsonFiles();
+    eventsCreateGcsBucketAndUploadJsonFiles();
 
-    String dataset = "products";
+    String dataset = "user_events";
 
-    String validProductsTable = "products";
+    String validEventsTable = "events";
 
-    String invalidProductsTable = "products_some_invalid";
+    String invalidEventsTable = "events_some_invalid";
 
-    String productSchemaFilePath = "src/main/resources/product_schema.json";
+    String eventsSchemaFilePath = "src/main/resources/event_schema.json";
 
-    String validProductsSourceFile = String.format(
-        "gs://%s/products.json",
-        ProductsCreateGcsBucket.getBucketName());
+    String validEventsSourceFile = String.format(
+        "gs://%s/user_events.json",
+        EventsCreateGcsBucket.getBucketName());
 
-    String invalidProductsSourceFile = String.format(
-        "gs://%s/products_some_invalid.json",
-        ProductsCreateGcsBucket.getBucketName());
+    String invalidEventsSourceFile = String.format(
+        "gs://%s/user_events_some_invalid.json",
+        EventsCreateGcsBucket.getBucketName());
 
     BufferedReader bufferedReader = new BufferedReader(
-        new FileReader(productSchemaFilePath));
+        new FileReader(eventsSchemaFilePath));
 
     String jsonToString = bufferedReader.lines().collect(Collectors.joining());
 
@@ -64,19 +64,19 @@ public class ProductsCreateBigqueryTable {
 
     Field[] fields = getGson().fromJson(jsonToString, Field[].class);
 
-    Schema productSchema = Schema.of(fields);
+    Schema eventsSchema = Schema.of(fields);
 
     createBqDataset(dataset);
 
-    createBqTable(dataset, validProductsTable, productSchema);
+    createBqTable(dataset, validEventsTable, eventsSchema);
 
-    uploadDataToBqTable(dataset, validProductsTable, validProductsSourceFile,
-        productSchema);
+    uploadDataToBqTable(dataset, validEventsTable, validEventsSourceFile,
+        eventsSchema);
 
-    createBqTable(dataset, invalidProductsTable, productSchema);
+    createBqTable(dataset, invalidEventsTable, eventsSchema);
 
-    uploadDataToBqTable(dataset, invalidProductsTable,
-        invalidProductsSourceFile, productSchema);
+    uploadDataToBqTable(dataset, invalidEventsTable, invalidEventsSourceFile,
+        eventsSchema);
   }
 
   public static Gson getGson() {
