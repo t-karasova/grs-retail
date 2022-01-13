@@ -82,11 +82,11 @@ public final class EventsCreateBigQueryTable {
 
     String validEventsSourceFile = String.format(
         "gs://%s/user_events.json",
-        EventsCreateGcsBucket.getBUCKET_NAME());
+        EventsCreateGcsBucket.getBucketName());
 
     String invalidEventsSourceFile = String.format(
         "gs://%s/user_events_some_invalid.json",
-        EventsCreateGcsBucket.getBUCKET_NAME());
+        EventsCreateGcsBucket.getBucketName());
 
     BufferedReader bufferedReader = new BufferedReader(
         new FileReader(eventsSchemaFilePath));
