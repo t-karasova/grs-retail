@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Google Inc. All Rights Reserved.
+ * Copyright 2022 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,6 +64,6 @@ public class SearchWithBoostSpecTest {
 
     Assert.assertTrue(productTitle.contains("Tee"));
 
-    Assert.assertEquals(133, response.getTotalSize());
+    Assert.assertEquals(129, response.getTotalSize());
   }
 }
