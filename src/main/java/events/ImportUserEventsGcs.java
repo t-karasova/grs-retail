@@ -1,10 +1,10 @@
 /*
- * Copyright 2021 Google Inc. All Rights Reserved.
+ * Copyright 2022 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
-
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -12,7 +12,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
+ */
+
+/*
  * [START retail_import_user_events_from_gcs]
  * Import user events into a catalog from GCS using Retail API
  */
@@ -27,29 +29,40 @@ import com.google.cloud.retail.v2.ImportUserEventsRequest;
 import com.google.cloud.retail.v2.ImportUserEventsResponse;
 import com.google.cloud.retail.v2.UserEventInputConfig;
 import com.google.cloud.retail.v2.UserEventServiceClient;
-import com.google.cloud.retail.v2.UserEventServiceSettings;
+
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-public class ImportUserEventsGcs {
+public final class ImportUserEventsGcs {
 
-  // Read the project number from the environment variable
+  /**
+   * This variable describes project number getting from environment variable.
+   */
   private static final String PROJECT_NUMBER = System.getenv("PROJECT_NUMBER");
 
-  private static final String ENDPOINT = "retail.googleapis.com:443";
-
+  /**
+   * This variable describes default catalog name.
+   */
   private static final String DEFAULT_CATALOG = String.format(
       "projects/%s/locations/global/catalogs/default_catalog",
       PROJECT_NUMBER);
 
-  // Read bucket name from the environment variable
+  /**
+   * This variable describes GCS bucket from the environment variable.
+   */
   private static final String GCS_BUCKET = String.format("gs://%s",
       System.getenv("EVENTS_BUCKET_NAME"));
 
+  /**
+   * This variable describes GCS errors bucket from the environment variable.
+   */
   private static final String GCS_ERRORS_BUCKET = String.format("%s/error",
       GCS_BUCKET);
 
+  /**
+   * This variable describes GCS events object from the environment variable.
+   */
   private static final String GCS_EVENTS_OBJECT = "user_events.json";
 
   /*
@@ -57,18 +70,28 @@ public class ImportUserEventsGcs {
   GCS_EVENTS_OBJECT = "user_events_some_invalid.json"
    */
 
-  // get user events service client
-  private static UserEventServiceClient getUserEventsServiceClient()
-      throws IOException {
-    UserEventServiceSettings userEventServiceSettings = UserEventServiceSettings.newBuilder()
-        .setEndpoint(ENDPOINT)
-        .build();
-    return UserEventServiceClient.create(userEventServiceSettings);
+  private ImportUserEventsGcs() {
   }
 
-  // get import user events from gcs request
+  /**
+   * Get user event service client.
+   *
+   * @return UserEventServiceClient.
+   * @throws IOException if endpoint is incorrect.
+   */
+  private static UserEventServiceClient getUserEventsServiceClient()
+      throws IOException {
+    return UserEventServiceClient.create();
+  }
+
+  /**
+   * Get import user events from gcs request.
+   *
+   * @param gcsObjectName GCS object name for import.
+   * @return ImportUserEventsRequest.
+   */
   public static ImportUserEventsRequest getImportEventsGcsRequest(
-      String gcsObjectName) {
+      final String gcsObjectName) {
     // TO CHECK ERROR HANDLING PASTE THE INVALID CATALOG NAME HERE:
     // DEFAULT_CATALOG = "invalid_catalog_name"
 
@@ -97,7 +120,17 @@ public class ImportUserEventsGcs {
     return importRequest;
   }
 
-  // call the Retail API to import user events
+  /**
+   * Call the Retail API to import user events.
+   *
+   * @throws IOException          from the called method.
+   * @throws ExecutionException   when attempting to retrieve the result of a
+   *                              task that aborted by throwing an exception.
+   * @throws InterruptedException when a thread is waiting, sleeping, or
+   *                              otherwise occupied, and the thread is
+   *                              interrupted, either before or during the
+   *                              activity.
+   */
   public static void importUserEventsFromGcs()
       throws IOException, ExecutionException, InterruptedException {
     ImportUserEventsRequest importGcsRequest = getImportEventsGcsRequest(
@@ -110,9 +143,12 @@ public class ImportUserEventsGcs {
         gcsOperation.getName());
 
     while (!gcsOperation.isDone()) {
+      final int awaitDuration = 30;
+
       System.out.println("Please wait till operation is done.");
 
-      getUserEventsServiceClient().awaitTermination(30, TimeUnit.SECONDS);
+      getUserEventsServiceClient().awaitTermination(
+          awaitDuration, TimeUnit.SECONDS);
 
       System.out.println("Import user events operation is done.");
 
@@ -126,7 +162,12 @@ public class ImportUserEventsGcs {
     }
   }
 
-  public static void main(String[] args)
+  /**
+   * Executable tutorial class.
+   *
+   * @param args command line arguments.
+   */
+  public static void main(final String[] args)
       throws IOException, ExecutionException, InterruptedException {
     importUserEventsFromGcs();
   }

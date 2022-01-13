@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Google Inc. All Rights Reserved.
+ * Copyright 2022 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,6 @@ public class SearchWithFacetSpecTest {
 
     Assert.assertTrue(output.matches("(?s)^(.*Search response.*)$"));
 
-    // check the response contains some products
     Assert.assertTrue(output.matches("(?s)^(.*results.*id.*)$"));
 
     Assert.assertTrue(output.matches("(?s)^(.*facets.*?colorFamilies.*)$"));
@@ -70,7 +69,6 @@ public class SearchWithFacetSpecTest {
 
     Assert.assertTrue(productTitle.contains("Tee"));
 
-    Assert.assertTrue(
-        response.getFacets(0).getKey().contains("colorFamilies"));
+    Assert.assertEquals("colorFamilies", response.getFacets(0).getKey());
   }
 }
