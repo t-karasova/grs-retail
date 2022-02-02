@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google Inc.
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,6 +72,8 @@ public final class UpdateUserEventsJson {
     BufferedWriter writer = new BufferedWriter(new FileWriter(jsonFile));
 
     writer.write(json);
+
+    System.out.printf("User events file '%s' updated.%n", jsonFile);
 
     writer.close();
   }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google Inc.
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 
 /*
- * [START add_fulfillment_places]
+ * [START retail_add_fulfillment_places]
  */
 
 package product;
@@ -23,6 +23,7 @@ package product;
 import static setup.SetupCleanup.createProduct;
 import static setup.SetupCleanup.deleteProduct;
 import static setup.SetupCleanup.getProduct;
+import static setup.SetupCleanup.tryToDeleteProductIfExists;
 
 import com.google.cloud.retail.v2.AddFulfillmentPlacesRequest;
 import com.google.cloud.retail.v2.ProductServiceClient;
@@ -57,6 +58,16 @@ public final class AddFulfillmentPlaces {
   private static final Timestamp REQUEST_TIME = Timestamp.newBuilder()
       .setSeconds(Instant.now().getEpochSecond())
       .setNanos(Instant.now().getNano()).build();
+
+  /**
+   * The time when the fulfillment updates are issued.
+   * If set with outdated time (yesterday), the fulfillment information
+   * will not updated.
+   */
+//  private static final Timestamp REQUEST_TIME = Timestamp.newBuilder()
+//      .setSeconds(Instant.now().minus(1, ChronoUnit.DAYS).getEpochSecond())
+//      .setNanos(Instant.now().getNano())
+//      .build();
 
   private AddFulfillmentPlaces() {
   }
@@ -102,7 +113,9 @@ public final class AddFulfillmentPlaces {
    * @throws IOException from the called method.
    */
   public static void addFulfillmentPlaces(final String productName)
-      throws IOException {
+      throws IOException, InterruptedException {
+    final int awaitDuration = 30;
+
     AddFulfillmentPlacesRequest addFulfillmentRequest =
         getAddFulfillmentRequest(productName);
 
@@ -114,7 +127,7 @@ public final class AddFulfillmentPlaces {
     This is a long-running operation and its result is not immediately
     present with get operations,thus we simulate wait with sleep method.
     */
-//    getProductServiceClient().awaitTermination(30, TimeUnit.SECONDS);
+    getProductServiceClient().awaitTermination(awaitDuration, TimeUnit.SECONDS);
   }
 
   /**
@@ -126,6 +139,8 @@ public final class AddFulfillmentPlaces {
       throws IOException, InterruptedException {
 
     final int awaitDuration = 30;
+
+    tryToDeleteProductIfExists(PRODUCT_NAME);
 
     createProduct(PRODUCT_ID);
 
@@ -139,4 +154,4 @@ public final class AddFulfillmentPlaces {
   }
 }
 
-// [END add_fulfillment_places]
+// [END retail_add_fulfillment_places]

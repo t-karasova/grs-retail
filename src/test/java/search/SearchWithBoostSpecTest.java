@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google Inc.
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,8 +33,9 @@ public class SearchWithBoostSpecTest {
   @Before
   public void setUp() throws IOException, InterruptedException, ExecutionException {
 
-    Process exec = Runtime.getRuntime()
-        .exec("mvn compile exec:java -Dexec.mainClass=search.SearchWithBoostSpec");
+    Process exec =
+        Runtime.getRuntime()
+            .exec("mvn compile exec:java -Dexec.mainClass=search.SearchWithBoostSpec");
 
     StreamGobbler streamGobbler = new StreamGobbler(exec.getInputStream());
 
@@ -64,6 +65,6 @@ public class SearchWithBoostSpecTest {
 
     Assert.assertTrue(productTitle.contains("Tee"));
 
-    Assert.assertEquals(129, response.getTotalSize());
+    Assert.assertEquals(128, response.getTotalSize());
   }
 }

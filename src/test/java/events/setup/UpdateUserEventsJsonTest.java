@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package product;
+package events.setup;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -25,7 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 import util.StreamGobbler;
 
-public class ImportProductsGcsTest {
+public class UpdateUserEventsJsonTest {
 
   private String output;
 
@@ -35,7 +35,7 @@ public class ImportProductsGcsTest {
 
     Process exec = Runtime.getRuntime()
         .exec(
-            "mvn compile exec:java -Dexec.mainClass=product.ImportProductsGcs");
+            "mvn compile exec:java -Dexec.mainClass=events.setup.UpdateUserEventsJson");
 
     StreamGobbler streamGobbler = new StreamGobbler(exec.getInputStream());
 
@@ -46,19 +46,11 @@ public class ImportProductsGcsTest {
   }
 
   @Test
-  public void testImportProductsGcs() {
+  public void testUpdateUserEventsJson() {
     Assert.assertTrue(output.matches(
-        "(?s)^(.*Import products from google cloud source request.*)$"));
-
-    Assert.assertTrue(
-        output.matches("(?s)^(.*input_uris: \"gs://.*/products.json\".*)$"));
+        "(?s)^(.*User events file 'src/main/resources/user_events.json' updated.*)$"));
 
     Assert.assertTrue(output.matches(
-        "(?s)^(.*projects/.*/locations/global/catalogs/default_catalog/branches/0/operations/import-products.*)$"));
-
-    Assert.assertTrue(output.matches(
-        "(?s)^(.*Number of successfully imported products:.*316.*)$"));
-
-    Assert.assertTrue(output.matches("(?s)^(.*Operation result.*)$"));
+        "(?s)^(.*User events file 'src/main/resources/user_events_some_invalid.json' updated.*)$"));
   }
 }
