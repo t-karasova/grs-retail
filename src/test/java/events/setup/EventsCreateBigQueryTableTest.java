@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package product;
+package events.setup;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -25,7 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 import util.StreamGobbler;
 
-public class ImportProductsGcsTest {
+public class EventsCreateBigQueryTableTest {
 
   private String output;
 
@@ -35,7 +35,7 @@ public class ImportProductsGcsTest {
 
     Process exec = Runtime.getRuntime()
         .exec(
-            "mvn compile exec:java -Dexec.mainClass=product.ImportProductsGcs");
+            "mvn compile exec:java -Dexec.mainClass=events.setup.EventsCreateBigQueryTable");
 
     StreamGobbler streamGobbler = new StreamGobbler(exec.getInputStream());
 
@@ -46,19 +46,20 @@ public class ImportProductsGcsTest {
   }
 
   @Test
-  public void testImportProductsGcs() {
+  public void testEventsCreateBigQueryTable() {
     Assert.assertTrue(output.matches(
-        "(?s)^(.*Import products from google cloud source request.*)$"));
-
-    Assert.assertTrue(
-        output.matches("(?s)^(.*input_uris: \"gs://.*/products.json\".*)$"));
+        "(?s)^(.*Bucket was created crs-interactive-tutorials_events.*?in US with storage class STANDARD.*)$"));
 
     Assert.assertTrue(output.matches(
-        "(?s)^(.*projects/.*/locations/global/catalogs/default_catalog/branches/0/operations/import-products.*)$"));
+        "(?s)^(.*File src/main/resources/user_events.json uploaded to bucket.*)$"));
 
     Assert.assertTrue(output.matches(
-        "(?s)^(.*Number of successfully imported products:.*316.*)$"));
+        "(?s)^(.*File src/main/resources/user_events_some_invalid.json uploaded to bucket.*)$"));
 
-    Assert.assertTrue(output.matches("(?s)^(.*Operation result.*)$"));
+    Assert.assertTrue(output.matches(
+        "(?s)^(.*Json from GCS successfully loaded in a table 'events'.*)$"));
+
+    Assert.assertTrue(output.matches(
+        "(?s)^(.*Json from GCS successfully loaded in a table 'events_some_invalid'.*)$"));
   }
 }

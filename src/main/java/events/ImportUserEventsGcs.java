@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google Inc.
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@
 
 package events;
 
-import com.google.api.gax.longrunning.OperationFuture;
 import com.google.cloud.retail.v2.GcsSource;
 import com.google.cloud.retail.v2.ImportErrorsConfig;
 import com.google.cloud.retail.v2.ImportMetadata;
@@ -30,9 +29,10 @@ import com.google.cloud.retail.v2.ImportUserEventsResponse;
 import com.google.cloud.retail.v2.UserEventInputConfig;
 import com.google.cloud.retail.v2.UserEventServiceClient;
 
+import com.google.longrunning.Operation;
+import com.google.longrunning.OperationsClient;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 public final class ImportUserEventsGcs {
 
@@ -124,48 +124,54 @@ public final class ImportUserEventsGcs {
    * Call the Retail API to import user events.
    *
    * @throws IOException          from the called method.
-   * @throws ExecutionException   when attempting to retrieve the result of a
-   *                              task that aborted by throwing an exception.
    * @throws InterruptedException when a thread is waiting, sleeping, or
    *                              otherwise occupied, and the thread is
    *                              interrupted, either before or during the
    *                              activity.
    */
   public static void importUserEventsFromGcs()
-      throws IOException, ExecutionException, InterruptedException {
+      throws IOException, InterruptedException {
     ImportUserEventsRequest importGcsRequest = getImportEventsGcsRequest(
         GCS_EVENTS_OBJECT);
 
-    OperationFuture<ImportUserEventsResponse, ImportMetadata> gcsOperation
-        = getUserEventsServiceClient().importUserEventsAsync(importGcsRequest);
+    UserEventServiceClient serviceClient = getUserEventsServiceClient();
 
-    System.out.printf("The operation was started: %s%n",
-        gcsOperation.getName());
+    String operationName = serviceClient
+        .importUserEventsCallable()
+        .call(importGcsRequest)
+        .getName();
 
-    while (!gcsOperation.isDone()) {
-      final int awaitDuration = 30;
+    System.out.printf("OperationName = %s\n", operationName);
 
-      System.out.println("Please wait till operation is done.");
+    OperationsClient operationsClient = serviceClient.getOperationsClient();
 
-      getUserEventsServiceClient().awaitTermination(
-          awaitDuration, TimeUnit.SECONDS);
+    Operation operation = operationsClient.getOperation(operationName);
 
-      System.out.println("Import user events operation is done.");
+    while (!operation.getDone()) {
+      // Keep polling the operation periodically until the import task is done.
+      final int awaitDuration = 30000;
 
-      if (gcsOperation.getMetadata().get() != null) {
-        System.out.printf("Number of successfully imported events: %s%n",
-            gcsOperation.getMetadata().get().getSuccessCount());
+      Thread.sleep(awaitDuration);
 
-        System.out.printf("Number of failures during the importing: %s%n",
-            gcsOperation.getMetadata().get().getFailureCount());
-      } else {
-        System.out.println("Metadata in bigQuery operation is empty.");
-      }
-      if (gcsOperation.get() != null) {
-        System.out.printf("Operation result: %s%n", gcsOperation.get());
-      } else {
-        System.out.println("Operation result is empty.");
-      }
+      operation = operationsClient.getOperation(operationName);
+    }
+
+    if (operation.hasMetadata()) {
+      ImportMetadata metadata = operation.getMetadata()
+          .unpack(ImportMetadata.class);
+
+      System.out.printf("Number of successfully imported events: %s\n",
+          metadata.getSuccessCount());
+
+      System.out.printf("Number of failures during the importing: %s\n",
+          metadata.getFailureCount());
+    }
+
+    if (operation.hasResponse()) {
+      ImportUserEventsResponse response = operation.getResponse()
+          .unpack(ImportUserEventsResponse.class);
+
+      System.out.printf("Operation result: %s%n", response);
     }
   }
 

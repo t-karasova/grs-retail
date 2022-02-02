@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google Inc.
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ package search;
 import com.google.cloud.retail.v2.SearchRequest;
 import com.google.cloud.retail.v2.SearchResponse;
 import com.google.cloud.retail.v2.SearchServiceClient;
-
 import java.io.IOException;
 import java.util.UUID;
 
@@ -82,13 +81,14 @@ public final class SearchWithOrdering {
 
     final int pageSize = 10;
 
-    SearchRequest searchRequest = SearchRequest.newBuilder()
-        .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
-        .setQuery(query)
-        .setOrderBy(orderBy)
-        .setVisitorId(VISITOR_ID) // A unique identifier to track visitors
-        .setPageSize(pageSize)
-        .build();
+    SearchRequest searchRequest =
+        SearchRequest.newBuilder()
+            .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
+            .setQuery(query)
+            .setOrderBy(orderBy)
+            .setVisitorId(VISITOR_ID) // A unique identifier to track visitors
+            .setPageSize(pageSize)
+            .build();
 
     System.out.println("Search request: " + searchRequest);
 
@@ -107,11 +107,10 @@ public final class SearchWithOrdering {
 
     SearchRequest searchRequest = getSearchRequest("Hoodie", order);
 
-    SearchResponse searchResponse = getSearchServiceClient().search(
-            searchRequest).getPage()
-        .getResponse();
+    SearchResponse searchResponse =
+        getSearchServiceClient().search(searchRequest).getPage().getResponse();
 
-    System.out.println("Search response: " + searchResponse);
+    System.out.printf("Search request: %n%s", searchRequest);
 
     return searchResponse;
   }

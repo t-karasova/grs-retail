@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google Inc.
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,8 +33,9 @@ public class SearchWithPaginationTest {
   @Before
   public void setUp() throws IOException, InterruptedException, ExecutionException {
 
-    Process exec = Runtime.getRuntime()
-        .exec("mvn compile exec:java -Dexec.mainClass=search.SearchWithPagination");
+    Process exec =
+        Runtime.getRuntime()
+            .exec("mvn compile exec:java -Dexec.mainClass=search.SearchWithPagination");
 
     StreamGobbler streamGobbler = new StreamGobbler(exec.getInputStream());
 
@@ -54,7 +55,7 @@ public class SearchWithPaginationTest {
   }
 
   @Test
-  public void TestSearchWithOrdering() throws IOException {
+  public void testSearchWithOrdering() throws IOException {
 
     SearchResponse response = SearchWithPagination.search();
 

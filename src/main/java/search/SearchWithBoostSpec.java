@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google Inc.
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,27 +79,30 @@ public final class SearchWithBoostSpec {
    * @param boostStrength is a rate of boost strength.
    * @return SearchRequest.
    */
-  public static SearchRequest getSearchRequest(final String query,
-      final String condition, final float boostStrength) {
+  public static SearchRequest getSearchRequest(
+      final String query, final String condition, final float boostStrength) {
 
     final int pageSize = 10;
 
-    BoostSpec boostSpec = BoostSpec.newBuilder()
-        .addConditionBoostSpecs(ConditionBoostSpec.newBuilder()
-            .setCondition(condition)
-            .setBoost(boostStrength)
-            .build())
-        .build();
+    BoostSpec boostSpec =
+        BoostSpec.newBuilder()
+            .addConditionBoostSpecs(
+                ConditionBoostSpec.newBuilder()
+                    .setCondition(condition)
+                    .setBoost(boostStrength)
+                    .build())
+            .build();
 
-    SearchRequest searchRequest = SearchRequest.newBuilder()
-        .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
-        .setQuery(query)
-        .setVisitorId(VISITOR_ID)
-        .setBoostSpec(boostSpec)
-        .setPageSize(pageSize)
-        .build();
+    SearchRequest searchRequest =
+        SearchRequest.newBuilder()
+            .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
+            .setQuery(query)
+            .setVisitorId(VISITOR_ID)
+            .setBoostSpec(boostSpec)
+            .setPageSize(pageSize)
+            .build();
 
-    System.out.println("Search request: " + searchRequest);
+    System.out.printf("Search request: %n%s", searchRequest);
 
     return searchRequest;
   }
@@ -117,8 +120,8 @@ public final class SearchWithBoostSpec {
 
     SearchRequest searchRequest = getSearchRequest("Tee", condition, boost);
 
-    SearchResponse searchResponse = getSearchServiceClient().search(
-        searchRequest).getPage().getResponse();
+    SearchResponse searchResponse =
+        getSearchServiceClient().search(searchRequest).getPage().getResponse();
 
     System.out.println("Search response: " + searchResponse);
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package product;
+package product.setup;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -25,7 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 import util.StreamGobbler;
 
-public class ImportProductsGcsTest {
+public class ProductsCreateBigqueryTableTest {
 
   private String output;
 
@@ -35,7 +35,7 @@ public class ImportProductsGcsTest {
 
     Process exec = Runtime.getRuntime()
         .exec(
-            "mvn compile exec:java -Dexec.mainClass=product.ImportProductsGcs");
+            "mvn compile exec:java -Dexec.mainClass=product.setup.ProductsCreateBigqueryTable");
 
     StreamGobbler streamGobbler = new StreamGobbler(exec.getInputStream());
 
@@ -46,19 +46,22 @@ public class ImportProductsGcsTest {
   }
 
   @Test
-  public void testImportProductsGcs() {
+  public void testProductsCreateBigqueryTable() {
     Assert.assertTrue(output.matches(
-        "(?s)^(.*Import products from google cloud source request.*)$"));
+        "(?s)^(.*Bucket was created crs-interactive-tutorials_products.*?in US with storage class STANDARD.*)$"));
+
+    Assert.assertTrue(output.matches(
+        "(?s)^(.*File src/main/resources/products.json uploaded to bucket.*)$"));
+
+    Assert.assertTrue(output.matches(
+        "(?s)^(.*File src/main/resources/products_some_invalid.json uploaded to bucket.*)$"));
 
     Assert.assertTrue(
-        output.matches("(?s)^(.*input_uris: \"gs://.*/products.json\".*)$"));
+        output.matches(
+            "(?s)^(.*Json from GCS successfully loaded in a table 'products'.*)$"));
 
-    Assert.assertTrue(output.matches(
-        "(?s)^(.*projects/.*/locations/global/catalogs/default_catalog/branches/0/operations/import-products.*)$"));
-
-    Assert.assertTrue(output.matches(
-        "(?s)^(.*Number of successfully imported products:.*316.*)$"));
-
-    Assert.assertTrue(output.matches("(?s)^(.*Operation result.*)$"));
+    Assert.assertTrue(
+        output.matches(
+            "(?s)^(.*Json from GCS successfully loaded in a table 'products_some_invalid'.*)$"));
   }
 }

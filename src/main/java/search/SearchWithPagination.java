@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google Inc.
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ package search;
 import com.google.cloud.retail.v2.SearchRequest;
 import com.google.cloud.retail.v2.SearchResponse;
 import com.google.cloud.retail.v2.SearchServiceClient;
-
+import com.google.cloud.retail.v2.SearchServiceClient.SearchPagedResponse;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -80,19 +80,21 @@ public final class SearchWithPagination {
    * @param pageToken page token.
    * @return SearchRequest.
    */
-  public static SearchRequest getSearchRequest(final String query,
-      final int pageSize, final int offset, final String pageToken) {
+  public static SearchRequest getSearchRequest(
+      final String query, final int pageSize, final int offset,
+      final String pageToken) {
 
-    SearchRequest searchRequest = SearchRequest.newBuilder()
-        .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
-        .setVisitorId(VISITOR_ID)
-        .setQuery(query)
-        .setPageSize(pageSize)
-        .setOffset(offset)
-        .setPageToken(pageToken)
-        .build();
+    SearchRequest searchRequest =
+        SearchRequest.newBuilder()
+            .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
+            .setVisitorId(VISITOR_ID)
+            .setQuery(query)
+            .setPageSize(pageSize)
+            .setOffset(offset)
+            .setPageToken(pageToken)
+            .build();
 
-    System.out.println("Search request: " + searchRequest);
+    System.out.printf("Search request: %n%s", searchRequest);
 
     return searchRequest;
   }
@@ -112,8 +114,9 @@ public final class SearchWithPagination {
     SearchRequest searchRequestFirstPage = getSearchRequest("Hoodie", pageSize,
         offset, pageToken);
 
-    SearchResponse searchResponseFirstPage = getSearchServiceClient().search(
-        searchRequestFirstPage).getPage().getResponse();
+    SearchResponse searchResponseFirstPage =
+        getSearchServiceClient().search(searchRequestFirstPage).getPage()
+            .getResponse();
 
     System.out.println("Search response: " + searchResponseFirstPage);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google Inc.
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,6 @@ import com.google.cloud.retail.v2.SearchRequest.QueryExpansionSpec;
 import com.google.cloud.retail.v2.SearchRequest.QueryExpansionSpec.Condition;
 import com.google.cloud.retail.v2.SearchResponse;
 import com.google.cloud.retail.v2.SearchServiceClient;
-
 import java.io.IOException;
 import java.util.UUID;
 
@@ -85,17 +84,17 @@ public final class SearchWithQueryExpansionSpec {
 
     final int pageSize = 10;
 
-    QueryExpansionSpec queryExpansionSpec = QueryExpansionSpec.newBuilder()
-        .setCondition(condition)
-        .build();
+    QueryExpansionSpec queryExpansionSpec =
+        QueryExpansionSpec.newBuilder().setCondition(condition).build();
 
-    SearchRequest searchRequest = SearchRequest.newBuilder()
-        .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
-        .setQuery(query)
-        .setVisitorId(VISITOR_ID)
-        .setQueryExpansionSpec(queryExpansionSpec)
-        .setPageSize(pageSize)
-        .build();
+    SearchRequest searchRequest =
+        SearchRequest.newBuilder()
+            .setPlacement(DEFAULT_SEARCH_PLACEMENT_NAME)
+            .setQuery(query)
+            .setVisitorId(VISITOR_ID)
+            .setQueryExpansionSpec(queryExpansionSpec)
+            .setPageSize(pageSize)
+            .build();
 
     System.out.println("Search request: " + searchRequest);
 
@@ -115,10 +114,10 @@ public final class SearchWithQueryExpansionSpec {
     SearchRequest searchRequest = getSearchRequest("Google Youth Hero Tee Grey",
         condition);
 
-    SearchResponse searchResponse = getSearchServiceClient().search(
-        searchRequest).getPage().getResponse();
+    SearchResponse searchResponse =
+        getSearchServiceClient().search(searchRequest).getPage().getResponse();
 
-    System.out.println("Search response: " + searchResponse);
+    System.out.printf("Search request: %n%s", searchRequest);
 
     return searchResponse;
   }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google Inc.
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -181,7 +181,7 @@ public final class SetupCleanup {
     Product product = getProductServiceClient().createProduct(
         createProductRequest);
 
-    System.out.println("Product is created: " + product);
+    System.out.println("Product is created. \n" + product);
 
     return product;
   }
@@ -357,7 +357,7 @@ public final class SetupCleanup {
             .build());
 
     System.out.println(
-        "Created bucket "
+        "Bucket was created "
             + bucket.getName()
             + " in "
             + bucket.getLocation()
