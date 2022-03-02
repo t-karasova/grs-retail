@@ -1,21 +1,21 @@
 <walkthrough-metadata>
-  <meta name="title" content="Write user events tutorial" />
-  <meta name="description" content="Use this method if you want to add one user event to the catalog." />
+  <meta name="title" content="Purge user events tutorial" />
+  <meta name="description" content="Use this method if you want to to purge the user events from the catalog." />
   <meta name="component_id" content="593554" />
 </walkthrough-metadata>
 
-# Write user events tutorial
+# Purge user events tutorial
 
 ## Introduction
 
 The Retail API exposes methods for managing user events.
-If you want to add one user event to the catalog, you can use the `writeUserEvent` method.
+If you want to purge the user events from the catalog you can use the `purgeUserEvents` method.
 
-<walkthrough-tutorial-duration duration="5"></walkthrough-tutorial-duration>
+<walkthrough-tutorial-duration duration="3.0"></walkthrough-tutorial-duration>
 
 ## Get started with Google Cloud Retail
 
-This step is required if this is the first Retail API Tutorial you run.
+This step is required if this is the first Retail API tutorial you run.
 Otherwise, you can skip it.
 
 ### Select your project and enable the Retail API
@@ -79,12 +79,13 @@ Because you are going to run the code samples in your own Google Cloud project, 
 
 You can find the Java Google Retail library is described [here](https://googleapis.dev/java/google-cloud-retail/latest/index.html)
 
+
 ## Clone the Retail code samples
 
 This step is required if this is the first Retail API tutorial you run.
 Otherwise, you can skip it.
 
-Clone the Git repository with all the code samples to learn the Retail features and check them in action.
+Clone the Git repository with all the code samples to learn about the Retail features and see them in action.
 
 <!-- TODO(ianan): change the repository link -->
 1. Run the following command in the Terminal:
@@ -99,56 +100,75 @@ Clone the Git repository with all the code samples to learn the Retail features 
     cd java-retail/samples/snippets
     ```
 
-## Write user events
+## Purge user events
 
 1. Before you start, build the Maven project and go to the code samples directory - our starting point to runcode samples:
    ```bash
    cd ~/java-retail | mvn clean install -DskipTests
    cd ~/java-retail/samples/snippets  
    ```
-   
-The `WriteUserEventRequest` request consists of two fields:
+
+To send the `PurgeUserEventsRequest` request you need to specify the following fields:
 - `parent`—required field. The parent catalog name, such as `projects/<YOUR_PROJECT_NUMBER>/locations/global/catalogs/default_catalog`.
-- `userEvent`—required field. The user event you are going to write.
+- `filter`—required field. The filter string to specify the events to be deleted. An empty string filter is not allowed.
+  The eligible fields for filtering are:
+  - eventType: UserEvent.eventType string.
+  - eventTime: in ISO 8601 "zulu" format.
+  - visitorId: specifying this deletes all events associated with a visitor.
+  - userId: specifying this deletes all events associated with a user.
+- `force`—if force is set to `false`, the method returns the expected purge count without deleting any user events; if set to `true`, the user events are purged from the catalog.
 
-Learn more about the user events in [the Retail documentation](https://cloud.google.com/retail/docs/reference/rpc/google.cloud.retail.v2#userevent)
+1. Open the`PurgeUserEventsRequest` example in the <walkthrough-editor-select-regex filePath="cloudshell_open/grs-retail/src/main/java/events/PurgeUserEvent.java" regex="# get purge user event request">`events/PurgeUserEvent.java`</walkthrough-editor-select-regex> file.
 
-1. Check the `WriteUserEventRequest` request example in the <walkthrough-editor-select-regex filePath="cloudshell_open/grs-retail/src/main/java/events/WriteUserEvent.java" regex="# get write user event request">`events/WriteUserEvent.java`</walkthrough-editor-select-regex> file.
+1. Check that the filter field is set with the value:
+    ```
+    private static final String VISITOR_ID = "test_visitor_id";
+   
+    PurgeUserEventsRequest.newBuilder()
+            .setFilter(String.format("visitorId=\"%s\"", VISITOR_ID))
+            .setParent(DEFAULT_CATALOG)
+            .setForce(true)
+            .build()
+    ```
 
 1. Run the code sample in the Terminal with the following command:
     ```bash
-    mvn compile exec:java -Dexec.mainClass=events.WriteUserEvent
+    mvn compile exec:java -Dexec.mainClass=events.PurgeUserEvent
     ```
 
-The Retail API returns the created user event. Check the output in the Terminal.
+The long-running operation starts. You can check the operation name in the Terminal output.
 
+The purge operation might take up to 24 hours. If the long-running operation is successful, then `purgedEventsCount` is returned in the `google.longrunning.Operations.response` field.
 
 ## Error handling
 
-Next, check the error handling by sending a request with an invalid parent.
+Next, let's check the error handling. Send a request with an invalid filter.
 
-1. Find the <walkthrough-editor-select-regex filePath="cloudshell_open/grs-retail/src/main/java/events/WriteUserEvent.java" regex="# TO CHECK THE ERROR HANDLING TRY TO PASS INVALID CATALOG:">comment</walkthrough-editor-select-regex> and uncomment the next line.
+1. Find the <walkthrough-editor-select-regex filePath="cloudshell_open/grs-retail/src/main/java/events/PurgeUserEvent.java" regex="# TO CHECK ERROR HANDLING SET INVALID FILTER HERE:">comment</walkthrough-editor-select-regex> and set the filter field with an invalid value:
+    ```
+    .setFilter(String.format("invalid=\"%s\"", "123abc"))
+    ```
 
 1. Run the code sample in the Terminal with the following command:
     ```bash
-    mvn compile exec:java -Dexec.mainClass=events.WriteUserEvent
+    mvn compile exec:java -Dexec.mainClass=events.PurgeUserEvent
     ```
 
 1. Check the error message:
     ```terminal
-    io.grpc.StatusRuntimeException: NOT_FOUND: catalog_id 'invalid_catalog' not found for project. In most cases, this should be set to 'default_catalog'. If you just created this resource (for example, by activating your project), it may take up 5 minutes for the resource(s) to be activated.
+   io.grpc.StatusRuntimeException: INVALID_ARGUMENT: Invalid filter 'invalid="123abc"'. '=' can not be specified with 'test' Valid filter examples: eventTime>"2012-04-23T18:25:43.511Z" eventTime<"2012-04-23T18:25:43.511Z" eventType=search visitorId="someVisitorId"
     ```
 
 ## Congratulations
 
 <walkthrough-conclusion-trophy></walkthrough-conclusion-trophy>
 
-You have completed the tutorial! We encourage you to test writing user events by yourself.
+You have completed the tutorial! We encourage you to test purging the user events using different filters.
 
 <walkthrough-inline-feedback></walkthrough-inline-feedback>
 
 ### Do more with the Retail API
 
-<walkthrough-tutorial-card id="retail_api_v2_purge_user_events_java" icon="LOGO_JAVA" title="Purge user events tutorial" keepPrevious=true>Try to purge user events via the Retail API</walkthrough-tutorial-card>
-
 <walkthrough-tutorial-card id="retail_api_v2_rejoin_user_events_java" icon="LOGO_JAVA" title="Rejoin user events tutorial" keepPrevious=true>Try to rejoin user events via the Retail API</walkthrough-tutorial-card>
+
+<walkthrough-tutorial-card id="retail_api_v2_write_user_events_java" icon="LOGO_JAVA" title="Write user events tutorial" keepPrevious=true>Try to write user events via the Retail API</walkthrough-tutorial-card>

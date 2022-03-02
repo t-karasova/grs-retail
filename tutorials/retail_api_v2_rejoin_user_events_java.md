@@ -1,21 +1,26 @@
 <walkthrough-metadata>
-  <meta name="title" content="Write user events tutorial" />
-  <meta name="description" content="Use this method if you want to add one user event to the catalog." />
+  <meta name="title" content="Rejoin user events tutorial" />
+  <meta name="description" content="Use this method if you want to to rejoin the user events in the catalog." />
   <meta name="component_id" content="593554" />
 </walkthrough-metadata>
 
-# Write user events tutorial
+# Rejoin user events tutorial
 
 ## Introduction
 
 The Retail API exposes methods for managing user events.
-If you want to add one user event to the catalog, you can use the `writeUserEvent` method.
 
-<walkthrough-tutorial-duration duration="5"></walkthrough-tutorial-duration>
+The rejoin operation joins specified events with the latest version of the product catalog.
+
+A user event is considered unjoined if the product it's associated with isn't present in the catalog at the time that the user event is ingested. Unjoined events lack detailed product information and are not as useful to training models and serving results.
+
+In addition to addressing unjoined events, the rejoin operation can be used to correct events that have been joined with the wrong product catalog.
+
+<walkthrough-tutorial-duration duration="3.0"></walkthrough-tutorial-duration>
 
 ## Get started with Google Cloud Retail
 
-This step is required if this is the first Retail API Tutorial you run.
+This step is required if this is the first Retail API tutorial you run.
 Otherwise, you can skip it.
 
 ### Select your project and enable the Retail API
@@ -99,39 +104,40 @@ Clone the Git repository with all the code samples to learn the Retail features 
     cd java-retail/samples/snippets
     ```
 
-## Write user events
+## Rejoin user events
 
 1. Before you start, build the Maven project and go to the code samples directory - our starting point to runcode samples:
    ```bash
    cd ~/java-retail | mvn clean install -DskipTests
    cd ~/java-retail/samples/snippets  
    ```
-   
-The `WriteUserEventRequest` request consists of two fields:
+
+The `RejoinUserEventsRequest` method consists of two fields:
 - `parent`—required field. The parent catalog name, such as `projects/<YOUR_PROJECT_NUMBER>/locations/global/catalogs/default_catalog`.
-- `userEvent`—required field. The user event you are going to write.
+- `userEventRejoinScope`—required field. The scope of user events to be rejoined with the latest product catalog. If the rejoining is intended to reduce the number of unjoined events, set the `UserEventRejoinScope` field to `UNJOINED_EVENTS`. If the rejoining is intended to correct product catalog information in joined events, set the `UserEventRejoinScope` field to `JOINED_EVENTS`. If all events need to be rejoined, set the `UserEventRejoinScope` field to `USER_EVENT_REJOIN_SCOPE_UNSPECIFIED`.
 
-Learn more about the user events in [the Retail documentation](https://cloud.google.com/retail/docs/reference/rpc/google.cloud.retail.v2#userevent)
+Learn more about the user events in [the Retail documentation](https://cloud.google.com/retail/docs/reference/rpc/google.cloud.retail.v2#rejoinusereventsrequest).
 
-1. Check the `WriteUserEventRequest` request example in the <walkthrough-editor-select-regex filePath="cloudshell_open/grs-retail/src/main/java/events/WriteUserEvent.java" regex="# get write user event request">`events/WriteUserEvent.java`</walkthrough-editor-select-regex> file.
+You can check the `RejoinUserEventsRequest` example in the `events/RejoinUserEvent.java` file.
+
+1. Check the `RejoinUserEventsRequest` request example in the <walkthrough-editor-select-regex filePath="cloudshell_open/grs-retail/src/main/java/events/RejoinUserEvent.java" regex="# get rejoin user event request">`events/RejoinUserEvent.java`</walkthrough-editor-select-regex> file.
 
 1. Run the code sample in the Terminal with the following command:
     ```bash
-    mvn compile exec:java -Dexec.mainClass=events.WriteUserEvent
+    mvn compile exec:java -Dexec.mainClass=events.RejoinUserEvent
     ```
 
-The Retail API returns the created user event. Check the output in the Terminal.
-
+The rejoin operation might take up to 24 hours. If the long-running operation is successful, then `rejoinedUserEventsCount`, the number of user events that were joined with the latest product catalogs, is returned.
 
 ## Error handling
 
-Next, check the error handling by sending a request with an invalid parent.
+Next, check the error handling by sending a rejoin request with an invalid parent.
 
-1. Find the <walkthrough-editor-select-regex filePath="cloudshell_open/grs-retail/src/main/java/events/WriteUserEvent.java" regex="# TO CHECK THE ERROR HANDLING TRY TO PASS INVALID CATALOG:">comment</walkthrough-editor-select-regex> and uncomment the next line.
+1. Find the <walkthrough-editor-select-regex filePath="cloudshell_open/grs-retail/src/main/java/events/RejoinUserEvent.java" regex="# TO CHECK THE ERROR HANDLING TRY TO PASS INVALID CATALOG:">comment</walkthrough-editor-select-regex> and uncomment the next line.
 
 1. Run the code sample in the Terminal with the following command:
     ```bash
-    mvn compile exec:java -Dexec.mainClass=events.WriteUserEvent
+    mvn compile exec:java -Dexec.mainClass=events.RejoinUserEvent
     ```
 
 1. Check the error message:
@@ -143,7 +149,7 @@ Next, check the error handling by sending a request with an invalid parent.
 
 <walkthrough-conclusion-trophy></walkthrough-conclusion-trophy>
 
-You have completed the tutorial! We encourage you to test writing user events by yourself.
+You have completed the tutorial! We encourage you to test rejoining the user events with different combinations.
 
 <walkthrough-inline-feedback></walkthrough-inline-feedback>
 
@@ -151,4 +157,4 @@ You have completed the tutorial! We encourage you to test writing user events by
 
 <walkthrough-tutorial-card id="retail_api_v2_purge_user_events_java" icon="LOGO_JAVA" title="Purge user events tutorial" keepPrevious=true>Try to purge user events via the Retail API</walkthrough-tutorial-card>
 
-<walkthrough-tutorial-card id="retail_api_v2_rejoin_user_events_java" icon="LOGO_JAVA" title="Rejoin user events tutorial" keepPrevious=true>Try to rejoin user events via the Retail API</walkthrough-tutorial-card>
+<walkthrough-tutorial-card id="retail_api_v2_write_user_events_java" icon="LOGO_JAVA" title="Write user events tutorial" keepPrevious=true>Try to write user events via the Retail API</walkthrough-tutorial-card>
