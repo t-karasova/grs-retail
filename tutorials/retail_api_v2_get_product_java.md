@@ -5,7 +5,7 @@
   <meta name="keywords" content="retail, get product" />
 </walkthrough-metadata>
 
-# Update product tutorial
+# Get product tutorial
 
 ## Get started
 
