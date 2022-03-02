@@ -9,7 +9,7 @@
 
 ## Get started
 
-To fill the catalog or to update a massive number of products, we recommend using the `import_products` method. However,
+To fill the catalog or to update a massive number of products, we recommend using the `importProducts()` method. However,
 sometimes you might need to make some detached changes in your product catalog.
 
 For such cases, the Retail API provides you with the following methods:
@@ -130,10 +130,10 @@ Clone the Git repository with all the code samples to learn the Retail features 
 ## Update product
 
 To update a product you should send an `UpdateProductRequest` call to the Retail API with the following required fields specified:
-- `product`—the product object to be updated or created (depending on the  `allow_missing` value, the product can be created if it's missing).
-- `allow_missing`—if the value is set to `true`, and the product is not found, a new product is created.
+- `product`—the product object to be updated or created (depending on the  `allowMissing` value, the product can be created if it's missing).
+- `allowMissing`—if the value is set to `true`, and the product is not found, a new product is created.
 
-1. Before you start, build the Maven project and go to the code samples directory - our starting point to runcode samples:
+1. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
    ```bash
    cd ~/java-retail | mvn clean install -DskipTests
    cd ~/java-retail/samples/snippets  
