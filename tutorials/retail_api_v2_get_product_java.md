@@ -1,8 +1,8 @@
 <walkthrough-metadata>
-  <meta name="title" content="Retail API. Update product tutorial" />
-  <meta name="description" content="Learn how to use Retail API Java library to update product tutorial" />
+  <meta name="title" content="Retail API. Get product tutorial" />
+  <meta name="description" content="Learn how to use Retail API Java library to get product tutorial" />
   <meta name="component_id" content="593554" />
-  <meta name="keywords" content="retail, update product" />
+  <meta name="keywords" content="retail, get product" />
 </walkthrough-metadata>
 
 # Update product tutorial
@@ -155,7 +155,7 @@ projects/<project_number>/locations/global/catalogs/<catalog_id>/branches/<branc
 
 <walkthrough-conclusion-trophy></walkthrough-conclusion-trophy>
 
-You have completed the tutorial! We encourage you to test updating products by yourself.
+You have completed the tutorial! We encourage you to test getting products by yourself.
 
 <walkthrough-inline-feedback></walkthrough-inline-feedback>
 
