@@ -188,7 +188,7 @@ The product object with updated fields is already preset in generateProductForUp
 
 <walkthrough-conclusion-trophy></walkthrough-conclusion-trophy>
 
-You have completed the tutorial! We encourage you to test the deleting products by yourself.
+You have completed the tutorial! We encourage you to test updating products by yourself.
 
 <walkthrough-inline-feedback></walkthrough-inline-feedback>
 
@@ -196,7 +196,6 @@ You have completed the tutorial! We encourage you to test the deleting products 
 
 <walkthrough-tutorial-card id="retail_api_v2_create_product_java" icon="LOGO_JAVA" title="Create product tutorial" keepPrevious=true>Try to create a product via the Retail API</walkthrough-tutorial-card>
 
-<walkthrough-tutorial-card id="retail_api_v2_get_product_java" icon="LOGO_JAVA" title="Get product tutorial" keepPrevious=true>
-Try to get a product via the Retail API</walkthrough-tutorial-card>
+<walkthrough-tutorial-card id="retail_api_v2_get_product_java" icon="LOGO_JAVA" title="Get product tutorial" keepPrevious=true>Try to get a product via the Retail API</walkthrough-tutorial-card>
 
-<walkthrough-tutorial-card id="retail_api_v2_update_product_java" icon="LOGO_JAVA" title="Update product tutorial" keepPrevious=true>Try to update a product via the Retail API</walkthrough-tutorial-card>
+<walkthrough-tutorial-card id="retail_api_v2_delete_product_java" icon="LOGO_JAVA" title="Delete product tutorial" keepPrevious=true>Try to delete a product via the Retail API</walkthrough-tutorial-card>
