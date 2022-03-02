@@ -1,8 +1,8 @@
 <walkthrough-metadata>
-  <meta name="title" content="Retail API. Delete product tutorial" />
-  <meta name="description" content="Learn how to use Retail API Java library to delete product tutorial" />
+  <meta name="title" content="Retail API. Update product tutorial" />
+  <meta name="description" content="Learn how to use Retail API Java library to update product tutorial" />
   <meta name="component_id" content="593554" />
-  <meta name="keywords" content="retail, delete product" />
+  <meta name="keywords" content="retail, update product" />
 </walkthrough-metadata>
 
 # Update product tutorial
