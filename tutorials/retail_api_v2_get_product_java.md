@@ -136,9 +136,9 @@ You should use the full resource name of a product, such as:
 projects/<project_number>/locations/global/catalogs/<catalog_id>/branches/<branch_id>/products/<product_id>
 ```
 
-1. Open the `GetProductRequest` example in <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/GetProduct.java" regex="Get product request">DeleteProduct.java</walkthrough-editor-select-regex>.
+1. Open the `GetProductRequest` example in <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/GetProduct.java" regex="Get product request">GetProduct.java</walkthrough-editor-select-regex>.
 
-2. Before you start, build the Maven project and go to the code samples directory - our starting point to runcode samples:
+2. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
    ```bash
    cd ~/java-retail | mvn clean install -DskipTests
    cd ~/java-retail/samples/snippets  
@@ -149,7 +149,7 @@ projects/<project_number>/locations/global/catalogs/<catalog_id>/branches/<branc
     mvn compile exec:java -Dexec.mainClass=product.GetProduct
     ```
 
-4. The Retail API returns the requested product with all product fields despite the list of retrievable fields provided in product.retrievable_fields. It defines which product fields should be displayed only in a search response.
+4. The Retail API returns the requested product with all product fields.
 
 ## Congratulations
 
