@@ -114,20 +114,16 @@ Otherwise, you can skip it.
 
 Clone the Git repository with all the code samples to learn the Retail features and check them in action.
 
-<!-- TODO(ianan): change the repository link -->
-
-1.  Run the following command in the Terminal: `bash git clone
-    https://github.com/t-karasova/grs-retail.git`
-
+1. Run the following command in the Terminal:
+    ```bash
+    git clone https://github.com/googleapis/java-retail.git
+    ```
     The code samples for each of the Retail services are stored in different
     directories.
 
-1.  Go to the code samples directory - our starting point to run more commands.
-    `bash cd java-retail/samples/snippets`
-
 ## Import user events to the Retail catalog from the inline source
 
-1. Before you start, build the Maven project and go to the code samples directory - our starting point to runcode samples:
+1. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
    ```bash
    cd ~/java-retail | mvn clean install -DskipTests
    cd ~/java-retail/samples/snippets  
@@ -136,7 +132,7 @@ Clone the Git repository with all the code samples to learn the Retail features 
 1.  To check the example of an import user events request, open the
     <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/events/ImportUserEventsInline.java" regex="Get user events for import.">`events/ImportUserEventsInline.java`</walkthrough-editor-select-regex> file.
 
-     The `getUserEvents( )` method creates the user events to be used in the
+     The `getUserEvents()` method creates the user events to be used in the
     `inputConfig` field.
 
     The `parent` field in the `ImportUserEventsRequest` method contains a
@@ -169,11 +165,11 @@ The operation is completed when the `operation.done()` field is set to true.
 
     You have imported valid user event objects into the catalog.
 
-1.  Check the `operation.metadata.getSuccessCount` field to get the total number
+1.  Check the `operation.metadata.getSuccessCount()` method to get the total number
     of the successfully imported events.
 
-    The number of failures during the import is returned to the
-    `operation.metadata.getFailureCount` field.
+    The number of failures during the import is returned by the
+    `operation.metadata.getFailureCount()` method.
 
     The operation is successful, and the operation object contains a `result`
     field.

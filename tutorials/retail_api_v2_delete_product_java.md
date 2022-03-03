@@ -9,16 +9,16 @@
 
 ## Get started
 
-To fill the catalog or to update a massive number of products, we recommend using the `import_products` method. However,
+To fill the catalog or to update a massive number of products, we recommend using the `importProducts()` method. However,
 sometimes you might need to make some detached changes in your product catalog.
 
 For such cases, the Retail API provides you with the following methods:
-- create_product
-- get_product
-- update_product
-- delete_product
+- createProduct()
+- getProduct()
+- updateProduct()
+- deleteProduct()
 
-In this tutorial you will call the `delete_product()` method.
+In this tutorial you will call the `deleteProduct()` method.
 
 For information about managing catalog information, see the [Retail API documentation](https://cloud.google.com/retail/docs/manage-catalog).
 
@@ -114,18 +114,12 @@ Otherwise, you can skip it.
 
 Clone the Git repository with all the code samples to learn the Retail features and check them in action.
 
-<!-- TODO(ianan): change the repository link -->
 1. Run the following command in the Terminal:
     ```bash
-    git clone https://github.com/t-karasova/grs-retail.git
+    git clone https://github.com/googleapis/java-retail.git
     ```
 
     The code samples for each of the Retail services are stored in different directories.
-
-1. Go to the code samples directory - our starting point to run more commands.
-    ```bash
-    cd java-retail/samples/snippets
-    ```
 
 ## Delete product
 
@@ -138,7 +132,7 @@ projects/<project_number>/locations/global/catalogs/<catalog_id>/branches/<branc
 
 1. Open the `DeleteProductRequest` example in <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/DeleteProduct.java" regex="Get delete product request">DeleteProduct.java</walkthrough-editor-select-regex>.
 
-1. Before you start, build the Maven project and go to the code samples directory - our starting point to runcode samples:
+1. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
    ```bash
    cd ~/java-retail | mvn clean install -DskipTests
    cd ~/java-retail/samples/snippets  
@@ -166,7 +160,7 @@ There is no return value for this method. To check if the product was successful
 
 <walkthrough-conclusion-trophy></walkthrough-conclusion-trophy>
 
-You have completed the tutorial! We encourage you to test the deleting products by yourself.
+You have completed the tutorial! We encourage you to test deleting products by yourself.
 
 <walkthrough-inline-feedback></walkthrough-inline-feedback>
 
@@ -174,7 +168,6 @@ You have completed the tutorial! We encourage you to test the deleting products 
 
 <walkthrough-tutorial-card id="retail_api_v2_create_product_java" icon="LOGO_JAVA" title="Create product tutorial" keepPrevious=true>Try to create a product via the Retail API</walkthrough-tutorial-card>
 
-<walkthrough-tutorial-card id="retail_api_v2_get_product_java" icon="LOGO_JAVA" title="Get product tutorial" keepPrevious=true>
-Try to get a product via the Retail API</walkthrough-tutorial-card>
+<walkthrough-tutorial-card id="retail_api_v2_get_product_java" icon="LOGO_JAVA" title="Get product tutorial" keepPrevious=true>Try to get a product via the Retail API</walkthrough-tutorial-card>
 
 <walkthrough-tutorial-card id="retail_api_v2_update_product_java" icon="LOGO_JAVA" title="Update product tutorial" keepPrevious=true>Try to update a product via the Retail API</walkthrough-tutorial-card>

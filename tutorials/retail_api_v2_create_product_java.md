@@ -10,7 +10,7 @@
 
 ## Get started
 
-To fill the catalog or to update a massive number of products, we recommend using the `import_products` method. However,
+To fill the catalog or to update a massive number of products, we recommend using the `importProducts()` method. However,
 sometimes you might need to make some detached changes in your product catalog.
 
 For such cases, the Retail API provides you with the following methods:
@@ -115,18 +115,12 @@ Otherwise, you can skip it.
 
 Clone the Git repository with all the code samples to learn the Retail features and check them in action.
 
-<!-- TODO(ianan): change the repository link -->
 1. Run the following command in the Terminal:
     ```bash
-    git clone https://github.com/t-karasova/grs-retail.git
+    git clone https://github.com/googleapis/java-retail.git
     ```
 
     The code samples for each of the Retail services are stored in different directories.
-
-1. Go to the code samples directory - our starting point to run more commands.
-    ```bash
-    cd java-retail/samples/snippets
-    ```
 
 ## Product object overview
 
@@ -138,8 +132,8 @@ The required product fields are:
     ```
 - `id`—product identifier, which is the final component of the product name.
 - `type`—the type of the product. The default value is `PRIMARY`.
-- `primary_product_id`—a variant group identifier required for `VARIANT` products.
-- `categories[]`—names of categories that the product belongs to. This can represent different category hierarchies.
+- `primaryProductId`—a variant group identifier required for `VARIANT` products.
+- `categories`—names of categories that the product belongs to. This can represent different category hierarchies.
 - `title`—the product title that will be visible to a customer.
 
 ## Product types overview
@@ -179,7 +173,7 @@ In this tutorial you will create a simple `PRIMARY` product presented in JSON fo
 
 ## Create a product in a catalog
 
-1. Before you start, build the Maven project and go to the code samples directory - our starting point to runcode samples:
+1. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
    ```bash
    cd ~/java-retail | mvn clean install -DskipTests
    cd ~/java-retail/samples/snippets  
@@ -225,8 +219,7 @@ You have completed the tutorial! We encourage you to try creating products by yo
 
 ### Do more with the Retail API
 
-<walkthrough-tutorial-card id="retail_api_v2_get_product_java" icon="LOGO_JAVA" title="Get product tutorial" keepPrevious=true>
-Try to get a product via the Retail API</walkthrough-tutorial-card>
+<walkthrough-tutorial-card id="retail_api_v2_get_product_java" icon="LOGO_JAVA" title="Get product tutorial" keepPrevious=true>Try to get a product via the Retail API</walkthrough-tutorial-card>
 
 <walkthrough-tutorial-card id="retail_api_v2_update_product_java" icon="LOGO_JAVA" title="Update product tutorial" keepPrevious=true>Try to update a product via the Retail API</walkthrough-tutorial-card>
 
