@@ -9,7 +9,7 @@
 
 ## Get started
 
-To fill the catalog or to update a massive number of products, we recommend using the `importProducts` method. However,
+To fill the catalog or to update a massive number of products, we recommend using the `importProducts()` method. However,
 sometimes you might need to make some detached changes in your product catalog.
 
 For such cases, the Retail API provides you with the following methods:
