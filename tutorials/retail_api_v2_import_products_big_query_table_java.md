@@ -145,9 +145,9 @@ Before you import products to your catalog, you need to upload the data to the B
 To upload the data to the BigQuery table, first create a dataset, then create the table with the Retail data schema.
 Next, upload data to the table from a prepared JSON file. The data in the file should correspond the Retail schema as well.
 
-There is a <walkthrough-editor-select-regex filePath="cloudshell_open/grs-grs-retail/src/main/resources/products.json" regex="id">`resources/products.json`</walkthrough-editor-select-regex> file with valid products. It should be uploaded to the `products` dataset and `products` table.
+There is a <walkthrough-editor-select-regex filePath="cloudshell_open/interactive-tutorials/src/main/resources/products.json" regex="id">`resources/products.json`</walkthrough-editor-select-regex> file with valid products. It should be uploaded to the `products` dataset and `products` table.
 
-Also, there is a <walkthrough-editor-select-regex filePath="cloudshell_open/grs-retail/src/main/resources/products_some_invalid.json" regex="id">`resources/products_some_invalid.json`</walkthrough-editor-select-regex> file containing some invalid products along with valid ones. It should be uploaded to the `products` dataset and `products_some_invalid` table. This table will be used to demonstrate the error handling.
+Also, there is a <walkthrough-editor-select-regex filePath="cloudshell_open/interactive-tutorials/src/main/resources/products_some_invalid.json" regex="id">`resources/products_some_invalid.json`</walkthrough-editor-select-regex> file containing some invalid products along with valid ones. It should be uploaded to the `products` dataset and `products_some_invalid` table. This table will be used to demonstrate the error handling.
 
 1. Run the following code in the Terminal to create tables and import data:
     ```bash
@@ -164,9 +164,9 @@ If you do not have permissions to run the ```bq``` command, you can create the t
 
 ### Upload catalog data to Cloud Storage
 
-There is a <walkthrough-editor-select-regex filePath="cloudshell_open/grs-retail/src/main/resources/products.json" regex="id">resources/products.json</walkthrough-editor-select-regex> file with valid products prepared in the `product` directory.
+There is a <walkthrough-editor-select-regex filePath="cloudshell_open/interactive-tutorials/src/main/resources/products.json" regex="id">resources/products.json</walkthrough-editor-select-regex> file with valid products prepared in the `product` directory.
 
-The other file, <walkthrough-editor-select-regex filePath="cloudshell_open/grs-grs-retail/src/main/resources/products_some_invalid.json" regex="id">resources/products_some_invalid.json</walkthrough-editor-select-regex>, contains both valid and invalid products. You will use it to check the error handling.
+The other file, <walkthrough-editor-select-regex filePath="cloudshell_open/interactive-tutorials/src/main/resources/products_some_invalid.json" regex="id">resources/products_some_invalid.json</walkthrough-editor-select-regex>, contains both valid and invalid products. You will use it to check the error handling.
 
 In your own project create a Cloud Storage bucket and put the JSON file there.
 The bucket name must be unique. For convenience, you can name it `<YOUR_PROJECT_ID>_<TIMESTAMP>`.
@@ -201,7 +201,7 @@ The bucket name must be unique. For convenience, you can name it `<YOUR_PROJECT_
 
 1. Set the **Destination** field **Table** with the value ```products```.
 
-1. To provide a table schema, enable the toggle **Edit as text** and in the **Schema** field, enter the schema from **`grs-retail/src/main/resources/product_schema.json`**.
+1. To provide a table schema, enable the toggle **Edit as text** and in the **Schema** field, enter the schema from **`interactive-tutorials/src/main/resources/product_schema.json`**.
 
 1. Click **Create table**.
 
@@ -212,7 +212,7 @@ The BigQuery table is created. You can proceed to importing products to the cata
 
 1. Add the service account `cloud-retail-customer-data-access@system.gserviceaccount.com` as a BigQuery Data Viewer for your project.
 
-1. Open the file <walkthrough-editor-select-regex filePath="cloudshell_open/grs-retail/src/main/java/product/ImportProductsBigQueryTable.java" regex="# get import products from big query request">`product/ImportProductsBigQueryTable.java`</walkthrough-editor-select-regex> and look at the example of the import product request.
+1. Open the file <walkthrough-editor-select-regex filePath="cloudshell_open/interactive-tutorials/src/main/java/product/ImportProductsBigQueryTable.java" regex="# get import products from big query request">`product/ImportProductsBigQueryTable.java`</walkthrough-editor-select-regex> and look at the example of the import product request.
 
     The field `parent` contains a catalog name along with a branch number where you are going to import your
     products to. You can use the default branch to import products to. However, if you are using custom products, change `default_branch`, which is **0**, to another branch ID, for example **1**. In the search tutorials you request `SearchService` to search for products in the default branch.
@@ -262,7 +262,7 @@ There is a `products_for_import_invalid` table in the BigQuery dataset that cont
 
 Use it for importing to get an error message.
 
-1. Go to the <walkthrough-editor-select-regex filePath="cloudshell_open/grs-retail/src/main/java/product/ImportProductsBigQueryTable.java" regex="# TO CHECK ERROR HANDLING USE THE TABLE WITH INVALID PRODUCTS:">`product/ImportProductsBigQueryTable.java`</walkthrough-editor-select-regex> file and assign the `TABLE_ID` value to the table with invalid products:
+1. Go to the <walkthrough-editor-select-regex filePath="cloudshell_open/interactive-tutorials/src/main/java/product/ImportProductsBigQueryTable.java" regex="# TO CHECK ERROR HANDLING USE THE TABLE WITH INVALID PRODUCTS:">`product/ImportProductsBigQueryTable.java`</walkthrough-editor-select-regex> file and assign the `TABLE_ID` value to the table with invalid products:
     ```
     private static final String TABLE_ID = "products_some_invalid";
     ```
@@ -292,7 +292,7 @@ The error is the following:
 
 Send an invalid import request to make the operation fail.
 
-1. In the <walkthrough-editor-select-regex filePath="cloudshell_open/grs-retail/src/main/java/product/ImportProductsBigQueryTable.java" regex="# TO CHECK ERROR HANDLING USE THE TABLE WITH INVALID PRODUCTS:">`product/ImportProductsBigQueryTable.java`</walkthrough-editor-select-regex> file, open the <walkthrough-editor-select-regex filePath="cloudshell_open/grs-retail/src/main/java/product/ImportProductsBigQueryTable.java" regex="getImportProductsBigQueryRequest">`getImportProductsBigQueryRequest()`</walkthrough-editor-select-regex> method, and add a local variable `DEFAULT_CATALOG` with an invalid catalog name.
+1. In the <walkthrough-editor-select-regex filePath="cloudshell_open/interactive-tutorials/src/main/java/product/ImportProductsBigQueryTable.java" regex="# TO CHECK ERROR HANDLING USE THE TABLE WITH INVALID PRODUCTS:">`product/ImportProductsBigQueryTable.java`</walkthrough-editor-select-regex> file, open the <walkthrough-editor-select-regex filePath="cloudshell_open/interactive-tutorials/src/main/java/product/ImportProductsBigQueryTable.java" regex="getImportProductsBigQueryRequest">`getImportProductsBigQueryRequest()`</walkthrough-editor-select-regex> method, and add a local variable `DEFAULT_CATALOG` with an invalid catalog name.
 
 1. Run the code again and check the error message
 
