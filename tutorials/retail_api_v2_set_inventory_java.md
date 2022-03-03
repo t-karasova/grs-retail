@@ -150,7 +150,7 @@ Next, to ensure that the product inventory information was updated successfully,
 
 ## Send an out-of-order SetInventory request
 
-The `SetInventory` method allows you to specify an update time when the request is sent.
+The `getSetInventoryRequest` method allows you to specify an update time when the request is sent.
 The Retail API compares the update time you've specified with the latest time recorded for the relevant inventory fields. An update happens only if the specified update time value is greater than the latest update time value.
 
 1. Modify the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/SetInventory.java" regex="float price">`price`</walkthrough-editor-select-regex> field value:
@@ -158,7 +158,7 @@ The Retail API compares the update time you've specified with the latest time re
     final float price = 20.0f;
     ```
 
-1. Change the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/SetInventory.java" regex="The request timestamp">`SetInventory.java`</walkthrough-editor-select-regex> request and set the `request_time` value to yesterday:
+1. Change the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/SetInventory.java" regex="The request timestamp">`SetInventory.java`</walkthrough-editor-select-regex> request and set the `requestTime` value to yesterday:
     ```
     Timestamp requestTime = Timestamp.newBuilder()
         .setSeconds(Instant.now().minus(1, ChronoUnit.DAYS).getEpochSecond())
