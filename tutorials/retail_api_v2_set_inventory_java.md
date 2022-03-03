@@ -10,7 +10,7 @@
 
 Changes to a product's inventory information might occur more frequently than changes to the catalog information.
 
-You can push inventory updates using the `SetInventory()` method instead of updating the entire product.
+You can push inventory updates using the `setInventoryAsync()` method instead of updating the entire product.
 
 For more information about managing catalog information, see the [Retail API documentation](https://cloud.google.com/retail/docs/inventory-updates#non-incremental-updates).
 
@@ -150,7 +150,7 @@ Next, to ensure that the product inventory information was updated successfully,
 
 ## Send an out-of-order SetInventory request
 
-The `getSetInventoryRequest` method allows you to specify an update time when the request is sent.
+The `setInventoryAsync()` method allows you to specify an update time when the request is sent.
 The Retail API compares the update time you've specified with the latest time recorded for the relevant inventory fields. An update happens only if the specified update time value is greater than the latest update time value.
 
 1. Modify the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/SetInventory.java" regex="float price">`price`</walkthrough-editor-select-regex> field value:
