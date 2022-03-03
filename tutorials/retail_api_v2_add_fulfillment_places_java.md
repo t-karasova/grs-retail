@@ -120,11 +120,6 @@ Clone the Git repository with all the code samples to learn the Retail features 
 
     The code samples for each of the Retail services are stored in different directories.
 
-1. Go to the code samples directory - our starting point to run more commands.
-    ```bash
-    cd java-retail/samples/snippets
-    ```
-
 ## Add fulfillment places
 
 1. Before you start, build the Maven project and go to the code samples directory - our starting point to runcode samples:
@@ -133,62 +128,33 @@ Clone the Git repository with all the code samples to learn the Retail features 
    cd ~/java-retail/samples/snippets  
    ```
 
-1. Set the following fields to send the `AddFulfillmentPlacesRequest` request:
+1. Go to the `getAddFulfillmentRequest()` method in `AddFulfillmentPlaces` class and check which fields need to be set in order to send the `AddFulfillmentPlacesRequest`:
     - `product`—the product name whose inventory information will be updated
     - `type`—the fulfillment type. You can set one of the [supported values](https://cloud.google.com/retail/docs/reference/rpc/google.cloud.retail.v2#addfulfillmentplacesrequest).
-    - `place_ids[]`—the store IDs for each of the fulfillment types
-    - `add_time`—the time when the fulfillment updates are pushed. It is used to prevent out-of-order updates on the fulfillment information. If this isn't provided, the internal system time will be used.
-    - `allow_missing`—if set to true and the product is not found, the fulfillment information will be retained for up to 24 hours and processed after the product is created.
-
-1. Open <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/AddFulfillmentPlaces.java" regex="Add fulfillment request">product/AddFulfillmentPlaces.java</walkthrough-editor-select-regex> file and check the `AddFulfillmentPlacesRequest` request.
+    - `placeIds`—the store IDs for each of the fulfillment types
+    - `addTime`—the time when the fulfillment updates are pushed. It is used to prevent out-of-order updates on the fulfillment information. If this isn't provided, the internal system time will be used.
+    - `allowMissing`—if set to true and the product is not found, the fulfillment information will be retained for up to 24 hours and processed after the product is created.
 
 1. To add the fulfillment places, open the Terminal and run the following command:
     ```bash
     mvn compile exec:java -Dexec.mainClass=product.AddFulfillmentPlaces
     ```
 
-1. Check the response in the Terminal. The product is initially created without the fulfillment information. Check the `getProduct()` response with the fulfillment places `store1`, `store2` and `store3` added to the `pickup-in-store` fulfillment type.
+1. Check the response in the Terminal. The product is initially created without the fulfillment information. 
 
-## Send an out-of-order add_fulfillment_places request
-
-The `AddFulfillmentPlaces` method lets you specify the update time when the request is sent.
-The Retail API compares the update time you've specified with the latest time recorded for the relevant inventory fields. The update happens only if the specified update time value is greater than the latest update time value.
-
-1. Modify the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/AddFulfillmentPlaces.java" regex=".addPlaceIds\(">`placeIds`</walkthrough-editor-select-regex> field value:
-    ```
-    .addPlaceIds("store4, store5, store6")
-    ```
-
-1. Set the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/AddFulfillmentPlaces.java" regex="REQUEST_TIME =">`REQUEST_TIME`</walkthrough-editor-select-regex> value to yesterday:
-    ```
-      private static final Timestamp REQUEST_TIME = Timestamp.newBuilder()
-      .setSeconds(Instant.now().minus(1,ChronoUnit.DAYS).getEpochSecond())
-      .setNanos(Instant.now().getNano()).build();
-    ```
-
-1. Before you run the same code sample again, comment out the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/AddFulfillmentPlaces.java" regex=" createProduct\(PRODUCT_ID\)">` createProduct(PRODUCT_ID);`</walkthrough-editor-select-regex> line to avoid the `Product already exists` error message.
-
-1. Uncomment the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/AddFulfillmentPlaces.java" regex="deleteProduct\(PRODUCT_NAME\)">`deleteProduct(PRODUCT_NAME)`</walkthrough-editor-select-regex> line to clean up after the code sample run.
-
-1. Run the code sample in the Terminal:
-    ```bash
-    mvn compile exec:java -Dexec.mainClass=product.AddFulfillmentPlaces
-    ```
-
-1. Check the product printed out in the Terminal.  The fulfillment places information has no updates.
+1. Check the `getProduct()` response with the fulfillment places `store1`, `store2` and `store3` added to the `pickup-in-store` fulfillment type.
 
 ## Congratulations
 
 <walkthrough-conclusion-trophy></walkthrough-conclusion-trophy>
 
-You have completed the tutorial! We encourage you to test adding the product fulfillment places by yourself.
+You have completed the tutorial! We encourage you to test adding product fulfillment places by yourself.
 
 <walkthrough-inline-feedback></walkthrough-inline-feedback>
 
 ### Do more with the Retail API
 
-<walkthrough-tutorial-card id="retail_api_v2_set_invenory_java" icon="LOGO_JAVA" title="Set inventory tutorial" keepPrevious=true>
-Try to set inventory via the Retail API</walkthrough-tutorial-card>
+<walkthrough-tutorial-card id="retail_api_v2_set_invenory_java" icon="LOGO_JAVA" title="Set inventory tutorial" keepPrevious=true>Try to set inventory via the Retail API</walkthrough-tutorial-card>
 
-<walkthrough-tutorial-card id="retail_api_v2_remove_fulfillment_places_java" icon="LOGO_JAVA" title="Removee fulfillment tutorial" keepPrevious=true>Try to remove fulfillment places via the Retail API</walkthrough-tutorial-card>
+<walkthrough-tutorial-card id="retail_api_v2_remove_fulfillment_places_java" icon="LOGO_JAVA" title="Remove fulfillment tutorial" keepPrevious=true>Try to remove fulfillment places via the Retail API</walkthrough-tutorial-card>
 
