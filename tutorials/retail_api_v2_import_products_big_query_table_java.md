@@ -125,18 +125,12 @@ Clone the Git repository with all the code samples to learn the Retail features 
 
     The code samples for each of the Retail services are stored in different directories.
 
-1. Go to the code samples directory - our starting point to run more commands.
+1. Go to the `interactive-tutorials` directory. It's our starting point to run more commands.
     ```bash
-    cd java-retail/samples/snippets
+    cd java-retail/samples/interactive-tutorials
     ```
 
 ## Create the BigQuery table and upload products
-
-1. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
-   ```bash
-   cd ~/java-retail | mvn clean install -DskipTests
-   cd ~/java-retail/samples/snippets  
-   ```
 
 Before you import products to your catalog, you need to upload the data to the BigQuery table first. There are two ways to do it:
 - [Create an empty BigQuery table](https://cloud.google.com/bigquery/docs/tables#creating_an_empty_table_with_a_schema_definition) using the Retail schema and products in this table using SQL.
@@ -156,7 +150,6 @@ Also, there is a <walkthrough-editor-select-regex filePath="cloudshell_open/inte
 1. The dataset `products` with both tables are created, check them in [Cloud Console](https://console.cloud.google.com/bigquery).
 
 **Note**: If you don't have permissions to run the ```bq``` command and get a `Permission denied` error, you can create the table and upload your data from UI admin console.
-
 
 ## Create the BigQuery table and upload products from UI admin console
 
