@@ -140,9 +140,9 @@ Clone the Git repository with all the code samples to learn the Retail features 
     mvn compile exec:java -Dexec.mainClass=product.AddFulfillmentPlaces
     ```
 
-1. Check the response in the Terminal. The product is initially created without the fulfillment information. 
+1. Check the response in the Terminal. The product was initially created with fulfillment places `store0` and `store1`. 
 
-1. Check the `getProduct()` response with the fulfillment places `store1`, `store2` and `store3` added to the `pickup-in-store` fulfillment type.
+1. Check the `getProduct()` response with the newly added fulfillment places `store2`, `store3` and `store4` for the `pickup-in-store` fulfillment type.
 
 ## Congratulations
 
