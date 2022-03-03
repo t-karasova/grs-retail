@@ -99,18 +99,12 @@ Clone the Git repository with all the code samples to learn the Retail features 
 
     The code samples for each of the Retail services are stored in different directories.
 
-1. Go to the code samples directory - our starting point to run more commands.
+1. Go to the `interactive-tutorials` directory. It's our starting point to run more commands.
     ```bash
-    cd java-retail/samples/snippets
+    cd java-retail/samples/interactive-tutorials
     ```
 
 ## Rejoin user events
-
-1. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
-   ```bash
-   cd ~/java-retail | mvn clean install -DskipTests
-   cd ~/java-retail/samples/snippets  
-   ```
 
 The `RejoinUserEventsRequest` method consists of two fields:
 - `parent`—required field. The parent catalog name, such as `projects/<YOUR_PROJECT_NUMBER>/locations/global/catalogs/default_catalog`.
@@ -120,7 +114,7 @@ Learn more about the user events in [the Retail documentation](https://cloud.goo
 
 You can check the `RejoinUserEventsRequest` example in the `events/RejoinUserEvent.java` file.
 
-1. Check the `RejoinUserEventsRequest` request example in the <walkthrough-editor-select-regex filePath="cloudshell_open/grs-retail/src/main/java/events/RejoinUserEvent.java" regex="# get rejoin user event request">`events/RejoinUserEvent.java`</walkthrough-editor-select-regex> file.
+1. Check the `RejoinUserEventsRequest` request example in the <walkthrough-editor-select-regex filePath="cloudshell_open/interactive-tutorials/src/main/java/events/RejoinUserEvent.java" regex="# get rejoin user event request">`events/RejoinUserEvent.java`</walkthrough-editor-select-regex> file.
 
 1. Run the code sample in the Terminal with the following command:
     ```bash
@@ -133,7 +127,7 @@ The rejoin operation might take up to 24 hours. If the long-running operation is
 
 Next, check the error handling by sending a rejoin request with an invalid parent.
 
-1. Find the <walkthrough-editor-select-regex filePath="cloudshell_open/grs-retail/src/main/java/events/RejoinUserEvent.java" regex="# TO CHECK THE ERROR HANDLING TRY TO PASS INVALID CATALOG:">comment</walkthrough-editor-select-regex> and uncomment the next line.
+1. Find the <walkthrough-editor-select-regex filePath="cloudshell_open/interactive-tutorials/src/main/java/events/RejoinUserEvent.java" regex="# TO CHECK THE ERROR HANDLING TRY TO PASS INVALID CATALOG:">comment</walkthrough-editor-select-regex> and uncomment the next line.
 
 1. Run the code sample in the Terminal with the following command:
     ```bash

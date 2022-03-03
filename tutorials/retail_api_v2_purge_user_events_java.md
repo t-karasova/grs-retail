@@ -95,18 +95,12 @@ Clone the Git repository with all the code samples to learn about the Retail fea
 
     The code samples for each of the Retail services are stored in different directories.
 
-1. Go to the code samples directory - our starting point to run more commands.
+1. Go to the `interactive-tutorials` directory. It's our starting point to run more commands.
     ```bash
-    cd java-retail/samples/snippets
+    cd java-retail/samples/interactive-tutorials
     ```
 
 ## Purge user events
-
-1. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
-   ```bash
-   cd ~/java-retail | mvn clean install -DskipTests
-   cd ~/java-retail/samples/snippets  
-   ```
 
 To send the `PurgeUserEventsRequest` request you need to specify the following fields:
 - `parent`—required field. The parent catalog name, such as `projects/<YOUR_PROJECT_NUMBER>/locations/global/catalogs/default_catalog`.
@@ -118,7 +112,7 @@ To send the `PurgeUserEventsRequest` request you need to specify the following f
   - userId: specifying this deletes all events associated with a user.
 - `force`—if force is set to `false`, the method returns the expected purge count without deleting any user events; if set to `true`, the user events are purged from the catalog.
 
-1. Open the`PurgeUserEventsRequest` example in the <walkthrough-editor-select-regex filePath="cloudshell_open/grs-retail/src/main/java/events/PurgeUserEvent.java" regex="# get purge user event request">`events/PurgeUserEvent.java`</walkthrough-editor-select-regex> file.
+1. Open the`PurgeUserEventsRequest` example in the <walkthrough-editor-select-regex filePath="cloudshell_open/interactive-tutorials/src/main/java/events/PurgeUserEvent.java" regex="# get purge user event request">`events/PurgeUserEvent.java`</walkthrough-editor-select-regex> file.
 
 1. Check that the filter field is set with the value:
     ```
@@ -144,7 +138,7 @@ The purge operation might take up to 24 hours. If the long-running operation is 
 
 Next, let's check the error handling. Send a request with an invalid filter.
 
-1. Find the <walkthrough-editor-select-regex filePath="cloudshell_open/grs-retail/src/main/java/events/PurgeUserEvent.java" regex="# TO CHECK ERROR HANDLING SET INVALID FILTER HERE:">comment</walkthrough-editor-select-regex> and set the filter field with an invalid value:
+1. Find the <walkthrough-editor-select-regex filePath="cloudshell_open/interactive-tutorials/src/main/java/events/PurgeUserEvent.java" regex="# TO CHECK ERROR HANDLING SET INVALID FILTER HERE:">comment</walkthrough-editor-select-regex> and set the filter field with an invalid value:
     ```
     .setFilter(String.format("invalid=\"%s\"", "123abc"))
     ```

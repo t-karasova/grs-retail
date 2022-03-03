@@ -94,18 +94,12 @@ Clone the Git repository with all the code samples to learn the Retail features 
 
     The code samples for each of the Retail services are stored in different directories.
 
-1. Go to the code samples directory - our starting point to run more commands.
+1. Go to the `interactive-tutorials` directory. It's our starting point to run more commands.
     ```bash
-    cd java-retail/samples/snippets
+    cd java-retail/samples/interactive-tutorials
     ```
 
 ## Write user events
-
-1. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
-   ```bash
-   cd ~/java-retail | mvn clean install -DskipTests
-   cd ~/java-retail/samples/snippets  
-   ```
    
 The `WriteUserEventRequest` request consists of two fields:
 - `parent`—required field. The parent catalog name, such as `projects/<YOUR_PROJECT_NUMBER>/locations/global/catalogs/default_catalog`.
@@ -113,7 +107,7 @@ The `WriteUserEventRequest` request consists of two fields:
 
 Learn more about the user events in [the Retail documentation](https://cloud.google.com/retail/docs/reference/rpc/google.cloud.retail.v2#userevent)
 
-1. Check the `WriteUserEventRequest` request example in the <walkthrough-editor-select-regex filePath="cloudshell_open/grs-retail/src/main/java/events/WriteUserEvent.java" regex="# get write user event request">`events/WriteUserEvent.java`</walkthrough-editor-select-regex> file.
+1. Check the `WriteUserEventRequest` request example in the <walkthrough-editor-select-regex filePath="cloudshell_open/interactive-tutorials/src/main/java/events/WriteUserEvent.java" regex="# get write user event request">`events/WriteUserEvent.java`</walkthrough-editor-select-regex> file.
 
 1. Run the code sample in the Terminal with the following command:
     ```bash
@@ -127,7 +121,7 @@ The Retail API returns the created user event. Check the output in the Terminal.
 
 Next, check the error handling by sending a request with an invalid parent.
 
-1. Find the <walkthrough-editor-select-regex filePath="cloudshell_open/grs-retail/src/main/java/events/WriteUserEvent.java" regex="# TO CHECK THE ERROR HANDLING TRY TO PASS INVALID CATALOG:">comment</walkthrough-editor-select-regex> and uncomment the next line.
+1. Find the <walkthrough-editor-select-regex filePath="cloudshell_open/interactive-tutorials/src/main/java/events/WriteUserEvent.java" regex="# TO CHECK THE ERROR HANDLING TRY TO PASS INVALID CATALOG:">comment</walkthrough-editor-select-regex> and uncomment the next line.
 
 1. Run the code sample in the Terminal with the following command:
     ```bash
