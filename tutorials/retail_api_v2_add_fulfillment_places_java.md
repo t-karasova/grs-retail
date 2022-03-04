@@ -129,7 +129,7 @@ Clone the Git repository with all the code samples to learn the Retail features 
    ```
 1. Open <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/AddFulfillmentPlaces.java" regex="Add fulfillment request">product/AddFulfillmentPlaces.java</walkthrough-editor-select-regex> file and check the `AddFulfillmentPlacesRequest` request.
 
-1. Check the values for thefollowing fields to send the `AddFulfillmentPlacesRequest` request:
+1. Check the values for the following fields to send the `AddFulfillmentPlacesRequest` request:
      - `product`—the product name whose inventory information will be updated
      - `type`—the fulfillment type. You can set one of the [supported values](https://cloud.google.com/retail/docs/reference/rpc/google.cloud.retail.v2#addfulfillmentplacesrequest).
      - `place_ids[]`—the store IDs for each of the fulfillment types
@@ -181,8 +181,7 @@ You have completed the tutorial! We encourage you to test adding the product ful
 
 ### Do more with the Retail API
 
-<walkthrough-tutorial-card id="retail_api_v2_set_invenory_java" icon="LOGO_JAVA" title="Set inventory tutorial" keepPrevious=true>
-Try to set inventory via the Retail API</walkthrough-tutorial-card>
+<walkthrough-tutorial-card id="retail_api_v2_set_inventory_java" icon="LOGO_JAVA" title="Set inventory tutorial" keepPrevious=true>Try to set inventory via the Retail API</walkthrough-tutorial-card>
 
-<walkthrough-tutorial-card id="retail_api_v2_remove_fulfillment_places_java" icon="LOGO_JAVA" title="Removee fulfillment tutorial" keepPrevious=true>Try to remove fulfillment places via the Retail API</walkthrough-tutorial-card>
+<walkthrough-tutorial-card id="retail_api_v2_remove_fulfillment_places_java" icon="LOGO_JAVA" title="Remove fulfillment tutorial" keepPrevious=true>Try to remove fulfillment places via the Retail API</walkthrough-tutorial-card>
 
