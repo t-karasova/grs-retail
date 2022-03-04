@@ -9,12 +9,12 @@
 ## Introduction
 
 In this tutorial you will learn how to use Retail API Product Service methods, which are exposed to perform the following methods:
-- create_product
-- get_product
-- update_product
-- delete_product
+- createProduct()
+- getProduct()
+- updateProduct()
+- deleteProduct()
 
-You will start with creating a simple product, then call the `get product` method. Next you will update some product fields, and finally remove the product from the catalog.
+You will start with creating a simple product, then call the `getProduct()` method. Next you will update some product fields, and finally remove the product from the catalog.
 
 For more information about managing catalog information, see the [Retail API documentation](https://cloud.google.com/retail/docs/manage-catalog).
 
@@ -110,18 +110,12 @@ Otherwise, you can skip it.
 
 Clone the Git repository with all the code samples to learn the Retail features and check them in action.
 
-<!-- TODO(ianan): change the repository link -->
 1. Run the following command in the Terminal:
     ```bash
-    git clone https://github.com/t-karasova/grs-retail.git
+    git clone https://github.com/googleapis/java-retail.git
     ```
 
     The code samples for each of the Retail services are stored in different directories.
-
-1. Go to the code samples directory - our starting point to run more commands.
-    ```bash
-    cd java-retail/samples/snippets
-    ```
 
 ## Product object overview
 
@@ -133,15 +127,15 @@ The required product fields are:
     ```
 - `id`—product identifier, which is the final component of the product name.
 - `type`—the type of the product. The default value is `PRIMARY`.
-- `primary_product_id`—a variant group identifier required for `VARIANT` products.
-- `categories[]`—names of categories that the product belongs to. This can represent different category hierarchies.
+- `primaryProductId`—a variant group identifier required for `VARIANT` products.
+- `categories`—names of categories that the product belongs to. This can represent different category hierarchies.
 - `title`—the product title that will be visible to a customer.
 
 ## Generate a simple product object
 
 In this tutorial you will create a simple `PRIMARY` product presented in JSON format:
 
-```json
+```
 {
   "name": "projects/<PROJECT_NUMBER>/locations/global/catalogs/default_catalog/branches/default_branch/products/crud_product_id",
   "id": "crud_product_id",
@@ -211,7 +205,7 @@ To build the `GetProductRequest` request, only the `name` field is required. You
 ## Update a product request
 
 To update a product you should send an `UpdateProductRequest` request to the Retail API with the following required fields specified:
- - `product`—the product object to be updated or created (depending on the  `allow_missing` value, the product can be created if it's missing).
+ - `product`—the product object to be updated or created (depending on the  `allowMissing` value, the product can be created if it's missing).
  - `updateMask`—indicates which fields in the provided product should be updated.
  - `allowMissing`—if the value is set to `true`, and the product is not found, a new product is created.
 
@@ -222,7 +216,7 @@ To update each of its fields, you need to set the product object in a catalog to
 
 Take a look at the `generateProductForUpdate()` method that returns the product object with updated fields except for these fields: `name`, `id`, and `type`—these fields are immutable.
 
-```java
+```
 {
   "name": "projects/<PROJECT_NUMBER>/locations/global/catalogs/default_catalog/branches/default_branch/products/<PRODUCT_ID>", #cannot be updated , should point to existent product
   "id": "<PRODUCT_ID>", #cannot be updated
@@ -291,6 +285,6 @@ projects/<project_number>/locations/global/catalogs/<catalog_id>/branches/<branc
 
 <walkthrough-conclusion-trophy></walkthrough-conclusion-trophy>
 
-You have completed the tutorial! We encourage you to test the managing products by yourself.
+You have completed the tutorial! We encourage you to test managing products by yourself.
 
 <walkthrough-inline-feedback></walkthrough-inline-feedback>

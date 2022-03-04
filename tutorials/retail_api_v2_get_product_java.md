@@ -114,18 +114,12 @@ Otherwise, you can skip it.
 
 Clone the Git repository with all the code samples to learn the Retail features and check them in action.
 
-<!-- TODO(ianan): change the repository link -->
 1. Run the following command in the Terminal:
     ```bash
-    git clone https://github.com/t-karasova/grs-retail.git
+    git clone https://github.com/googleapis/java-retail.git
     ```
 
    The code samples for each of the Retail services are stored in different directories.
-
-1. Go to the code samples directory - our starting point to run more commands.
-    ```bash
-    cd java-retail/samples/snippets
-    ```
 
 ## Get product
 

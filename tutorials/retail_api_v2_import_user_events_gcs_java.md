@@ -115,22 +115,16 @@ Otherwise, you can skip it.
 
 Clone the Git repository with all the code samples to learn the Retail features and check them in action.
 
-<!-- TODO(ianan): change the repository link -->
 1. Run the following command in the Terminal:
     ```bash
-    git clone https://github.com/t-karasova/grs-retail.git
+    git clone https://github.com/googleapis/java-retail.git
     ```
 
     The code samples for each of the Retail services are stored in different directories.
 
-1. Go to the code samples directory - our starting point to run more commands.
-    ```bash
-    cd java-retail/samples/snippets
-    ```
-
 ## Upload catalog data to Cloud Storage
 
-1. Before you start, build the Maven project and go to the code samples directory - our starting point to runcode samples:
+1. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
    ```bash
    cd ~/java-retail | mvn clean install -DskipTests
    cd ~/java-retail/samples/snippets  
@@ -165,7 +159,7 @@ The bucket name must be unique. For convenience, you can name it `<YOUR_PROJECT_
 
     If you are using user events prepared for these tutorials from the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/resources/user_events.json" regex="id">resources/user_events.json</walkthrough-editor-select-regex> file, you can use the default branch to import user events to. However, if you are using custom user events, change the default_branch, which is `0`, to another branch ID, for example `1`.
 
-    The `input_config` field defines the `GcsSource` as an import source.
+    The `inputConfig` field defines the `GcsSource` as an import source.
 
 1.  To perform the user events import, open Terminal and run the command:
     ```bash
@@ -186,7 +180,7 @@ The operation is completed when the field `operation.done()` is set to true.
 
     You have imported valid user event objects into the catalog.
 
-1. Check the `gcs_operation.metadata.success_count` field to get the total number of successfully imported user events. The number of failures during the user events import is returned in the `gcs_operation.metadata.failure_count` field.
+1. Check the `gcs_operation.metadata.getSuccessCount()` method to get the total number of successfully imported user events. The number of failures during the user events import is returned by the `gcs_operation.metadata.getFailureCount()` method.
 
 1. Check the results printed out in the Terminal:
     ```terminal
@@ -244,7 +238,7 @@ import_summary {
 
 Next, send an invalid import request to check the error message.
 
-1. Open the  <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/events/ImportUserEventsGcs.java" regex="# TO CHECK ERROR HANDLING PASTE THE INVALID CATALOG NAME HERE">`get_import_events_gcs_request()`</walkthrough-editor-select-regex> method, and uncomment the line with the `default_catalog` local variable with an invalid catalog name.
+1. Open the  <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/events/ImportUserEventsGcs.java" regex="# TO CHECK ERROR HANDLING PASTE THE INVALID CATALOG NAME HERE">`getImportEventsGcsRequest()`</walkthrough-editor-select-regex> method, and uncomment the line with the `default_catalog` local variable with an invalid catalog name.
 
 1. Run the code again with the following command:
     ```bash

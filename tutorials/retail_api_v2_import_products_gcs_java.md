@@ -104,22 +104,16 @@ Otherwise, you can skip it.
 
 Clone the Git repository with all the code samples to learn the Retail features and check them in action.
 
-<!-- TODO(ianan): change the repository link -->
 1. Run the following command in the Terminal:
     ```bash
-    git clone https://github.com/t-karasova/grs-retail.git
+    git clone https://github.com/googleapis/java-retail.git
     ```
 
     The code samples for each of the Retail services are stored in different directories.
 
-1. Go to the code samples directory - our starting point to run more commands.
-    ```bash
-    cd java-retail/samples/snippets
-    ```
-
 ## Upload catalog data to Cloud Storage
 
-1. Before you start, build the Maven project and go to the code samples directory - our starting point to runcode samples:
+1. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
    ```bash
    cd ~/java-retail | mvn clean install -DskipTests
    cd ~/java-retail/samples/snippets  
@@ -163,7 +157,7 @@ To upload catalog data to the Cloud Storage bucket, you can create one or more J
 
     If you are using products prepared for these tutorials from <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/resources/products.json" regex="id">resources/products.json</walkthrough-editor-select-regex> file, you can use the defailt branch to import products to. But, if you are using custom products, change the default_branch, which is **0**, to another branch ID, for example **1**. In the search tutorials you will request `SearchService` to search for products in the default branch.
 
-    The `input_config` field defines the `GcsSource` as an import source.
+    The `inputConfig` field defines the `GcsSource` as an import source.
 
 1. To perform the product import, open Terminal and run the command:
     ```bash
@@ -184,7 +178,7 @@ The operation is completed when the field `operation.done()` is set to true.
 
 1. You have imported valid product objects into the catalog.
 
-1. Check the `operation.metadata.successCount` field to get the total number of successfully imported products. The number of failures during the product import is returned in the `operation.metadata.failureCount` field.
+1. Check the `operation.metadata.getSuccessCount()` method to get the total number of successfully imported products. The number of failures during the product import is returned by the `operation.metadata.getFailureCount()` method.
 
 1. Check the results printed out in the Terminal:
     ```terminal
@@ -232,7 +226,7 @@ The `operation.result` field points to the errors bucket, where you can find a J
 
 The error is the following:
 ```json
-{"code":3,"message":"Invalid value at 'availability' (type.googleapis.com/google.cloud.retail.v2main.Product.Availability): \"INVALID_VALUE\"","details":[{"@type":"type.googleapis.com/google.protobuf.Struct","value":{"line_number":1}}]}
+   {"code":3,"message":"Invalid value at 'availability' (type.googleapis.com/google.cloud.retail.v2main.Product.Availability): \"INVALID_VALUE\"","details":[{"@type":"type.googleapis.com/google.protobuf.Struct","value":{"line_number":1}}]}
 ```
 
 ## Errors appeared due to invalid request
@@ -240,12 +234,13 @@ The error is the following:
 Next, send an invalid import request to check the error message.
 
 1. Open the  <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/ImportProductsGcs.java" regex="# TO CHECK ERROR HANDLING PASTE THE INVALID CATALOG NAME HERE">getImportProductsGcsRequest()</walkthrough-editor-select-regex> method, and set some invalid catalog name as the catalog name in the line:
-
-```String INVALID_DEFAULT_CATALOG = 
-   String.format("projects/%s/locations/global/catalogs/invalid_catalog/branches/default_branch", PROJECT_NUMBER);```
-
-```ImportProductsRequest importRequest = ImportProductsRequest.newBuilder().setParent("INVALID_DEFAULT_CATALOG")```
-
+```
+   String INVALID_DEFAULT_CATALOG = 
+   String.format("projects/%s/locations/global/catalogs/invalid_catalog/branches/default_branch", PROJECT_NUMBER);
+```
+```
+   ImportProductsRequest importRequest = ImportProductsRequest.newBuilder().setParent("INVALID_DEFAULT_CATALOG");
+```
 1. Run the code again with the following command:
     ```bash
     mvn compile exec:java -Dexec.mainClass=product.ImportProductsGcs
@@ -259,6 +254,6 @@ Next, send an invalid import request to check the error message.
 
 <walkthrough-conclusion-trophy></walkthrough-conclusion-trophy>
 
-You have completed the tutorial! We encourage you to test the importing products from Google Cloud Storage by yourself and try different combinations of various filter expressions.
+You have completed the tutorial! We encourage you to test importing products from Google Cloud Storage by yourself and try different combinations of various filter expressions.
 
 <walkthrough-inline-feedback></walkthrough-inline-feedback>

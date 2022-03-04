@@ -112,22 +112,16 @@ Otherwise, you can skip it.
 
 Clone the Git repository with all the code samples to learn the Retail features and check them in action.
 
-<!-- TODO(ianan): change the repository link -->
 1. Run the following command in the Terminal:
     ```bash
-    git clone https://github.com/t-karasova/grs-retail.git
+    git clone https://github.com/googleapis/java-retail.git
     ```
 
     The code samples for each of the Retail services are stored in different directories.
 
-1. Go to the code samples directory - our starting point to run more commands.
-    ```bash
-    cd java-retail/samples/snippets
-    ```
-
 ## Import products from the inline source
 
-1. Before you start, build the Maven project and go to the code samples directory - our starting point to runcode samples:
+1. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
    ```bash
    cd ~/java-retail | mvn clean install -DskipTests
    cd ~/java-retail/samples/snippets  
@@ -162,7 +156,7 @@ The operation is completed when the `operation.done()` field is set to true.
     - `error`, if the operation failed.
     - `result`, if the operation was successful.
 
-1. Check the `operation.metadata.getSuccessCount` field to get the total number of successfully imported products. The number of failures during the product import is returned in `operation.metadata.getFailureCount` field.
+1. Check the `operation.metadata.getSuccessCount()` field to get the total number of successfully imported products. The number of failures during the product import is returned in `operation.metadata.getFailureCount()` field.
 
 ## Error handling
 
