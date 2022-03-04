@@ -123,18 +123,18 @@ Clone the Git repository with all the code samples to learn the Retail features 
 
 1. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
    ```bash
-   cd ~/java-retail | mvn clean install -DskipTests
-   cd ~/java-retail/samples/snippets  
+   cd java-retail/samples/interactive-tutorials/ 
+   mvn clean install -DskipTests
+
    ```
+1. Open <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/AddFulfillmentPlaces.java" regex="Add fulfillment request">product/AddFulfillmentPlaces.java</walkthrough-editor-select-regex> file and check the `AddFulfillmentPlacesRequest` request.
 
-1. Set the following fields to send the `AddFulfillmentPlacesRequest` request:
-    - `product`—the product name whose inventory information will be updated
-    - `type`—the fulfillment type. You can set one of the [supported values](https://cloud.google.com/retail/docs/reference/rpc/google.cloud.retail.v2#addfulfillmentplacesrequest).
-    - `place_ids[]`—the store IDs for each of the fulfillment types
-    - `add_time`—the time when the fulfillment updates are pushed. It is used to prevent out-of-order updates on the fulfillment information. If this isn't provided, the internal system time will be used.
-    - `allow_missing`—if set to true and the product is not found, the fulfillment information will be retained for up to 24 hours and processed after the product is created.
-
-1. Open <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/AddFulfillmentPlaces.java" regex="Add fulfillment request">product/AddFulfillmentPlaces.java</walkthrough-editor-select-regex> file and check the `AddFulfillmentPlacesRequest` request.
+1. Check the values for thefollowing fields to send the `AddFulfillmentPlacesRequest` request:
+     - `product`—the product name whose inventory information will be updated
+     - `type`—the fulfillment type. You can set one of the [supported values](https://cloud.google.com/retail/docs/reference/rpc/google.cloud.retail.v2#addfulfillmentplacesrequest).
+     - `place_ids[]`—the store IDs for each of the fulfillment types
+     - `add_time`—the time when the fulfillment updates are pushed. It is used to prevent out-of-order updates on the fulfillment information. If this isn't provided, the internal system time will be used.
+     - `allow_missing`—if set to true and the product is not found, the fulfillment information will be retained for up to 24 hours and processed after the product is created.
 
 1. To add the fulfillment places, open the Terminal and run the following command:
     ```bash
@@ -148,21 +148,21 @@ Clone the Git repository with all the code samples to learn the Retail features 
 The `AddFulfillmentPlaces` method lets you specify the update time when the request is sent.
 The Retail API compares the update time you've specified with the latest time recorded for the relevant inventory fields. The update happens only if the specified update time value is greater than the latest update time value.
 
-1. Modify the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/AddFulfillmentPlaces.java" regex=".addPlaceIds\(">`placeIds`</walkthrough-editor-select-regex> field value:
+1. Modify the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/AddFulfillmentPlaces.java" regex=".addPlaceIds\(">`placeIds`</walkthrough-editor-select-regex> field value:
     ```
     .addPlaceIds("store4, store5, store6")
     ```
 
-1. Set the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/AddFulfillmentPlaces.java" regex="REQUEST_TIME =">`REQUEST_TIME`</walkthrough-editor-select-regex> value to yesterday:
+1. Set the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/AddFulfillmentPlaces.java" regex="REQUEST_TIME =">`REQUEST_TIME`</walkthrough-editor-select-regex> value to yesterday:
     ```
       private static final Timestamp REQUEST_TIME = Timestamp.newBuilder()
       .setSeconds(Instant.now().minus(1,ChronoUnit.DAYS).getEpochSecond())
       .setNanos(Instant.now().getNano()).build();
     ```
 
-1. Before you run the same code sample again, comment out the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/AddFulfillmentPlaces.java" regex=" createProduct\(PRODUCT_ID\)">` createProduct(PRODUCT_ID);`</walkthrough-editor-select-regex> line to avoid the `Product already exists` error message.
+1. Before you run the same code sample again, comment out the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/AddFulfillmentPlaces.java" regex=" createProduct\(PRODUCT_ID\)">` createProduct(PRODUCT_ID);`</walkthrough-editor-select-regex> line to avoid the `Product already exists` error message.
 
-1. Uncomment the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/AddFulfillmentPlaces.java" regex="deleteProduct\(PRODUCT_NAME\)">`deleteProduct(PRODUCT_NAME)`</walkthrough-editor-select-regex> line to clean up after the code sample run.
+1. Uncomment the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/AddFulfillmentPlaces.java" regex="deleteProduct\(PRODUCT_NAME\)">`deleteProduct(PRODUCT_NAME)`</walkthrough-editor-select-regex> line to clean up after the code sample run.
 
 1. Run the code sample in the Terminal:
     ```bash

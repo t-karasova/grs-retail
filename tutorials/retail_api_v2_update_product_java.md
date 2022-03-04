@@ -117,15 +117,10 @@ Clone the Git repository with all the code samples to learn the Retail features 
 <!-- TODO(ianan): change the repository link -->
 1. Run the following command in the Terminal:
     ```bash
-    git clone https://github.com/t-karasova/grs-retail.git
+    git clone https://github.com/googleapis/java-retail.git
     ```
 
    The code samples for each of the Retail services are stored in different directories.
-
-1. Go to the code samples directory - our starting point to run more commands.
-    ```bash
-    cd java-retail/samples/snippets
-    ```
 
 ## Update product
 
@@ -135,8 +130,8 @@ To update a product you should send an `UpdateProductRequest` call to the Retail
 
 1. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
    ```bash
-   cd ~/java-retail | mvn clean install -DskipTests
-   cd ~/java-retail/samples/snippets  
+   cd java-retail/samples/interactive-tutorials/  
+   mvn clean install -DskipTests
    ```
 
 The originally created product is the following:

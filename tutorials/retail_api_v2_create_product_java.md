@@ -175,11 +175,11 @@ In this tutorial you will create a simple `PRIMARY` product presented in JSON fo
 
 1. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
    ```bash
-   cd ~/java-retail | mvn clean install -DskipTests
-   cd ~/java-retail/samples/snippets  
+   cd java-retail/samples/interactive-tutorials/  
+   mvn clean install -DskipTests     
    ```
 
-1. Open the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/CreateProduct.java" regex="Generate product to create">CreateProduct.java</walkthrough-editor-select-regex> code sample and check this product generation with the method ```generateProduct()```.
+1. Open the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/CreateProduct.java" regex="Generate product to create">CreateProduct.java</walkthrough-editor-select-regex> code sample and check this product generation with the method ```generateProduct()```.
 
 1. To create a product, send a `CreateProductRequest` to Retail API with the following required fields specified:
     - `product`—the product object you want to create
@@ -188,7 +188,7 @@ In this tutorial you will create a simple `PRIMARY` product presented in JSON fo
 
 1. To create a product, run the sample in the Terminal using the command:
     ```bash
-    pmvn compile exec:java -Dexec.mainClass=product.CreateProduct
+    mvn compile exec:java -Dexec.mainClass=product.CreateProduct
     ```
 
 The Retail API returns the created product as a response.
@@ -201,7 +201,7 @@ If you send a request without one of the required fields or if the field format 
 
 1. Run the sample in the Terminal using the command:
     ```bash
-    pmvn compile exec:java -Dexec.mainClass=product.CreateProduct
+    mvn compile exec:java -Dexec.mainClass=product.CreateProduct
     ```
 
 1. You should see the following error message:

@@ -126,14 +126,14 @@ Clone the Git repository with all the code samples to learn the Retail features 
 
 1. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
    ```bash
-   cd ~/java-retail | mvn clean install -DskipTests
-   cd ~/java-retail/samples/snippets  
+   cd java-retail/samples/interactive-tutorials/  
+   mvn clean install -DskipTests
    ```
 
-There is a <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/resources/user_events.json" regex="id">resources/user_events.json</walkthrough-editor-select-regex> file with valid user events prepared in the `resources` directory.
+There is a <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/resources/user_events.json" regex="id">resources/user_events.json</walkthrough-editor-select-regex> file with valid user events prepared in the `resources` directory.
 
 The other file,
-<walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/resources/user_events_some_invalid.json" regex="id">resources/user_events_some_invalid.json</walkthrough-editor-select-regex>,
+<walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/resources/user_events_some_invalid.json" regex="id">resources/user_events_some_invalid.json</walkthrough-editor-select-regex>,
 contains both valid and invalid user events. You will use it to check the error
 handling.
 
@@ -153,11 +153,11 @@ The bucket name must be unique. For convenience, you can name it `<YOUR_PROJECT_
 
 ## Import user events to the Retail catalog from the Cloud Storage source
 
-1. To check the example of an import user events request, open <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/events/ImportUserEventsGcs.java" regex="# call the Retail API to import products">events/ImportUserEventsGcs.java</walkthrough-editor-select-regex>.
+1. To check the example of an import user events request, open <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/events/ImportUserEventsGcs.java" regex="# call the Retail API to import products">events/ImportUserEventsGcs.java</walkthrough-editor-select-regex>.
 
     The `parent` field in the `ImportUserEventsRequest` method contains a catalog name along with a branch number you are going to import your user events to.
 
-    If you are using user events prepared for these tutorials from the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/resources/user_events.json" regex="id">resources/user_events.json</walkthrough-editor-select-regex> file, you can use the default branch to import user events to. However, if you are using custom user events, change the default_branch, which is `0`, to another branch ID, for example `1`.
+    If you are using user events prepared for these tutorials from the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/resources/user_events.json" regex="id">resources/user_events.json</walkthrough-editor-select-regex> file, you can use the default branch to import user events to. However, if you are using custom user events, change the default_branch, which is `0`, to another branch ID, for example `1`.
 
     The `inputConfig` field defines the `GcsSource` as an import source.
 
@@ -200,9 +200,9 @@ Try to import some invalid user events objects and check the error message in th
 
 The `type` field is required and should have one of the [defined values](https://cloud.google.com/retail/docs/user-events#types), so if you set some invalid value, you get the invalid user event objects.
 
-There is a <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/resources/user_events_some_invalid.json" regex="id">resources/user_events_some_invalid.json</walkthrough-editor-select-regex> file in the Cloud Storage bucket that contains some invalid user events.
+There is a <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/resources/user_events_some_invalid.json" regex="id">resources/user_events_some_invalid.json</walkthrough-editor-select-regex> file in the Cloud Storage bucket that contains some invalid user events.
 
-1. Open the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/events/ImportUserEventsGcs.java" regex="# TO CHECK ERROR HANDLING USE THE JSON WITH INVALID USER EVENT">code sample</walkthrough-editor-select-regex> and assign the `gcs_events_object` value to the filename:
+1. Open the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/events/ImportUserEventsGcs.java" regex="# TO CHECK ERROR HANDLING USE THE JSON WITH INVALID USER EVENT">code sample</walkthrough-editor-select-regex> and assign the `gcs_events_object` value to the filename:
     ```
     GCS_EVENTS_OBJECT = "user_events_some_invalid.json"
     ```
@@ -238,7 +238,7 @@ import_summary {
 
 Next, send an invalid import request to check the error message.
 
-1. Open the  <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/events/ImportUserEventsGcs.java" regex="# TO CHECK ERROR HANDLING PASTE THE INVALID CATALOG NAME HERE">`getImportEventsGcsRequest()`</walkthrough-editor-select-regex> method, and uncomment the line with the `default_catalog` local variable with an invalid catalog name.
+1. Open the  <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/events/ImportUserEventsGcs.java" regex="# TO CHECK ERROR HANDLING PASTE THE INVALID CATALOG NAME HERE">`getImportEventsGcsRequest()`</walkthrough-editor-select-regex> method, and uncomment the line with the `default_catalog` local variable with an invalid catalog name.
 
 1. Run the code again with the following command:
     ```bash

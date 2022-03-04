@@ -156,14 +156,14 @@ In this tutorial you will create a simple `PRIMARY` product presented in JSON fo
 }
 ```
 
-Open the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/CrudProduct.java" regex="# generate product for update">CrudProduct.java</walkthrough-editor-select-regex> code sample and check this product generation with the `generateProduct()` method.
+Open the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/CrudProduct.java" regex="# generate product for update">CrudProduct.java</walkthrough-editor-select-regex> code sample and check this product generation with the `generateProduct()` method.
 
 ## Create a product request
 
 1. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
    ```bash
-   cd ~/java-retail | mvn clean install -DskipTests
-   cd ~/java-retail/samples/snippets
+   cd java-retail/samples/interactive-tutorials/ 
+   mvn clean install -DskipTests
    ```
 
 1. To create a product, send a `CreateProductRequest` request to Retail API with the following required fields specified:
@@ -171,9 +171,9 @@ Open the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/
     - `productId`—product ID
     - `parent`—a branch name in a catalog where the product will be created
 
-1. Check the `CreateProductRequest` request along with the Retail API call in a <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/CrudProduct.java" regex="Create product">`createProduct()`</walkthrough-editor-select-regex> method.
+1. Check the `CreateProductRequest` request along with the Retail API call in a <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/CrudProduct.java" regex="Create product">`createProduct()`</walkthrough-editor-select-regex> method.
 
-1. Comment out <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/CrudProduct.java" regex="Executable tutorial class">the lines</walkthrough-editor-select-regex> with the following calls: `getProduct()`, `updateProduct()`, and `deleteProduct()`. These actions will be checked in the next steps.
+1. Comment out <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/CrudProduct.java" regex="Executable tutorial class">the lines</walkthrough-editor-select-regex> with the following calls: `getProduct()`, `updateProduct()`, and `deleteProduct()`. These actions will be checked in the next steps.
 
 1. To create a product, run the sample in the Terminal using the command:
     ```bash
@@ -189,9 +189,9 @@ To build the `GetProductRequest` request, only the `name` field is required. You
     projects/<project_number>/locations/global/catalogs/<catalog_id>/branches/<branch_id>/products/<product_id>
     ```
 
-1. You can find the `GetProductRequest` example in a <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/CrudProduct.java" regex="Get product">`getProduct()`</walkthrough-editor-select-regex> method.
+1. You can find the `GetProductRequest` example in a <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/CrudProduct.java" regex="Get product">`getProduct()`</walkthrough-editor-select-regex> method.
 
-1. Comment out <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/CrudProduct.java" regex="Executable tutorial class">the lines</walkthrough-editor-select-regex> with the following calls: `createProduct()`, `updateProduct()`, and `deleteProduct()`. These actions were already checked or will be checked in the next steps.
+1. Comment out <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/CrudProduct.java" regex="Executable tutorial class">the lines</walkthrough-editor-select-regex> with the following calls: `createProduct()`, `updateProduct()`, and `deleteProduct()`. These actions were already checked or will be checked in the next steps.
 
 1. Uncomment the line with the `getProduct()` method call.
 
@@ -237,9 +237,9 @@ Take a look at the `generateProductForUpdate()` method that returns the product 
 }
 ```
 
-1. Check the `UpdateProductRequest` example in the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/CrudProduct.java" regex="Update product">`updateProduct()`</walkthrough-editor-select-regex> method.
+1. Check the `UpdateProductRequest` example in the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/CrudProduct.java" regex="Update product">`updateProduct()`</walkthrough-editor-select-regex> method.
 
-1. Comment out <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/CrudProduct.java" regex="# call the methods">the lines</walkthrough-editor-select-regex> with the following calls: `createProduct()`, `getProduct()`, `deleteProduct()`. These actions were already checked or will be checked in the next steps.
+1. Comment out <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/CrudProduct.java" regex="# call the methods">the lines</walkthrough-editor-select-regex> with the following calls: `createProduct()`, `getProduct()`, `deleteProduct()`. These actions were already checked or will be checked in the next steps.
 
 1. Uncomment the line with the `updateProduct()` method call.
 
@@ -259,9 +259,9 @@ You should use the full resource name of a product, such as:
 projects/<project_number>/locations/global/catalogs/<catalog_id>/branches/<branch_id>/products/<product_id>
 ```
 
-1. Check the `DeleteProductRequest` example in the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/CrudProduct.java" regex="Delete product">`deleteProduct()`</walkthrough-editor-select-regex> method.
+1. Check the `DeleteProductRequest` example in the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/CrudProduct.java" regex="Delete product">`deleteProduct()`</walkthrough-editor-select-regex> method.
 
-1. Comment out <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/CrudProduct.java" regex="Executable tutorial class">the lines</walkthrough-editor-select-regex> with the following calls: `createProduct()`, `getProduct()`, and `updateProduct()`. These actions were already checked or will be checked in the next steps.
+1. Comment out <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/CrudProduct.java" regex="Executable tutorial class">the lines</walkthrough-editor-select-regex> with the following calls: `createProduct()`, `getProduct()`, and `updateProduct()`. These actions were already checked or will be checked in the next steps.
 
 1. Uncomment the line with the `deleteProduct()` method call.
 

@@ -130,12 +130,12 @@ You should use the full resource name of a product, such as:
 projects/<project_number>/locations/global/catalogs/<catalog_id>/branches/<branch_id>/products/<product_id>
 ```
 
-1. Open the `GetProductRequest` example in <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/GetProduct.java" regex="Get product request">GetProduct.java</walkthrough-editor-select-regex>.
+1. Open the `GetProductRequest` example in <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/GetProduct.java" regex="Get product request">GetProduct.java</walkthrough-editor-select-regex>.
 
 2. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
    ```bash
-   cd ~/java-retail | mvn clean install -DskipTests
-   cd ~/java-retail/samples/snippets  
+   cd java-retail/samples/interactive-tutorials/  
+   mvn clean install -DskipTests
    ```
 
 3. Run the code sample in the Terminal to create a product in a catalog and remove it using a prepared request:

@@ -125,12 +125,12 @@ Clone the Git repository with all the code samples to learn the Retail features 
 
 1. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
    ```bash
-   cd ~/java-retail | mvn clean install -DskipTests
-   cd ~/java-retail/samples/snippets  
+   cd java-retail/samples/interactive-tutorials/ 
+   mvn clean install -DskipTests
    ```
 
 1.  To check the example of an import user events request, open the
-    <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/events/ImportUserEventsInline.java" regex="Get user events for import.">`events/ImportUserEventsInline.java`</walkthrough-editor-select-regex> file.
+    <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/events/ImportUserEventsInline.java" regex="Get user events for import.">`events/ImportUserEventsInline.java`</walkthrough-editor-select-regex> file.
 
      The `getUserEvents()` method creates the user events to be used in the
     `inputConfig` field.
