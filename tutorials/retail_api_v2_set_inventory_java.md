@@ -114,6 +114,7 @@ Clone the Git repository with all the code samples to learn the Retail features 
    The code samples for each of the Retail services are stored in different directories.
    
 ## Set inventory
+1. Open the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/SetInventory.java" regex="getSetInventoryRequest">SetInventory.java</walkthrough-editor-select-regex> file and check the `SetInventoryRequest` request.
 
 1. Check the values for the following fields to send the `SetInventoryRequest` call:
     - `inventory`—the inventory information to update. The fields allowed for updating are:
@@ -124,8 +125,6 @@ Clone the Git repository with all the code samples to learn the Retail features 
     - `setMask`—indicates what product inventory fields to update
     - `setTime`—the time when the request is sent. It is used to prevent out-of-order updates on inventory fields that contain the last update time recorded value.
     - `allowMissing`—if set to true and the product is not found, the fulfillment information will be retained for up to 24 hours and processed after the product is created.
-
-1. Open the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/SetInventory.java" regex="getSetInventoryRequest">SetInventory.java</walkthrough-editor-select-regex> file and check the `SetInventoryRequest` request.
 
 2. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
    ```bash
@@ -147,12 +146,12 @@ Next, to ensure that the product inventory information was updated successfully,
 The `setInventoryAsync()` method allows you to specify an update time when the request is sent.
 The Retail API compares the update time you've specified with the latest time recorded for the relevant inventory fields. An update happens only if the specified update time value is greater than the latest update time value.
 
-1. Modify the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/SetInventory.java" regex="float price">`price`</walkthrough-editor-select-regex> field value:
+1. Modify the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/SetInventory.java" regex="float price">`price`</walkthrough-editor-select-regex> field value:
     ```
     final float price = 20.0f;
     ```
 
-1. Change the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/SetInventory.java" regex="The request timestamp">`SetInventory.java`</walkthrough-editor-select-regex> request and set the `requestTime` value to yesterday:
+1. Change the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/SetInventory.java" regex="The request timestamp">`SetInventory.java`</walkthrough-editor-select-regex> request and set the `requestTime` value to yesterday:
     ```
     Timestamp requestTime = Timestamp.newBuilder()
         .setSeconds(Instant.now().minus(1, ChronoUnit.DAYS).getEpochSecond())

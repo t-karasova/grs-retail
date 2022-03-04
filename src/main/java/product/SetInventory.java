@@ -152,9 +152,9 @@ public final class SetInventory {
     This is a long running operation and its result is not immediately
     present with get operations,thus we simulate wait with sleep method.
     */
-    System.out.println("Set inventory, wait 30 seconds.");
+    final int awaitDuration = 50;
 
-    final int awaitDuration = 30;
+    System.out.println("Set inventory, wait " + awaitDuration + " seconds.");
 
     getProductServiceClient().awaitTermination(awaitDuration, TimeUnit.SECONDS);
   }
