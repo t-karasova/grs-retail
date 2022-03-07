@@ -112,10 +112,9 @@ Otherwise, you can skip it.
 
 Clone the Git repository with all the code samples to learn the Retail features and check them in action.
 
-<!-- TODO(ianan): change the repository link -->
 1. Run the following command in the Terminal:
     ```bash
-    git clone https://github.com/t-karasova/grs-retail.git
+    git clone https://github.com/googleapis/java-retail.git
     ```
 
     The code samples for each of the Retail services are stored in different directories.
@@ -128,7 +127,7 @@ Clone the Git repository with all the code samples to learn the Retail features 
    cd ~/java-retail/samples/snippets  
    ```
 
-1. Go to the `getAddFulfillmentRequest()` method in `AddFulfillmentPlaces` class and check which fields need to be set in order to send the `AddFulfillmentPlacesRequest`:
+1. Open <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/AddFulfillmentPlaces.java" regex="Add fulfillment request">product/AddFulfillmentPlaces.java</walkthrough-editor-select-regex> file and go to the `getAddFulfillmentRequest()` method. Check which fields need to be set in order to send the `AddFulfillmentPlacesRequest`:
     - `product`—the product name whose inventory information will be updated
     - `type`—the fulfillment type. You can set one of the [supported values](https://cloud.google.com/retail/docs/reference/rpc/google.cloud.retail.v2#addfulfillmentplacesrequest).
     - `placeIds`—the store IDs for each of the fulfillment types

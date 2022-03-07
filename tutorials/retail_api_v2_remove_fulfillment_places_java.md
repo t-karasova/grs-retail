@@ -112,10 +112,9 @@ Otherwise, you can skip it.
 
 Clone the Git repository with all the code samples to learn the Retail features and check them in action.
 
-<!-- TODO(ianan): change the repository link -->
 1. Run the following command in the Terminal:
     ```bash
-    git clone https://github.com/t-karasova/grs-retail.git
+    git clone https://github.com/googleapis/java-retail.git
     ```
 
    The code samples for each of the Retail services are stored in different directories.
@@ -128,7 +127,7 @@ Clone the Git repository with all the code samples to learn the Retail features 
    cd ~/java-retail/samples/snippets  
    ```
 
-1. Go to the `getRemoveFulfillmentRequest()` method in `RemoveFulfillmentPlaces` class and check which fields need to be set in order to send the `RemoveFulfillmentPlacesRequest`:
+1. Open <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/RemoveFulfillmentPlaces.java" regex="Remove fulfillment request">product/RemoveFulfillmentPlaces.java</walkthrough-editor-select-regex> file and go to the `getRemoveFulfillmentRequest()` method. Check which fields need to be set in order to send the `RemoveFulfillmentPlacesRequest`:
    - `product`—the product name whose inventory information will be updated
    - `type`—the fulfillment type. You can set one of the [supported values](https://cloud.google.com/retail/docs/reference/rpc/google.cloud.retail.v2#removefulfillmentplacesrequest).
    - `placeIds`—the store IDs for each of the fulfillment types
