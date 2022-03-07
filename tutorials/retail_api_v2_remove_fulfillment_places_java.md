@@ -1,12 +1,12 @@
 <walkthrough-metadata>
-  <meta name="title" content="Update inventory: add fulfillment places tutorial" />
-  <meta name="description" content="Learn how to update inventory information by adding fulfillment places" />
+  <meta name="title" content="Update inventory: remove fulfillment places tutorial" />
+  <meta name="description" content="Learn how to update inventory information by removing fulfillment places" />
   <meta name="component_id" content="593554" />
   <meta name="unlisted" content="true" />
-  <meta name="keywords" content="retail, update inventory, add fulfillment places" />
+  <meta name="keywords" content="retail, update inventory, remove fulfillment places" />
 </walkthrough-metadata>
 
-# Update inventory: add fulfillment places tutorial
+# Update inventory: remove fulfillment places tutorial
 
 ## Introduction
 
@@ -45,7 +45,7 @@ After the project is created, set your PROJECT_ID to a ```project``` variable.
 
 ### Create service account
 
-To access the Retail API you must create a service account. 
+To access the Retail API you must create a service account.
 
 1. To create service account follow this [instruction](https://cloud.google.com/retail/docs/setting-up#service-account)
 
@@ -56,7 +56,7 @@ To access the Retail API you must create a service account.
 
 ### Set up authentication
 
-To run a code sample from the Cloud Shell, you need to be authenticated using the service account credentials. 
+To run a code sample from the Cloud Shell, you need to be authenticated using the service account credentials.
 
 1.  Login with your user credentials.
 
@@ -117,9 +117,9 @@ Clone the Git repository with all the code samples to learn the Retail features 
     git clone https://github.com/googleapis/java-retail.git
     ```
 
-    The code samples for each of the Retail services are stored in different directories.
+   The code samples for each of the Retail services are stored in different directories.
 
-## Add fulfillment places
+## Remove fulfillment places
 
 1. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
    ```bash
@@ -127,27 +127,27 @@ Clone the Git repository with all the code samples to learn the Retail features 
    cd ~/java-retail/samples/snippets  
    ```
 
-1. Open <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/AddFulfillmentPlaces.java" regex="Add fulfillment request">product/AddFulfillmentPlaces.java</walkthrough-editor-select-regex> file and go to the `getAddFulfillmentRequest()` method. Check which fields need to be set in order to send the `AddFulfillmentPlacesRequest`:
-    - `product`—the product name whose inventory information will be updated
-    - `type`—the fulfillment type. You can set one of the [supported values](https://cloud.google.com/retail/docs/reference/rpc/google.cloud.retail.v2#addfulfillmentplacesrequest).
-    - `placeIds`—the store IDs for each of the fulfillment types
-    - `addTime`—the time when the fulfillment updates are pushed. It is used to prevent out-of-order updates on the fulfillment information. If this isn't provided, the internal system time will be used.
-    - `allowMissing`—if set to true and the product is not found, the fulfillment information will be retained for up to 24 hours and processed after the product is created.
+1. Open <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/RemoveFulfillmentPlaces.java" regex="Remove fulfillment request">product/RemoveFulfillmentPlaces.java</walkthrough-editor-select-regex> file and go to the `getRemoveFulfillmentRequest()` method. Check which fields need to be set in order to send the `RemoveFulfillmentPlacesRequest`:
+   - `product`—the product name whose inventory information will be updated
+   - `type`—the fulfillment type. You can set one of the [supported values](https://cloud.google.com/retail/docs/reference/rpc/google.cloud.retail.v2#removefulfillmentplacesrequest).
+   - `placeIds`—the store IDs for each of the fulfillment types
+   - `removeTime`—the time when the fulfillment updates are pushed. It is used to prevent out-of-order updates on the fulfillment information. If this isn't provided, the internal system time will be used.
+   - `allowMissing`—if set to true and the product is not found, the fulfillment information will be retained for up to 24 hours and processed after the product is created.
 
-1. To add the fulfillment places, open the Terminal and run the following command:
+1. To remove the fulfillment places, open the Terminal and run the following command:
     ```bash
-    mvn compile exec:java -Dexec.mainClass=product.AddFulfillmentPlaces
+    mvn compile exec:java -Dexec.mainClass=product.RemoveFulfillmentPlaces
     ```
 
-1. Check the response in the Terminal. The product was initially created with fulfillment places `store0` and `store1`. 
+1. Check the response in the Terminal. The product was initially created with fulfillment places `store0` and `store1`.
 
-1. Check the `getProduct()` response with the newly added fulfillment places `store2`, `store3` and `store4` for the `pickup-in-store` fulfillment type.
+1. Check the ```getProduct()``` response. The `store0`  place has been removed from the list of fulfillment places for the `pickup-in-store` fulfillment type.
 
 ## Congratulations
 
 <walkthrough-conclusion-trophy></walkthrough-conclusion-trophy>
 
-You have completed the tutorial! We encourage you to test adding product fulfillment places by yourself.
+You have completed the tutorial! We encourage you to test removing product fulfillment places by yourself.
 
 <walkthrough-inline-feedback></walkthrough-inline-feedback>
 
@@ -155,5 +155,5 @@ You have completed the tutorial! We encourage you to test adding product fulfill
 
 <walkthrough-tutorial-card id="retail_api_v2_set_invenory_java" icon="LOGO_JAVA" title="Set inventory tutorial" keepPrevious=true>Try to set inventory via the Retail API</walkthrough-tutorial-card>
 
-<walkthrough-tutorial-card id="retail_api_v2_remove_fulfillment_places_java" icon="LOGO_JAVA" title="Remove fulfillment tutorial" keepPrevious=true>Try to remove fulfillment places via the Retail API</walkthrough-tutorial-card>
+<walkthrough-tutorial-card id="retail_api_v2_add_fulfillment_places_java" icon="LOGO_JAVA" title="Add fulfillment tutorial" keepPrevious=true>Try to add fulfillment places via the Retail API</walkthrough-tutorial-card>
 
