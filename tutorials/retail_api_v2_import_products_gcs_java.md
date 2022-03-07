@@ -115,13 +115,13 @@ Clone the Git repository with all the code samples to learn the Retail features 
 
 1. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
    ```bash
-   cd ~/java-retail | mvn clean install -DskipTests
-   cd ~/java-retail/samples/snippets  
+   cd java-retail/samples/interactive-tutorials/ 
+   mvn clean install -DskipTests
    ```
-There is a <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/resources/products.json" regex="id">resources/products.json</walkthrough-editor-select-regex> file with valid products prepared in the `resources` directory.
+There is a <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/resources/products.json" regex="id">resources/products.json</walkthrough-editor-select-regex> file with valid products prepared in the `resources` directory.
 
 The other file,
-<walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/resources/products_some_invalid.json" regex="id">resources/products_some_invalid.json</walkthrough-editor-select-regex>,
+<walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/resources/products_some_invalid.json" regex="id">resources/products_some_invalid.json</walkthrough-editor-select-regex>,
 contains both valid and invalid products. You will use it to check the error
 handling.
 
@@ -130,12 +130,12 @@ The bucket name must be unique. For convenience, you can name it `<YOUR_PROJECT_
 
 1. Build the Maven project with the following command in the Terminal:
     ```bash
-    cd ~/java-retail | mvn clean install -DskipTests
+    cd java-retail 
+    mvn clean install -DskipTests
     ```
 
 1. To create the bucket and upload the JSON file, run the following command in the Terminal:
     ```bash
-    cd ~/java-retail/samples/snippets
     mvn compile exec:java -Dexec.mainClass=product.setup.ProductsCreateGcsBucket
     ```
 1. Now you can see the bucket is created in the [Cloud Storage](https://console.cloud.google.com/storage/browser), and the file is uploaded. The name of the created Cloud Storage bucket is printed in the Terminal.
@@ -151,11 +151,11 @@ The only reconciliation mode available for import from Cloud Storage is `INCREME
 
 To upload catalog data to the Cloud Storage bucket, you can create one or more JSON product files that do not exceed 2 GB each. You can set up to 100 JSON files in a single import request. For more information, see the [example of the product in JSON format](https://cloud.google.com/retail/docs/upload-catalog#json-format).
 
-1. To check the example of an import product request, open <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/ImportProductsGcs.java" regex="# call the Retail API to import products">product/ImportProductsGcs.java</walkthrough-editor-select-regex>.
+1. To check the example of an import product request, open <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/ImportProductsGcs.java" regex="# call the Retail API to import products">product/ImportProductsGcs.java</walkthrough-editor-select-regex>.
 
     The `parent` field contains a catalog name along with a branch number where products will be imported.
 
-    If you are using products prepared for these tutorials from <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/resources/products.json" regex="id">resources/products.json</walkthrough-editor-select-regex> file, you can use the defailt branch to import products to. But, if you are using custom products, change the default_branch, which is **0**, to another branch ID, for example **1**. In the search tutorials you will request `SearchService` to search for products in the default branch.
+    If you are using products prepared for these tutorials from <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/resources/products.json" regex="id">resources/products.json</walkthrough-editor-select-regex> file, you can use the default branch to import products to. But, if you are using custom products, change the default_branch, which is **0**, to another branch ID, for example **1**. In the search tutorials you will request `SearchService` to search for products in the default branch.
 
     The `inputConfig` field defines the `GcsSource` as an import source.
 
@@ -197,9 +197,9 @@ The title field is required. If you remove it, you get the invalid product objec
 
 Another example of an invalid product is a product with an incorrect value in the `product.availability` field.
 
-There is a <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/resources/products_some_invalid.json" regex="id">resources/products_some_invalid.json</walkthrough-editor-select-regex> file in the Cloud Storage bucket that contains some invalid products.
+There is a <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/resources/products_some_invalid.json" regex="id">resources/products_some_invalid.json</walkthrough-editor-select-regex> file in the Cloud Storage bucket that contains some invalid products.
 
-1. Open the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/ImportProductsGcs.java" regex="# TO CHECK ERROR HANDLING USE THE JSON WITH INVALID PRODUCT">code sample</walkthrough-editor-select-regex> and assign `GCS_PRODUCTS_OBJECT` value to the file name:
+1. Open the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/ImportProductsGcs.java" regex="# TO CHECK ERROR HANDLING USE THE JSON WITH INVALID PRODUCT">code sample</walkthrough-editor-select-regex> and assign `GCS_PRODUCTS_OBJECT` value to the file name:
     ```
     GCS_PRODUCTS_OBJECT = "products_some_invalid.json"
     ```
@@ -233,7 +233,7 @@ The error is the following:
 
 Next, send an invalid import request to check the error message.
 
-1. Open the  <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/ImportProductsGcs.java" regex="# TO CHECK ERROR HANDLING PASTE THE INVALID CATALOG NAME HERE">getImportProductsGcsRequest()</walkthrough-editor-select-regex> method, and set some invalid catalog name as the catalog name in the line:
+1. Open the  <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/ImportProductsGcs.java" regex="# TO CHECK ERROR HANDLING PASTE THE INVALID CATALOG NAME HERE">getImportProductsGcsRequest()</walkthrough-editor-select-regex> method, and set some invalid catalog name as the catalog name in the line:
 ```
    String INVALID_DEFAULT_CATALOG = 
    String.format("projects/%s/locations/global/catalogs/invalid_catalog/branches/default_branch", PROJECT_NUMBER);

@@ -130,12 +130,12 @@ You should use the full resource name of a product, such as:
 projects/<project_number>/locations/global/catalogs/<catalog_id>/branches/<branch_id>/products/<product_id>
 ```
 
-1. Open the `DeleteProductRequest` example in <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/DeleteProduct.java" regex="Get delete product request">DeleteProduct.java</walkthrough-editor-select-regex>.
+1. Open the `DeleteProductRequest` example in <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/DeleteProduct.java" regex="Get delete product request">DeleteProduct.java</walkthrough-editor-select-regex>.
 
 1. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
    ```bash
-   cd ~/java-retail | mvn clean install -DskipTests
-   cd ~/java-retail/samples/snippets  
+   cd java-retail/samples/interactive-tutorials/  
+   mvn clean install -DskipTests  
    ```
 1. Run the code sample in the Terminal to create a product in a catalog and remove it using a prepared request:
     ```bash
@@ -144,7 +144,7 @@ projects/<project_number>/locations/global/catalogs/<catalog_id>/branches/<branc
 
 There is no return value for this method. To check if the product was successfully removed, try to delete this product one more time:
 
-1. Copy the product name from the output message in the Terminal and assign it <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/DeleteProduct.java" regex="GENERATED_PRODUCT_ID">to the GENERATED_PRODUCT_ID variable</walkthrough-editor-select-regex>.
+1. Copy the product name from the output message in the Terminal and assign it <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/DeleteProduct.java" regex="GENERATED_PRODUCT_ID">to the GENERATED_PRODUCT_ID variable</walkthrough-editor-select-regex>.
 
 1. Run the following command in the Terminal:
    ```bash

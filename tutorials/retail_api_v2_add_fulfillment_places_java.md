@@ -123,16 +123,18 @@ Clone the Git repository with all the code samples to learn the Retail features 
 
 1. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
    ```bash
-   cd ~/java-retail | mvn clean install -DskipTests
-   cd ~/java-retail/samples/snippets  
-   ```
+   cd java-retail/samples/interactive-tutorials/ 
+   mvn clean install -DskipTests
 
-1. Open <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/AddFulfillmentPlaces.java" regex="Add fulfillment request">product/AddFulfillmentPlaces.java</walkthrough-editor-select-regex> file and go to the `getAddFulfillmentRequest()` method. Check which fields need to be set in order to send the `AddFulfillmentPlacesRequest`:
-    - `product`—the product name whose inventory information will be updated
-    - `type`—the fulfillment type. You can set one of the [supported values](https://cloud.google.com/retail/docs/reference/rpc/google.cloud.retail.v2#addfulfillmentplacesrequest).
-    - `placeIds`—the store IDs for each of the fulfillment types
-    - `addTime`—the time when the fulfillment updates are pushed. It is used to prevent out-of-order updates on the fulfillment information. If this isn't provided, the internal system time will be used.
-    - `allowMissing`—if set to true and the product is not found, the fulfillment information will be retained for up to 24 hours and processed after the product is created.
+   ```
+1. Open <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/AddFulfillmentPlaces.java" regex="Add fulfillment request">product/AddFulfillmentPlaces.java</walkthrough-editor-select-regex> file and check the `AddFulfillmentPlacesRequest` request.
+
+1. Check the values for the following fields to send the `AddFulfillmentPlacesRequest` request:
+     - `product`—the product name whose inventory information will be updated
+     - `type`—the fulfillment type. You can set one of the [supported values](https://cloud.google.com/retail/docs/reference/rpc/google.cloud.retail.v2#addfulfillmentplacesrequest).
+     - `place_ids[]`—the store IDs for each of the fulfillment types
+     - `add_time`—the time when the fulfillment updates are pushed. It is used to prevent out-of-order updates on the fulfillment information. If this isn't provided, the internal system time will be used.
+     - `allow_missing`—if set to true and the product is not found, the fulfillment information will be retained for up to 24 hours and processed after the product is created.
 
 1. To add the fulfillment places, open the Terminal and run the following command:
     ```bash
@@ -153,7 +155,7 @@ You have completed the tutorial! We encourage you to test adding product fulfill
 
 ### Do more with the Retail API
 
-<walkthrough-tutorial-card id="retail_api_v2_set_invenory_java" icon="LOGO_JAVA" title="Set inventory tutorial" keepPrevious=true>Try to set inventory via the Retail API</walkthrough-tutorial-card>
+<walkthrough-tutorial-card id="retail_api_v2_set_inventory_java" icon="LOGO_JAVA" title="Set inventory tutorial" keepPrevious=true>Try to set inventory via the Retail API</walkthrough-tutorial-card>
 
 <walkthrough-tutorial-card id="retail_api_v2_remove_fulfillment_places_java" icon="LOGO_JAVA" title="Remove fulfillment tutorial" keepPrevious=true>Try to remove fulfillment places via the Retail API</walkthrough-tutorial-card>
 

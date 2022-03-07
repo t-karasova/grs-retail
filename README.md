@@ -2,7 +2,7 @@
 
 ## Java code samples
 
-The code here demonstartes how to consume Google Retail Search API in Java
+The code here demonstrates how to consume Google Retail Search API in Java
 
 ## Get started with Google Cloud Retail
 

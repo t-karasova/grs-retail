@@ -123,21 +123,21 @@ Clone the Git repository with all the code samples to learn the Retail features 
 
 1. Before you start, build the Maven project and go to the code samples directory - our starting point to run code samples:
    ```bash
-   cd ~/java-retail | mvn clean install -DskipTests
-   cd ~/java-retail/samples/snippets  
+   cd java-retail/samples/interactive-tutorials/  
+   mvn clean install -DskipTests
    ```
 
 The only reconciliation mode available for inline importing is `INCREMENTAL`. That is, importing automatically creates new products and updates current products. Products already present in a catalog and missing from the imported JSON source will not change.
 
-1. To check the example of an import product request, open <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/ImportProductsInlineSource.java" regex="Get import products from inline source request">product/ImportProductsInlineSource.java</walkthrough-editor-select-regex>.
+1. To check the example of an import product request, open <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/ImportProductsInlineSource.java" regex="Get import products from inline source request">product/ImportProductsInlineSource.java</walkthrough-editor-select-regex>.
 
     The `parent` field contains a catalog name along with a branch number where products will be imported.
 
-    If you are using products prepared for these tutorials from <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/resources/products.json" regex="id">resources/products.json</walkthrough-editor-select-regex> file, you can use the default branch to import products to. However, if you are using custom products, change the default_branch, which is **0**, to another branch ID, for example **1**. In the search tutorials you request `SearchService` to search for products in the default branch.
+    If you are using products prepared for these tutorials from <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/resources/products.json" regex="id">resources/products.json</walkthrough-editor-select-regex> file, you can use the default branch to import products to. However, if you are using custom products, change the default_branch, which is **0**, to another branch ID, for example **1**. In the search tutorials you request `SearchService` to search for products in the default branch.
 
     The `inputConfig` field defines the `ProductInlineSource` as an import source.
 
-    To use generated products in this tutorial, check the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/ImportProductsInlineSource.java" regex="Prepare product to import as inline source">`getProducts()` </walkthrough-editor-select-regex> function first.
+    To use generated products in this tutorial, check the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/ImportProductsInlineSource.java" regex="Prepare product to import as inline source">`getProducts()` </walkthrough-editor-select-regex> function first.
 
 1. To import the products, open the Terminal and run the following command:
     ```bash
@@ -166,7 +166,7 @@ Try to import a few product objects, add an invalid one to them, and check the e
 
 The title field is required, so if you remove it, you will get an invalid product object.
 
-1. Go to the code sample and comment or remove the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/ImportProductsInlineSource.java" regex="#IamRemarkable Pen">product1 = Product.newBuilder().setTitle("#IamRemarkable Pen") </walkthrough-editor-select-regex> line.
+1. Go to the code sample and comment or remove the <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/ImportProductsInlineSource.java" regex="#IamRemarkable Pen">product1 = Product.newBuilder().setTitle("#IamRemarkable Pen") </walkthrough-editor-select-regex> line.
 
 1. Run the code sample and wait till the operation is completed:
     ```bash
@@ -188,7 +188,7 @@ The operation is successfully completed, so you can find a `result` field. Other
     }
     ```
 
-1. Send an invalid import request to make the operation fail. In the code sample, add to <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/snippets/src/main/java/product/ImportProductsInlineSource.java" regex="getImportProductsInlineRequest(">`getImportProductsInlineRequest()`</walkthrough-editor-select-regex> method a local variable, `defaultCatalog`, with an invalid catalog name.
+1. Send an invalid import request to make the operation fail. In the code sample, add to <walkthrough-editor-select-regex filePath="cloudshell_open/java-retail/samples/interactive-tutorials/src/main/java/product/ImportProductsInlineSource.java" regex="getImportProductsInlineRequest(">`getImportProductsInlineRequest()`</walkthrough-editor-select-regex> method a local variable, `defaultCatalog`, with an invalid catalog name.
 
 1. Run the code sample and wait till the operation is completed:
     ```bash
